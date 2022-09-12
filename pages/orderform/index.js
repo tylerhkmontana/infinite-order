@@ -15,14 +15,38 @@ export default function Orderform({ menu, category }) {
     function addItem(item) {
         const currItem = {...item}
         if (itemList.includes(currItem.name)) {
-            const updatedList = order.map(o => o.name === currItem.name ? {...o, quantity: o.quantity + 1} : o)
-            setOrder(prev => [...updatedList])
+            const updatedOrder = order.map(o => o.name === currItem.name ? {...o, quantity: o.quantity + 1} : o)
+            setOrder(prev => [...updatedOrder])
 
         } else {
             currItem.quantity = 0
             setItemList(prev => [...prev, currItem.name])
             setOrder(prev => [...prev, currItem])
         }
+    }
+
+    function decreaseItem(itemName) {
+        const updatedOrder = order.map(item => {
+            if(item.name === itemName) {
+                let quantity = item.quantity
+                if (quantity > 1) {
+                    return  {
+                        ...item,
+                        quantity: quantity -1
+                    }
+                } else {
+                    const updatedItemList = itemList.splice(itemList.indexOf(itemName))
+                    setItemList(prev => [...updatedItemList])
+                }
+            } else {
+                return item
+            }
+        })
+        setOrder(prev => [...updatedOrder])
+    }
+
+    function removeItem(item) {
+
     }
 
     return (
@@ -47,7 +71,11 @@ export default function Orderform({ menu, category }) {
                 <h1>Order</h1>
                 <div className={styles.order}>
                     {
-                        order.map((item, i) => <p key={i}>{ item.name } x { item.quantity }</p>)
+                        order.map((item, i) => <div className={styles.order_item}>
+                            <p key={i}>{ item.name } x { item.quantity }</p>
+                            <button onClick={() => decreaseItem(item.name)}>-</button>
+                            <button>remove</button>
+                            </div>)
                     }
                 </div>
             </div>

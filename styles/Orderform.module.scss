@@ -24,3 +24,9 @@
 .order {
     flex-direction: column;
 }
+
+.order_item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
