@@ -1,0 +1,367 @@
+{
+    "Foods": [
+        {
+            "name": "Beet Tostada",
+            "description": "",
+            "price": 14
+        },
+        {
+            "name": "Garden Ceviche",
+            "description": "",
+            "price": 13
+        },
+        {
+            "name": "Cauliflower",
+            "description": "",
+            "price": 17
+        },
+        {
+            "name": "Corn Dumpling",
+            "description": "",
+            "price": 15
+        },
+        {
+            "name": "Sweet Plantain",
+            "description": "",
+            "price": 13
+        },
+        {
+            "name": "Beef Tartare",
+            "description": "",
+            "price": 16
+        },
+        {
+            "name": "Oxtail Spring Roll",
+            "description": "",
+            "price": 18
+        },
+        {
+            "name": "Berkshire Rib",
+            "description": "",
+            "price": 18
+        },
+        {
+            "name": "Steak",
+            "description": "",
+            "price": 19
+        },
+        {
+            "name": "Yellotail Crudo",
+            "description": "",
+            "price": 17
+        },
+        {
+            "name": "Lobster Roll",
+            "description": "",
+            "price": 19
+        },
+        {
+            "name": "Scallop",
+            "description": "",
+            "price": 19
+        },
+        {
+            "name": "Gumbo",
+            "description": "",
+            "price": 14
+        },
+        {
+            "name": "Noodle",
+            "description": "",
+            "price": 17
+        },
+        {
+            "name": "Rice with Octopus",
+            "description": "",
+            "price": 19
+        }
+    ],
+    "Desserts": [
+        {
+            "name": "Injeolmi Mousse",
+            "description": "",
+            "price": 13
+        },
+        {
+            "name": "Pop Rocks",
+            "description": "",
+            "price": 13
+        }
+    ],
+    "Sake" :[
+        {
+            "name": "kitaya kansansui",
+            "description": "",
+            "price": {
+                "bottle": 105
+            }
+        },
+        {
+            "name": "dassai 45",
+            "description": "",
+            "price": {
+                "glass": 16,
+                "carafe": 39,
+                "bottle": 73
+            }
+        },
+        {
+            "name": "fukuju",
+            "description": "",
+            "price": {
+                "bottle": 78
+            }
+        },
+        {
+            "name": "sesshu otokoyama",
+            "description": "",
+            "price": {
+                "glass": 14,
+                "carafe": 33,
+                "bottle": 59
+            }
+        },
+        {
+            "name": "maboroshi no taki",
+            "description": "",
+            "price": {
+                "carafe": 37,
+                "bottle": 71
+            }
+        },
+        {
+            "name": "sempuku shinriki 85",
+            "description": "",
+            "price": {
+                "carafe": 36,
+                "bottle": 69
+            }
+        },
+        {
+            "name": "itami onigorohsi",
+            "description": "",
+            "price": {
+                "glass": 13,
+                "carafe": 31,
+                "bottle": 56
+            }
+        },
+        {
+            "name": "sayuri",
+            "description": "",
+            "price": {
+                "bottle": 49
+            }
+        },
+        {
+            "name": "hakutsuru organic",
+            "description": "",
+            "price": {
+                "glass": 12,
+                "carafe": 27,
+                "bottle": 49
+            }
+        },
+        {
+            "name": "house sake",
+            "description": "",
+            "price": {
+                "glass": 11,
+                "carafe": 25
+            }
+        }
+    ],
+    "Wine": [
+        {
+            "name": "cabernet sauvignon",
+            "description": "black's station",
+            "price": {
+                "glass": 11,
+                "bottle": 49
+            }
+        },
+        {
+            "name": "pinot noir",
+            "description": "underwood",
+            "price": {
+                "glass": 11,
+                "bottle": 49
+            }
+        },
+        {
+            "name": "tempranillo",
+            "description": "venta morales",
+            "price": {
+                "glass": 12,
+                "bottle": 51
+            }
+        },
+        {
+            "name": "chateau de saint cosme",
+            "description": "black's station",
+            "price": {
+                "bottle": 69
+            }
+        },
+        {
+            "name": "sauvignon blanc",
+            "description": "villa maria",
+            "price": {
+                "glass": 12,
+                "bottle": 51
+            }
+        },
+        {
+            "name": "chardonnay",
+            "description": "bogle",
+            "price": {
+                "glass": 11,
+                "bottle": 49
+            }
+        },
+        {
+            "name": "sparkling rose",
+            "description": "pol clement",
+            "price": {
+                "glass": 10,
+                "bottle": 45
+            }
+        }
+    ],
+    "Korean Spirit" :[
+        {
+            "name": "makgeolli",
+            "description": "",
+            "price": {
+                "glass": 8,
+                "bottle": 20
+            }
+        },
+        {
+            "name": "hwayo",
+            "description": "",
+            "price": {
+                "bottle": 45
+            }
+        },
+        {
+            "name": "seoul night",
+            "description": "",
+            "price": {
+                "bottle": 45
+            }
+        }
+    ],
+    "Cocktail": [
+        {
+            "name": "ruby the gf",
+            "description": "",
+            "price": 14
+        },
+        {
+            "name": "lychee reach rich",
+            "description": "",
+            "price": 14
+        },
+        {
+            "name": "ms. cutetini",
+            "description": "",
+            "price": 13
+        },
+        {
+            "name": "blah blah blue",
+            "description": "",
+            "price": 13
+        },
+        {
+            "name": "pure strawberry",
+            "description": "",
+            "price": 14
+        },
+        {
+            "name": "makgeolli mojito",
+            "description": "",
+            "price": 13
+        }
+    ],
+    "Beer": [
+        {
+            "name": "sapporo draft",
+            "description": "",
+            "price": 6
+        },
+        {
+            "name": "orion",
+            "description": "",
+            "price": 7
+        },
+        {
+            "name": "kirin ichban",
+            "description": "",
+            "price": 7
+        },
+        {
+            "name": "echigo",
+            "description": "",
+            "price": 9
+        },
+        {
+            "name": "yuzu beer",
+            "description": "",
+            "price": 8
+        },
+        {
+            "name": "grapefruit beer",
+            "description": "",
+            "price": 8
+        },
+        {
+            "name": "tokyo white",
+            "description": "",
+            "price": 10
+        },
+        {
+            "name": "kizakura \"lucky dog\"",
+            "description": "",
+            "price": 10
+        }
+    ],
+    "Non-Alcohol":[
+        {
+            "name": "yuzu strawberry",
+            "description": "",
+            "price": 8
+        },
+        {
+            "name": "golden punch",
+            "description": "",
+            "price": 8
+        },
+        {
+            "name": "soda",
+            "description": "",
+            "price": 3,
+            "options": [
+                "coke", "diet coke", "sprite"
+            ]
+        },
+        {
+            "name": "hot tea",
+            "description": "",
+            "price": 4,
+            "options": [
+                "green tea", "genmaicha", "sencha", "chamomile", "chai", "earl grey"
+            ]
+        },
+        {
+            "name": "sparkling water",
+            "description": "",
+            "price": 8
+        },
+        {
+            "name": "flat water",
+            "description": "",
+            "price": 8
+        }
+    ]
+}
