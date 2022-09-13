@@ -1,11 +1,18 @@
-import { readFile } from '../../modules/fileServices'
-import styles from '../../styles/Orderform.module.scss'
-import { useState } from 'react'
+import { readFile } from '../../../modules/fileServices'
+import styles from '../../../styles/Orderform.module.scss'
+import { useState, useEffect } from 'react'
+import ServerLayout from '../../../components/serverLayout'
+import { v4 as uuid4 } from 'uuid'
 
 export default function Orderform({ menu, category }) {
     const [currMenu, setCurrMenu] = useState([])
     const [order, setOrder] = useState([])
     const [itemList, setItemList] = useState([])
+    const [orderId , setOrderId] = useState('')
+
+    useEffect(() => {
+        setOrderId(uuid4())
+    }, [])
 
     function menuHandler(category) {
         setCurrMenu(prev => [...menu[category]])
@@ -22,8 +29,6 @@ export default function Orderform({ menu, category }) {
             setItemList(prev => [...prev, currItem.name])
             setOrder(prev => [...prev, currItem])
         }
-
-        console.log(itemList)
     }
 
     function decreaseItem(itemName) {
@@ -55,9 +60,16 @@ export default function Orderform({ menu, category }) {
         setOrder(prev => [...updatedOrder])
     }
 
+    function placeOrder() {
+        if(typeof window !== 'undefined'){
+            return window.localStorage.setItem('order', JSON.stringify(order))
+       }
+    }
+
     return (
-        <div className={styles.container}>
-            <button onClick={() => console.log(itemList)}>Check Item List</button>
+        <ServerLayout>
+            <button onClick={() => console.log(window.localStorage)}>Check LocalStorage</button>
+            <h1>OrderId: { orderId }</h1>
             <div className={styles.category_container}>
                 <h1>Cateogory</h1>
                 <div className={styles.category}>
@@ -86,7 +98,9 @@ export default function Orderform({ menu, category }) {
                     }
                 </div>
             </div>
-        </div>
+
+            <button onClick={() => placeOrder()}>Place Order</button>
+        </ServerLayout>
     )
 }
 
