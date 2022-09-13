@@ -1,12 +1,16 @@
 import { readFile } from '../../../modules/fileServices'
 import styles from '../../../styles/Orderform.module.scss'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import ServerLayout from '../../../components/serverLayout'
 import { v4 as uuid4 } from 'uuid'
 
 export default function Orderform({ menu, category }) {
+    const router = useRouter()
     const [currMenu, setCurrMenu] = useState([])
     const [order, setOrder] = useState([])
+    const [tableNum, setTableNum] = useState('')
+    const [numParty, setNumParty] = useState(0)
     const [itemList, setItemList] = useState([])
     const [orderId , setOrderId] = useState('')
 
@@ -60,16 +64,34 @@ export default function Orderform({ menu, category }) {
         setOrder(prev => [...updatedOrder])
     }
 
-    function placeOrder() {
+    function placeOrder(event) {
+        event.preventDefault()
+
+        console.log(numParty, tableNum)
         if(typeof window !== 'undefined'){
-            return window.localStorage.setItem('order', JSON.stringify(order))
+            let currOrders = JSON.parse(window.localStorage.getItem('orders')) || {}
+            currOrders[orderId] = {
+                name: tableNum,
+                numParty: numParty,
+                order: [...order]
+            }
+            
+            window.localStorage.setItem('orders', JSON.stringify(currOrders))
        }
+
+       router.push('/server')
     }
 
     return (
         <ServerLayout>
             <button onClick={() => console.log(window.localStorage)}>Check LocalStorage</button>
             <h1>OrderId: { orderId }</h1>
+            <form onSubmit={placeOrder}>
+                <input onChange={(e) => setTableNum(e.target.value)} placeholder='table #' required/>
+                <input onChange={(e) => setNumParty(e.target.value)} placeholder='# of party' type='number' required/>
+
+                <button type='submit'>Place Order</button>
+            </form>
             <div className={styles.category_container}>
                 <h1>Cateogory</h1>
                 <div className={styles.category}>
@@ -98,8 +120,6 @@ export default function Orderform({ menu, category }) {
                     }
                 </div>
             </div>
-
-            <button onClick={() => placeOrder()}>Place Order</button>
         </ServerLayout>
     )
 }

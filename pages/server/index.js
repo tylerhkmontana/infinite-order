@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import ServerLayout from '../../components/serverLayout'
 
 export default function Server() {
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState({})
 
     useEffect(() => {   
         if(typeof window !== 'undefined') {
-            const orders = JSON.parse(window.localStorage.getItem('order'))
-            setOrders(() => [...orders])
+            const orders = JSON.parse(window.localStorage.getItem('orders')) || {}
+            setOrders(() => ({...orders}))
         }
     }, [])
     
