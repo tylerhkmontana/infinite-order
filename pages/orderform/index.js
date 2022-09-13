@@ -8,49 +8,56 @@ export default function Orderform({ menu, category }) {
     const [itemList, setItemList] = useState([])
 
     function menuHandler(category) {
-        console.log(menu[category])
         setCurrMenu(prev => [...menu[category]])
     }
 
-    function addItem(item) {
+    async function addItem(item) {
         const currItem = {...item}
         if (itemList.includes(currItem.name)) {
             const updatedOrder = order.map(o => o.name === currItem.name ? {...o, quantity: o.quantity + 1} : o)
             setOrder(prev => [...updatedOrder])
 
         } else {
-            currItem.quantity = 0
+            currItem.quantity = 1
             setItemList(prev => [...prev, currItem.name])
             setOrder(prev => [...prev, currItem])
         }
+
+        console.log(itemList)
     }
 
     function decreaseItem(itemName) {
-        const updatedOrder = order.map(item => {
+        const updatedOrder = []
+        order.forEach(item => {
             if(item.name === itemName) {
                 let quantity = item.quantity
                 if (quantity > 1) {
-                    return  {
+                    updatedOrder.push({
                         ...item,
                         quantity: quantity -1
-                    }
+                    })
                 } else {
-                    const updatedItemList = itemList.splice(itemList.indexOf(itemName))
+                    const updatedItemList = itemList.filter(item => item !== itemName)
                     setItemList(prev => [...updatedItemList])
                 }
             } else {
-                return item
+                updatedOrder.push(item)
             }
         })
         setOrder(prev => [...updatedOrder])
     }
 
-    function removeItem(item) {
+    function removeItem(itemName) {
+        const updatedOrder = order.filter(item => item.name !== itemName)
+        const updatedItemList = itemList.filter(item => item !== itemName)
 
+        setItemList(prev => [...updatedItemList])
+        setOrder(prev => [...updatedOrder])
     }
 
     return (
         <div className={styles.container}>
+            <button onClick={() => console.log(itemList)}>Check Item List</button>
             <div className={styles.category_container}>
                 <h1>Cateogory</h1>
                 <div className={styles.category}>
@@ -71,10 +78,10 @@ export default function Orderform({ menu, category }) {
                 <h1>Order</h1>
                 <div className={styles.order}>
                     {
-                        order.map((item, i) => <div className={styles.order_item}>
-                            <p key={i}>{ item.name } x { item.quantity }</p>
+                        order.map((item, i) => <div key={i} className={styles.order_item}>
+                            <p>{ item.name } x { item.quantity }</p>
                             <button onClick={() => decreaseItem(item.name)}>-</button>
-                            <button>remove</button>
+                            <button onClick={() => removeItem(item.name)}>remove</button>
                             </div>)
                     }
                 </div>
