@@ -1,0 +1,11 @@
+@import './libs/theme.scss';
+
+.container {
+    @extend %container;
+}
+
+.logout_btn {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+}

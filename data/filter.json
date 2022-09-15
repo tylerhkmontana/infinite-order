@@ -1,5 +1,5 @@
 {
-    "Allergy": [
-            "dairy", "gluten", "vegitarian", "pork", "peanut", "treenut", "shellfish"
-        ]
+    "Allergy": {
+        "keywords": ["dairy", "gluten", "vegitarian", "pork", "peanut", "treenut", "shellfish"]
+    }
 }
