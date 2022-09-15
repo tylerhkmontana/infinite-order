@@ -3,89 +3,140 @@
         {
             "name": "Beet Tostada",
             "description": "",
-            "price": 14
+            "price": 14,
+            "filters": {
+                "Allergy": []
+            }
         },
         {
             "name": "Garden Ceviche",
             "description": "",
-            "price": 13
+            "price": 13,
+            "filters": {
+                "Allergy": []
+            }
         },
         {
             "name": "Cauliflower",
             "description": "",
-            "price": 17
+            "price": 17,
+            "filters": {
+                "Allergy": ["dairy", "gluten"]
+            }
         },
         {
             "name": "Corn Dumpling",
             "description": "",
-            "price": 15
+            "price": 15,
+            "filters": {
+                "Allergy": ["dairy", "gluten"]
+            }
         },
         {
             "name": "Sweet Plantain",
             "description": "",
-            "price": 13
+            "price": 13,
+            "filters": {
+                "Allergy": ["dariy", "gluten", "treenut"]
+            }
         },
         {
             "name": "Beef Tartare",
             "description": "",
-            "price": 16
+            "price": 16,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian"]
+            }
         },
         {
             "name": "Oxtail Spring Roll",
             "description": "",
-            "price": 18
+            "price": 18,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian"]
+            }
         },
         {
             "name": "Berkshire Rib",
             "description": "",
-            "price": 18
+            "price": 18,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian", "pork", "treenut"]
+            }
         },
         {
             "name": "Steak",
             "description": "",
-            "price": 19
+            "price": 19,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian"]
+            }
         },
         {
             "name": "Yellotail Crudo",
             "description": "",
-            "price": 17
+            "price": 17,
+            "filters": {
+                "Allergy": ["peanut", "vegitarian"]
+            }
         },
         {
             "name": "Lobster Roll",
             "description": "",
-            "price": 19
+            "price": 19,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian", "shellfish"]
+            }
         },
         {
             "name": "Scallop",
             "description": "",
-            "price": 19
+            "price": 19,
+            "filters": {
+                "Allergy": ["dairy", "vegitarian", "shellfish"]
+            }
         },
         {
             "name": "Gumbo",
             "description": "",
-            "price": 14
+            "price": 14,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian", "pork", "shellfish"]
+            }
         },
         {
             "name": "Noodle",
             "description": "",
-            "price": 17
+            "price": 17,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian", "shellfish", "treenut"]
+            }
         },
         {
             "name": "Rice with Octopus",
             "description": "",
-            "price": 19
+            "price": 19,
+            "filters": {
+                "Allergy": ["dairy", "gluten", "vegitarian", "pork", "shellfish"]
+            }
         }
     ],
     "Desserts": [
         {
             "name": "Injeolmi Mousse",
             "description": "",
-            "price": 13
+            "price": 13,
+            "filters": {
+                "Allergy": ["dairy", "gluten"]
+            }
         },
         {
             "name": "Pop Rocks",
             "description": "",
-            "price": 13
+            "price": 13,
+            "filters": {
+                "Allergy": ["dairy"]
+            }
         }
     ],
     "Sake" :[
