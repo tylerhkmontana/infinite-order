@@ -1,7 +1,8 @@
 import { createContext, useContext, useState } from "react";
-import { provider, auth } from "../modules/firebase"
+import { provider, auth, db } from "../modules/firebase"
 import { signInWithRedirect, onAuthStateChanged, signOut } from 'firebase/auth'
 import { useEffect } from "react";
+import { getDocs, query, where, collection, limit, setDoc, doc } from 'firebase/firestore'
 
 const Context = createContext();
 
@@ -10,11 +11,28 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        const { displayName, email } = user
+        const q = query(collection(db, "users"), where("email", "==", email), limit(1))
+        let foundUser
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach(doc => {
+          foundUser = doc.data()
+        })
+        
+        if(foundUser) {
+          console.log(foundUser)
+        } else {
+          await setDoc(doc(db, "users", '1'), {
+            name: displayName,
+            email: email
+          })
+        }
+      
         setUser({
-          name: user.displayName,
-          email: user.email
+          name: displayName,
+          email: email
         })
       } else {
         setUser(null)
