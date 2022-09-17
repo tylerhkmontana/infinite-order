@@ -10,26 +10,26 @@ const Context = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [orderform, setOrderform] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const { displayName, email } = user
-        const q = query(collection(db, "users"), where("email", "==", email), limit(1))
-        let foundUser
-        const querySnapshot = await getDocs(q)
-        querySnapshot.forEach(doc => {
-          foundUser = doc.data()
-        })
-        
+    const unsubscribe = onAuthStateChanged(auth, async (currUser) => {
+      if (currUser) {
+        const { displayName, email } = currUser
+        const foundUser = await findUser(email)
+        console.log(foundUser)
         if(foundUser) {
           setUser({
-            name: displayName,
-            email: email,
+            id: foundUser.id,
+            name: foundUser.name,
+            email: foundUser.email,
             businessName: foundUser.businessName
           })
+
+          const foundOrderform = await findOrderform(foundUser.id)
+          foundOrderform && setOrderform({...foundOrderform})
         } else {
           setUser({
             name: displayName,
@@ -55,21 +55,47 @@ export function AuthProvider({ children }) {
   }
 
   const signup = async (businessName) => {
-      await setDoc(doc(db, "users", uuid4()), {
-        name: user.name,
-        email: user.email,
-        businessName: businessName
-      });
+    let id = uuid4()
+    await setDoc(doc(db, "users", id), {
+      id: id,
+      name: user.name,
+      email: user.email,
+      businessName
+    });
     
-      setUser(prev => ({
-        ...prev,
-        businessName: businessName
-      }))
+    setUser(prev => ({
+      ...prev,
+      id,
+      businessName
+    }))
 
-      router.push('/management')
+    router.push('/management')
   }
+
+  const findUser = async (email) => {
+    const q = query(collection(db, "users"), where("email", "==", email), limit(1))
+    let foundUser
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach(doc => {
+      foundUser = doc.data()
+    })
+
+    return foundUser
+  }
+
+  const findOrderform = async (userId) => {
+    const q = query(collection(db, "orderforms"), where("userId", "==", userId), limit(1))
+    let foundOrderform
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach(doc => {
+      foundOrderform = doc.data()
+    })
+
+    return foundOrderform
+  }
+
   return (
-    <Context.Provider value={{ user, isLoading, login, logout, signup }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, isLoading, orderform, login, logout, signup }}>{children}</Context.Provider>
   );
 }
 

@@ -9,18 +9,19 @@ export default function ManagementLayout({ children }) {
     const router = useRouter()
 
     useEffect(() => {
-        if(user) {
-            console.log("Yes user")
-        } else {
+        if(!auth.currentUser && !isLoading) {
             router.push("/management/login")
-        }
-    }, [user])
+        } 
+    }, [auth.currentUser, isLoading])
 
     return(
         <>
             {
                 isLoading ? <div>Loading...</div> :
-                <main className={styles.container}>{ children }</main> 
+                <main className={styles.container}>
+                    <button className={styles.logout_btn} onClick={logout}>logout</button> 
+                    { children }
+                </main> 
             }
         </>
   

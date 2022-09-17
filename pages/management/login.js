@@ -9,7 +9,9 @@ export default function Login() {
     const router = useRouter()
 
     useEffect(() => {
-        user && router.push('/management')
+        if(!isLoading && user) {
+            user.businessName ? router.push('/management') : router.push("/management/signup")
+        } 
     }, [user])
 
     return(

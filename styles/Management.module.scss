@@ -4,8 +4,8 @@
     @extend %container;
 }
 
-.logout_btn {
-    position: fixed;
-    top: 50px;
-    right: 50px;
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
 }

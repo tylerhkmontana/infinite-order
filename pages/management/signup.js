@@ -2,10 +2,11 @@ import { useAuthContext } from "../../context/authContext"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import styles from '../../styles/Signup.module.scss'
+import ManagementLayout from "../../components/managementLayout"
 
 export default function Signup() {
     const [businessName, setBusinessName] = useState()
-    const { user, signup, isLoading } = useAuthContext()
+    const { user, signup, isLoading, logout } = useAuthContext()
     const router = useRouter()
 
     useEffect(() => {
@@ -20,23 +21,23 @@ export default function Signup() {
     }
 
     return (
-        <div>
-            {
-                isLoading ? <div>Loading...</div> :
-                <div>
-                    {
-                        user.businessName ? <div>Redirecting...</div> :
-                        <div className={styles.container}>
-                            <form className={styles.signup_form} onSubmit={signupHandler}>
-                                <h1>Sign UP</h1>
-                                <h2>What is your business name?</h2>
-                                <input type='text' placeholder="Business Name" onChange={e => setBusinessName(e.target.value)}/>
-                                <button type="submit">Sign Up</button>
-                            </form>
-                        </div>
-                    }
-                </div>
-            }
-        </div>
+        <ManagementLayout>
+            <div>
+                {
+                    user ? 
+                    <div className={styles.container}>
+                        <button className={styles.logout_btn} onClick={logout}>logout</button> 
+                        <form className={styles.signup_form} onSubmit={signupHandler}>
+                            <h1>Sign UP</h1>
+                            <h2>What is your business name?</h2>
+                            <input type='text' placeholder="Business Name" onChange={e => setBusinessName(e.target.value)}/>
+                            <button type="submit">Sign Up</button>
+                        </form>
+                    </div> :
+                    <div>Redirecting...</div> 
+                }
+            </div>
+        </ManagementLayout>
+
     )
 }
