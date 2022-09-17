@@ -8,12 +8,19 @@ export default function ManagementLayout({ children }) {
     const {user, isLoading, logout} = useAuthContext()
     const router = useRouter()
 
+    useEffect(() => {
+        if(user) {
+            console.log("Yes user")
+        } else {
+            router.push("/management/login")
+        }
+    }, [user])
 
     return(
         <>
             {
-                isLoading ? <div>...Loading</div> :
-                <div className={styles.container}>{ children }</div> 
+                isLoading ? <div>Loading...</div> :
+                <main className={styles.container}>{ children }</main> 
             }
         </>
   

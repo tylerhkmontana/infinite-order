@@ -1,1 +1,15 @@
 @import './libs/theme.scss';
+
+.container {
+    @extend %container;
+}
+
+.main {
+    & > h1 {
+        margin-bottom: 50px;
+    }
+}
+
+.google_signin_btn {
+    cursor: pointer;
+}

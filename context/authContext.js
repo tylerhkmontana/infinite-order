@@ -4,6 +4,7 @@ import { signInWithRedirect, onAuthStateChanged, signOut } from 'firebase/auth'
 import { useEffect } from "react";
 import { getDocs, query, where, collection, limit, setDoc, doc } from 'firebase/firestore'
 import { useRouter } from "next/router";
+import { v4 as uuid4 } from 'uuid'
 
 const Context = createContext();
 
@@ -16,26 +17,26 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const { displayName, email } = user
-        // const q = query(collection(db, "users"), where("email", "==", email), limit(1))
-        // let foundUser
-        // const querySnapshot = await getDocs(q)
-        // querySnapshot.forEach(doc => {
-        //   foundUser = doc.data()
-        // })
-        
-        // if(foundUser) {
-        //   console.log(foundUser)
-        // } else {
-        //   await setDoc(doc(db, "users", '1'), {
-        //     name: displayName,
-        //     email: email
-        //   })
-        // }
-      
-        setUser({
-          name: displayName,
-          email: email
+        const q = query(collection(db, "users"), where("email", "==", email), limit(1))
+        let foundUser
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach(doc => {
+          foundUser = doc.data()
         })
+        
+        if(foundUser) {
+          setUser({
+            name: displayName,
+            email: email,
+            businessName: foundUser.businessName
+          })
+        } else {
+          setUser({
+            name: displayName,
+            email: email
+          })
+          router.push("/management/signup")
+        }
       } else {
         setUser(null)
       }
@@ -47,15 +48,28 @@ export function AuthProvider({ children }) {
 
   const login = () => {
     signInWithRedirect(auth, provider)
-    router.push('/management')
   }
 
   const logout = async () => {
     await signOut(auth)
-    setUser(null)
+  }
+
+  const signup = async (businessName) => {
+      await setDoc(doc(db, "users", uuid4()), {
+        name: user.name,
+        email: user.email,
+        businessName: businessName
+      });
+    
+      setUser(prev => ({
+        ...prev,
+        businessName: businessName
+      }))
+
+      router.push('/management')
   }
   return (
-    <Context.Provider value={{ user, isLoading, login, logout }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, isLoading, login, logout, signup }}>{children}</Context.Provider>
   );
 }
 
