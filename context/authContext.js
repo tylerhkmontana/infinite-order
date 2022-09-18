@@ -16,30 +16,34 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currUser) => {
+      // Check if user logged in with google account
       if (currUser) {
         const { displayName, email } = currUser
         const foundUser = await findUser(email)
-        console.log(foundUser)
+
+        // Check if the user signed up on the platform
         if(foundUser) {
+          // Update context with the stored user information
           setUser({
             id: foundUser.id,
             name: foundUser.name,
             email: foundUser.email,
             businessName: foundUser.businessName
           })
-
-          const foundOrderform = await findOrderform(foundUser.id)
-          foundOrderform && setOrderform({...foundOrderform})
         } else {
           setUser({
             name: displayName,
             email: email
           })
+          // Send the user to sign up page
           router.push("/management/signup")
         }
       } else {
+        // User not logged in
         setUser(null)
       }
+
+      // Authentication process is done
       setIsLoading(false)
     })
 
@@ -83,19 +87,19 @@ export function AuthProvider({ children }) {
     return foundUser
   }
 
-  const findOrderform = async (userId) => {
-    const q = query(collection(db, "orderforms"), where("userId", "==", userId), limit(1))
-    let foundOrderform
-    const querySnapshot = await getDocs(q)
-    querySnapshot.forEach(doc => {
-      foundOrderform = doc.data()
-    })
+  // const findOrderform = async (userId) => {
+  //   const q = query(collection(db, "orderforms"), where("userId", "==", userId), limit(1))
+  //   let foundOrderform
+  //   const querySnapshot = await getDocs(q)
+  //   querySnapshot.forEach(doc => {
+  //     foundOrderform = doc.data()
+  //   })
 
-    return foundOrderform
-  }
+  //   return foundOrderform
+  // }
 
   return (
-    <Context.Provider value={{ user, isLoading, orderform, login, logout, signup }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, isLoading, login, logout, signup }}>{children}</Context.Provider>
   );
 }
 

@@ -1,4 +1,4 @@
-import styles from '../../styles/CreateOrderform.module.scss'
+import styles from '../../styles/ManageOrderform.module.scss'
 import { useAuthContext } from '../../context/authContext'
 import ManagementLayout from '../../components/managementLayout'
 import { useEffect } from 'react'
@@ -10,10 +10,8 @@ export default function ManageOrderform() {
     const router = useRouter()
 
     useEffect(() => {
-        if(!isLoading && !orderform) {
-            router.push('/management/createOrderform')
-        }
-    }, [isLoading])
+       
+    }, [])
 
     return(
         <ManagementLayout>

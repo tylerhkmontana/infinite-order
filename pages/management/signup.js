@@ -30,7 +30,7 @@ export default function Signup() {
                         <form className={styles.signup_form} onSubmit={signupHandler}>
                             <h1>Sign UP</h1>
                             <h2>What is your business name?</h2>
-                            <input type='text' placeholder="Business Name" onChange={e => setBusinessName(e.target.value)}/>
+                            <input type='text' placeholder="Business Name" onChange={e => setBusinessName(e.target.value)} required/>
                             <button type="submit">Sign Up</button>
                         </form>
                     </div> :

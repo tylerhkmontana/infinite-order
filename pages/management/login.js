@@ -12,7 +12,7 @@ export default function Login() {
         if(!isLoading && user) {
             user.businessName ? router.push('/management') : router.push("/management/signup")
         } 
-    }, [user])
+    }, [user, isLoading])
 
     return(
         <div>
@@ -27,7 +27,6 @@ export default function Login() {
                                 <img onClick={login} className={styles.google_signin_btn} alt='google signin button' src='/icons/google_signin_btn.png'/>
                             </div>
                         </div>
-
                     }
                 </div>
             }
