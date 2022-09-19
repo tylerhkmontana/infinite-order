@@ -1,0 +1,37 @@
+{
+    [unique_id]: {
+        id: <unique_id>,
+        userId: <user_id>,
+        updated: Date,
+        category: [
+            string, ...
+        ],
+        filter: {
+            [filter_name]: {
+                indicator: <letter>,
+                keywords: []
+            },
+            ...
+        },
+        items: [
+            {
+                name: string,
+                price: number,
+                category: <category>,
+                filters: {
+                    [filter_name]: [],
+                    ...
+                },
+                options: [
+                    {
+                        name: string,
+                        charge: number
+                    },
+                    ...
+                ]
+            },
+            ...
+        ]
+    },
+    ...
+}

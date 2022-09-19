@@ -5,12 +5,12 @@ import { useEffect } from "react";
 import { getDocs, query, where, collection, limit, setDoc, doc } from 'firebase/firestore'
 import { useRouter } from "next/router";
 import { v4 as uuid4 } from 'uuid'
+import jwt_decode from 'jwt-decode'
 
 const Context = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [orderform, setOrderform] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
@@ -19,24 +19,32 @@ export function AuthProvider({ children }) {
       // Check if user logged in with google account
       if (currUser) {
         const { displayName, email } = currUser
-        const foundUser = await findUser(email)
+        const idToken = await currUser.getIdToken(true)
+        const { exp } = jwt_decode(idToken)
+        const currTime = Math.floor(Date.now()/1000)
 
-        // Check if the user signed up on the platform
-        if(foundUser) {
-          // Update context with the stored user information
-          setUser({
-            id: foundUser.id,
-            name: foundUser.name,
-            email: foundUser.email,
-            businessName: foundUser.businessName
-          })
+        // sign out the user if his/her token expires
+        if(exp < currTime) {
+          logout()
         } else {
-          setUser({
-            name: displayName,
-            email: email
-          })
-          // Send the user to sign up page
-          router.push("/management/signup")
+          // Check if the user signed up on the platform
+          const foundUser = await findUser(email)
+          if(foundUser) {
+            // Update context with the stored user information
+            setUser({
+              id: foundUser.id,
+              name: foundUser.name,
+              email: foundUser.email,
+              businessName: foundUser.businessName
+            })
+          } else {
+            setUser({
+              name: displayName,
+              email: email
+            })
+            // Send the user to sign up page
+            router.push("/management/signup")
+          }
         }
       } else {
         // User not logged in
@@ -49,6 +57,18 @@ export function AuthProvider({ children }) {
 
     return () => unsubscribe()
   }, [])
+
+  const isAuthenticated = async () => {
+    const currUser = auth.currentUser
+    if (currUser) {
+      const idToken = await currUser.getIdToken(true)
+      const { exp } = jwt_decode(idToken)
+      const currTime = Math.floor(Date.now()/1000)
+      return exp > currTime
+    } else {
+      return false
+    }
+  }
 
   const login = () => {
     signInWithRedirect(auth, provider)
@@ -72,8 +92,6 @@ export function AuthProvider({ children }) {
       id,
       businessName
     }))
-
-    router.push('/management')
   }
 
   const findUser = async (email) => {
@@ -89,7 +107,7 @@ export function AuthProvider({ children }) {
 
 
   return (
-    <Context.Provider value={{ user, isLoading, login, logout, signup }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, isLoading, isAuthenticated, login, logout, signup }}>{children}</Context.Provider>
   );
 }
 
