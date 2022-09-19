@@ -87,16 +87,6 @@ export function AuthProvider({ children }) {
     return foundUser
   }
 
-  // const findOrderform = async (userId) => {
-  //   const q = query(collection(db, "orderforms"), where("userId", "==", userId), limit(1))
-  //   let foundOrderform
-  //   const querySnapshot = await getDocs(q)
-  //   querySnapshot.forEach(doc => {
-  //     foundOrderform = doc.data()
-  //   })
-
-  //   return foundOrderform
-  // }
 
   return (
     <Context.Provider value={{ user, isLoading, login, logout, signup }}>{children}</Context.Provider>
