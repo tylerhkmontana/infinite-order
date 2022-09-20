@@ -25,7 +25,9 @@
     margin-top: 30px;
 }
 
-.category {
+.category, .filter, .item {
+    width: 600px;
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -36,14 +38,14 @@
     }
 }
 
-.category_list, .categoryUpdate_list {
+.currCategories, .newCategories, .currFilters, .newFilters, .select_category {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
 }
 
-.categoryUpdate_list {
+.newCategories, .newFilters {
     & > span {
         color: blue;
     }

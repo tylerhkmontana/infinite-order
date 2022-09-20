@@ -19,32 +19,24 @@ export function AuthProvider({ children }) {
       // Check if user logged in with google account
       if (currUser) {
         const { displayName, email } = currUser
-        const idToken = await currUser.getIdToken(true)
-        const { exp } = jwt_decode(idToken)
-        const currTime = Math.floor(Date.now()/1000)
 
-        // sign out the user if his/her token expires
-        if(exp < currTime) {
-          logout()
+        // Check if the user signed up on the platform
+        const foundUser = await findUser(email)
+        if(foundUser) {
+          // Update context with the stored user information
+          setUser({
+            id: foundUser.id,
+            name: foundUser.name,
+            email: foundUser.email,
+            businessName: foundUser.businessName
+          })
         } else {
-          // Check if the user signed up on the platform
-          const foundUser = await findUser(email)
-          if(foundUser) {
-            // Update context with the stored user information
-            setUser({
-              id: foundUser.id,
-              name: foundUser.name,
-              email: foundUser.email,
-              businessName: foundUser.businessName
-            })
-          } else {
-            setUser({
-              name: displayName,
-              email: email
-            })
-            // Send the user to sign up page
-            router.push("/management/signup")
-          }
+          setUser({
+            name: displayName,
+            email: email
+          })
+          // Send the user to sign up page
+          router.push("/management/signup")
         }
       } else {
         // User not logged in
