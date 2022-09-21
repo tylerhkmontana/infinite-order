@@ -7,10 +7,7 @@
             string, ...
         ],
         filter: {
-            [filter_name]: {
-                indicator: <letter>,
-                keywords: []
-            },
+            [filter_name]: [...keywords],
             ...
         },
         items: [
@@ -19,7 +16,7 @@
                 price: number,
                 category: <category>,
                 filters: {
-                    [filter_name]: [],
+                    [filter_name]: [...keywords],
                     ...
                 },
                 options: [

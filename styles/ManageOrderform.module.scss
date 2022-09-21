@@ -9,6 +9,14 @@
     & > h1 {
         margin-bottom: 50px;
     }
+
+    span {
+        margin-right: 10px;
+    }
+
+    button {
+        margin-right: 10px;
+    }
 }
 
 .back_btn {
@@ -26,12 +34,13 @@
 }
 
 .category, .filter, .item {
-    width: 600px;
+    width: 800px;
     margin-top: 50px;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 20px;
-    background-color: #f1f1f1;
+    border: 1px solid black;
     padding: 10px;
     & > h3 {
         margin-bottom: 10px;
@@ -39,14 +48,18 @@
 }
 
 .currCategories, .newCategories, .currFilters, .newFilters, .select_category {
+    padding: 5px;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #f1f1f1;
     gap: 10px;
 }
 
-.newCategories, .newFilters {
-    & > span {
-        color: blue;
-    }
+.newItem_form {
+    background-color: #f1f1f1;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

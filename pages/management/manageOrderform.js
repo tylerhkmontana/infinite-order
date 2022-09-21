@@ -12,8 +12,10 @@ export default function ManageOrderform() {
     const [orderform, setOrderform] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [selectedCategroy, setSelectedCategory] = useState('')
+    const [selectedFilter, setSelectedFilter] = useState('')
     const [newCategories, setNewCategories] = useState([])
     const [newFilters, setNewFilters] = useState([])
+    const [newKeywords, setNewKeywords] = useState([])
 
     useEffect(() => {
         const getOrderform = async () => {
@@ -43,9 +45,8 @@ export default function ManageOrderform() {
                 userId: user.id,
                 updated: updated,
                 category: [],
-                filter: [],
-                item: [],
-                keywords: []
+                filter: {},
+                item: []
                 }
             await setDoc(doc(db, "orderforms", orderformId), newOrderform);
             setOrderform({...newOrderform})
@@ -56,20 +57,35 @@ export default function ManageOrderform() {
     // Local update
     function addCategory(e) {
         e.preventDefault()
-        const newCategory = e.target.firstChild.value
-        setNewCategories(prev => [...prev, newCategory])
-        e.target.firstChild.value = ''
+        const newCategory = (e.target.firstChild.value).toLowerCase()
+        if (newCategories.includes(newCategory) || orderform.category.includes(newCategory)) {
+            console.log("this category already exists")
+        } else {
+            setNewCategories(prev => [...prev, newCategory])
+            e.target.firstChild.value = ''
+        }
     }
 
     function addFilter(e) {
         e.preventDefault()
-        const newFilter = e.target.firstChild.value
-        setNewFilters(prev => [...prev, newFilter])
-        e.target.firstChild.value = ''
+        const newFilter = (e.target.firstChild.value).toLowerCase()
+        if (newFilters.includes(newFilter) || Object.keys(orderform.filter).includes(newFilter)) {
+            console.log("this filter already exsits")
+        } else {
+            setNewFilters(prev => [...prev, newFilter])
+            e.target.firstChild.value = ''
+        }
     }
 
-    function addKeyword() {
-        
+    function addKeyword(e) {
+        e.preventDefault()
+        const newKeyword = (e.target.firstChild.value).toLowerCase()
+        if (newKeywords.includes(newKeyword) || orderform.filter[selectedFilter].includes(newKeyword)) {
+            console.log("this keyword already exsits")
+        } else {
+            setNewKeywords(prev => [...prev, newKeyword])
+            e.target.firstChild.value = ''
+        }
     }
 
     // Firestore update
@@ -99,8 +115,11 @@ export default function ManageOrderform() {
      async function updateFilter() {
         setIsLoading(true)
         if(newFilters.length > 0) {
-            const currFilters = [...orderform.filter]
-            const updatedFilters = currFilters.concat(newFilters)
+            let updatedFilters = {...orderform.filter}
+            newFilters.forEach(f => {
+                updatedFilters[f] = []
+            })
+
             const orderformRef = doc(db, "orderforms", orderform.id)
             const updated = new Date()
 
@@ -118,7 +137,34 @@ export default function ManageOrderform() {
         setIsLoading(false)
     }
 
+    async function updateKeyword() {
+        setIsLoading(true)
+        if(newKeywords.length > 0 && selectedFilter) {
+            let currKeywords = [...orderform.filter[selectedFilter]]
+            let updatedKeywords = currKeywords.concat(newKeywords)
+            let currFilter = {...orderform.filter}
+            const orderformRef = doc(db, "orderforms", orderform.id)
+            const updated = new Date()
 
+            await updateDoc(orderformRef, {
+                filter: {
+                    ...currFilter,
+                    [selectedFilter]: updatedKeywords
+                },
+                updated
+            })
+            setOrderform(prev => ({
+                ...prev,
+                filter: {
+                    ...currFilter,
+                    [selectedFilter]: updatedKeywords
+                },
+                updated
+            }))
+            setNewKeywords([])
+        }
+        setIsLoading(false)
+    }
 
     return(
         <ManagementLayout>
@@ -141,65 +187,100 @@ export default function ManageOrderform() {
                                         <div className={styles.category}> 
                                             <h3>Category</h3>
 
-                                            <h4>Current categories:</h4> 
                                             <div className={styles.currCategories}>
-                                                {
-                                                    orderform.category.length > 0 ?
-                                                        orderform.category.map((c, i) => <div key={i}>{ c }</div>) :
-                                                        <p>empty</p>
-                                                }
+                                                <h4>Current categories:</h4> 
+                                                <div>
+                                                    {
+                                                        orderform.category.length > 0 ?
+                                                            orderform.category.map((c, i) => <span key={i}>{ c }</span>) :
+                                                            <p>empty</p>
+                                                    }
+                                                </div>
                                             </div>
                                         
-                                            <h4>Newly added categories:</h4>                              
                                             <div className={styles.newCategories}>
-                                                {
-                                                    newCategories.map((nc, i) =><span key={i}>{ nc }</span>) 
-                                                }
+                                                <h4>Newly added categories:</h4>     
+                                                <div>
+                                                    {
+                                                        newCategories.map((nc, i) =><span style={{ color: 'blue' }} key={i}>{ nc }</span>) 
+                                                    }
                                                     <form onSubmit={addCategory}>
-                                                    <input type='text' placeholder='category name' required/>
-                                                    <button type='submit'>add</button>
-                                                </form>
+                                                        <input type='text' placeholder='category name' required/>
+                                                        <button type='submit'>add</button>
+                                                    </form>
+                                                </div>                         
+                                                <button onClick={updateCategory}>Update</button>
                                             </div>
-                                            <button onClick={updateCategory}>Update</button>
                                         </div>
 
                                         <div className={styles.filter}> 
                                             <h3>Filter</h3>
 
-                                            <h4>Current Filters:</h4> 
                                             <div className={styles.currFilters}>
+                                                <h4>Current Filtes:</h4> 
+                                                <div>
+                                                    {
+                                                        Object.keys(orderform.filter).length > 0 ?
+                                                            Object.keys(orderform.filter).map((f, i) => <button style={{ backgroundColor: selectedFilter === f ? 'crimson' : 'inherit' }} onClick={() => setSelectedFilter(f)} key={i}>{ f }</button>) :
+                                                            <p>empty</p>
+                                                    }
+                                                </div>
                                                 {
-                                                    orderform.filter.length > 0 ?
-                                                        orderform.filter.map((f, i) => <div key={i}>{ f }</div>) :
-                                                        <p>empty</p>
+                                                    selectedFilter &&
+                                                    <div>
+                                                        <h4>Keywords: { selectedFilter }</h4>
+                                                        {
+                                                            orderform.filter[selectedFilter].map((keyword, i) => <span key={i}>{ keyword }</span>)
+                                                        }
+                                                        {
+                                                            newKeywords.map((nk, i) => <span style={{ color: 'blue' }} key={i}>{ nk }</span>)
+                                                        }
+                                                        <form onSubmit={addKeyword}>
+                                                            <input type='text' placeholder='keyword name' required/>
+                                                            <button type='submit'>add</button>
+                                                        </form>
+                                                        <button onClick={updateKeyword}>update</button>
+                                                    </div>
                                                 }
                                             </div>
                                         
-                                            <h4>Newly added filters:</h4>                              
                                             <div className={styles.newFilters}>
-                                                {
-                                                    newFilters.map((nf, i) =><span key={i}>{ nf }</span>) 
-                                                }
+                                                <h4>Newly added filters:</h4>        
+                                                <div>
+                                                    {
+                                                        newFilters.map((nf, i) =><span style={{ color: 'blue' }} key={i}>{ nf }</span>) 
+                                                    }
                                                     <form onSubmit={addFilter}>
-                                                    <input type='text' placeholder='filter name' required/>
-                                                    <button type='submit'>add</button>
-                                                </form>
-                                            </div>
-                                            <button onClick={updateFilter}>Update</button>
+                                                        <input type='text' placeholder='filter name' required/>
+                                                        <button type='submit'>add</button>
+                                                    </form>
+                                                </div>
+                                                <button onClick={updateFilter}>Update</button>
+                                            </div>              
                                         </div>
 
                                         <div className={styles.item}>
                                             <h3>Item</h3>
-                                            <h4>Select Category</h4>
                                             {
                                                 orderform.category.length > 0 ? 
                                                 <div>
                                                     <div className={styles.select_category}>
-                                                        {
-                                                            orderform.category.map((c, i) => 
-                                                            <button style={{ backgroundColor: selectedCategroy === c ? 'crimson' : 'inherit' }} onClick={() => setSelectedCategory(c)} key={i}>{ c }</button>)
-                                                        }
+                                                        <h4>Select Category</h4>
+                                                        <div>
+                                                            {
+                                                                orderform.category.map((c, i) => 
+                                                                <button style={{ backgroundColor: selectedCategroy === c ? 'crimson' : 'inherit' }} onClick={() => setSelectedCategory(c)} key={i}>{ c }</button>)
+                                                            }
+                                                        </div>
                                                     </div> 
+
+                                                    <div className={styles.item_container}>
+                                                        <form className={styles.newItem_form}>
+                                                            <h4>New Item</h4>
+                                                            <input type='text' placeholder='name'/>
+                                                            <input type='number' placeholder='price'/>
+                                                        </form>
+                                                    </div>
                                                 </div> :
                                                 <div>
                                                     You have no category yet.
