@@ -16,6 +16,17 @@ export default function ManageOrderform() {
     const [newCategories, setNewCategories] = useState([])
     const [newFilters, setNewFilters] = useState([])
     const [newKeywords, setNewKeywords] = useState([])
+    const [newOption, setNewOption] = useState({
+        name: '',
+        charge: 0
+    })
+    const [newItem, setNewItem] = useState({
+        name: '',
+        price: 0,
+        category: '',
+        filters: {},
+        options: []
+    })
 
     useEffect(() => {
         const getOrderform = async () => {
@@ -88,6 +99,44 @@ export default function ManageOrderform() {
         }
     }
 
+    function addOption() {
+        if (newOption.name) {
+            let currOptions = [...newItem.options]
+            currOptions.push(newOption)
+            setNewItem(prev => ({
+                ...prev,
+                options: currOptions
+            }))
+
+            setNewOption({
+                name: '',
+                charge: 0
+            })
+        } else {
+            console.log('no name given')
+        }
+    }
+
+    function updateFilterOfItem(event, filter, keyword) {
+        let currFilters = {
+            ...newItem.filters
+        }
+        if(!Object.keys(currFilters).includes(filter)) {
+            currFilters[filter] = []
+        }
+        let currKeywords = [...currFilters[filter]]
+        event.target.checked ? currKeywords.push(keyword) :
+            currKeywords.splice(currKeywords.indexOf(keyword), 1) 
+
+        setNewItem(prev => ({
+            ...prev,
+            filters: {
+                ...currFilters,
+                [filter]: currKeywords
+            }
+        }))
+    }
+
     // Firestore update
     async function updateCategory() {
         setIsLoading(true)
@@ -111,7 +160,6 @@ export default function ManageOrderform() {
         setIsLoading(false)
     }
 
-     // Firestore update
      async function updateFilter() {
         setIsLoading(true)
         if(newFilters.length > 0) {
@@ -164,6 +212,15 @@ export default function ManageOrderform() {
             setNewKeywords([])
         }
         setIsLoading(false)
+    }
+
+    async function updateItem(e) {
+        e.preventDefault()
+        let updatingItem = {
+            ...newItem,
+            category: selectedCategroy
+        }
+        console.log(updatingItem)
     }
 
     return(
@@ -275,11 +332,63 @@ export default function ManageOrderform() {
                                                     </div> 
 
                                                     <div className={styles.item_container}>
-                                                        <form className={styles.newItem_form}>
-                                                            <h4>New Item</h4>
-                                                            <input type='text' placeholder='name'/>
-                                                            <input type='number' placeholder='price'/>
-                                                        </form>
+                                                        <div className={styles.curr_items}>
+                                                            {
+                                                                orderform.item.map((item, i) => item.category === selectedCategroy && <p key={i}>{ item.name }</p>)
+                                                            }
+                                                        </div>
+                                                        {
+                                                            selectedCategroy && 
+                                                            <form onSubmit={updateItem} className={styles.newItem_form}>
+                                                                <h4>New Item</h4>
+                                                                <p>Selected Category: <strong>{ selectedCategroy }</strong></p>
+                                                                <input onChange={(e) => setNewItem(prev => ({
+                                                                    ...prev,
+                                                                    name: e.target.value
+                                                                }))} type='text' placeholder='name' required/>
+                                                                <input onChange={(e) => setNewItem(prev => ({
+                                                                    ...prev,
+                                                                    price: e.target.value
+                                                                }))} type='number' placeholder='price' required/>
+                                                                <div>
+                                                                    <h4>Filters</h4>
+                                                                    <hr/>
+                                                                    <br/>
+                                                                    {
+                                                                        Object.keys(orderform.filter).map((f, i) => 
+                                                                        <div key={i}>
+                                                                            <h4>{ f }</h4>   
+                                                                            {
+                                                                                orderform.filter[f].map(
+                                                                                    (keyword, i) => 
+                                                                                        <div key={i}>
+                                                                                            <input onChange={(e) => updateFilterOfItem(e, f, keyword)} value={keyword} type='checkbox'/>
+                                                                                            <label>{ keyword }</label>
+                                                                                        </div>
+                                                                                )
+                                                                            } 
+                                                                        </div>    
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                                <br/>
+                                                                <div>
+                                                                    <h4>Options</h4>
+                                                                    {
+                                                                        newItem.options.map((option, i) => 
+                                                                            <p key={i}>{ option.name }(+${ option.charge })</p>
+                                                                        )
+                                                                    }
+                                                                    <div>
+                                                                        <input onChange={e => setNewOption(prev => ({...prev, name: e.target.value}))} type='text' placeholder='option name'/>
+                                                                        <input onChange={e => setNewOption(prev => ({...prev, charge: e.target.value}))} type='number' placeholder='option charge' defaultValue={0}/>
+                                                                        <button type='button' onClick={addOption}>add option</button>
+                                                                    </div>
+                                                                    <hr/>
+                                                                </div>
+                                                                <button type='submit'>add item</button>
+                                                            </form>
+                                                        }
                                                     </div>
                                                 </div> :
                                                 <div>
