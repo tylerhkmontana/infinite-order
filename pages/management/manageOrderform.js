@@ -216,11 +216,39 @@ export default function ManageOrderform() {
 
     async function updateItem(e) {
         e.preventDefault()
+        setIsLoading(true)
         let updatingItem = {
             ...newItem,
             category: selectedCategroy
         }
         console.log(updatingItem)
+        const orderformRef = doc(db, "orderforms", orderform.id)
+        const updated = new Date()
+        const currItems = [...orderform.item]
+        await updateDoc(orderformRef, {
+            item: [
+                ...currItems,
+                updatingItem
+            ],
+            updated
+        })
+        setOrderform(prev => ({
+            ...prev,
+            item: [
+                ...currItems,
+                updatingItem
+            ],
+            updated
+        }))
+        setNewItem({
+            name: '',
+            price: 0,
+            category: '',
+            filters: {},
+            options: []
+        })
+
+        setIsLoading(false)
     }
 
     return(
@@ -241,100 +269,77 @@ export default function ManageOrderform() {
                                 {
                                     orderform ? 
                                         <div className={styles.orderform_form}>
-                                        <div className={styles.category}> 
-                                            <h3>Category</h3>
-
-                                            <div className={styles.currCategories}>
-                                                <h4>Current categories:</h4> 
-                                                <div>
-                                                    {
-                                                        orderform.category.length > 0 ?
-                                                            orderform.category.map((c, i) => <span key={i}>{ c }</span>) :
-                                                            <p>empty</p>
-                                                    }
-                                                </div>
-                                            </div>
-                                        
-                                            <div className={styles.newCategories}>
-                                                <h4>Newly added categories:</h4>     
-                                                <div>
-                                                    {
-                                                        newCategories.map((nc, i) =><span style={{ color: 'blue' }} key={i}>{ nc }</span>) 
-                                                    }
-                                                    <form onSubmit={addCategory}>
-                                                        <input type='text' placeholder='category name' required/>
-                                                        <button type='submit'>add</button>
-                                                    </form>
-                                                </div>                         
-                                                <button onClick={updateCategory}>Update</button>
-                                            </div>
-                                        </div>
-
-                                        <div className={styles.filter}> 
-                                            <h3>Filter</h3>
-
-                                            <div className={styles.currFilters}>
-                                                <h4>Current Filtes:</h4> 
-                                                <div>
-                                                    {
-                                                        Object.keys(orderform.filter).length > 0 ?
-                                                            Object.keys(orderform.filter).map((f, i) => <button style={{ backgroundColor: selectedFilter === f ? 'crimson' : 'inherit' }} onClick={() => setSelectedFilter(f)} key={i}>{ f }</button>) :
-                                                            <p>empty</p>
-                                                    }
-                                                </div>
-                                                {
-                                                    selectedFilter &&
+                                            <div className={styles.filter}> 
+                                                <h3>Filter</h3>
+                                                <div className={styles.newFilters}>
+                                                    <h4>Newly added filters:</h4>        
                                                     <div>
-                                                        <h4>Keywords: { selectedFilter }</h4>
                                                         {
-                                                            orderform.filter[selectedFilter].map((keyword, i) => <span key={i}>{ keyword }</span>)
+                                                            newFilters.map((nf, i) =><span style={{ color: 'blue' }} key={i}>{ nf }</span>) 
                                                         }
-                                                        {
-                                                            newKeywords.map((nk, i) => <span style={{ color: 'blue' }} key={i}>{ nk }</span>)
-                                                        }
-                                                        <form onSubmit={addKeyword}>
-                                                            <input type='text' placeholder='keyword name' required/>
+                                                        <form onSubmit={addFilter}>
+                                                            <input type='text' placeholder='filter name' required/>
                                                             <button type='submit'>add</button>
                                                         </form>
-                                                        <button onClick={updateKeyword}>update</button>
                                                     </div>
-                                                }
-                                            </div>
-                                        
-                                            <div className={styles.newFilters}>
-                                                <h4>Newly added filters:</h4>        
-                                                <div>
+                                                    <button onClick={updateFilter}>Update</button>
+                                                </div>              
+                                                <div className={styles.currFilters}>
+                                                    <h4>Current Filters:</h4> 
+                                                    <div>
+                                                        {
+                                                            Object.keys(orderform.filter).length > 0 ?
+                                                                Object.keys(orderform.filter).map((f, i) => <button style={{ backgroundColor: selectedFilter === f ? 'crimson' : 'inherit' }} onClick={() => setSelectedFilter(f)} key={i}>{ f }</button>) :
+                                                                <p>empty</p>
+                                                        }
+                                                    </div>
                                                     {
-                                                        newFilters.map((nf, i) =><span style={{ color: 'blue' }} key={i}>{ nf }</span>) 
-                                                    }
-                                                    <form onSubmit={addFilter}>
-                                                        <input type='text' placeholder='filter name' required/>
-                                                        <button type='submit'>add</button>
-                                                    </form>
-                                                </div>
-                                                <button onClick={updateFilter}>Update</button>
-                                            </div>              
-                                        </div>
-
-                                        <div className={styles.item}>
-                                            <h3>Item</h3>
-                                            {
-                                                orderform.category.length > 0 ? 
-                                                <div>
-                                                    <div className={styles.select_category}>
-                                                        <h4>Select Category</h4>
+                                                        selectedFilter &&
                                                         <div>
+                                                            <h4>Keywords:</h4>
                                                             {
-                                                                orderform.category.map((c, i) => 
-                                                                <button style={{ backgroundColor: selectedCategroy === c ? 'crimson' : 'inherit' }} onClick={() => setSelectedCategory(c)} key={i}>{ c }</button>)
+                                                                orderform.filter[selectedFilter].map((keyword, i) => <span key={i}>{ keyword }</span>)
                                                             }
+                                                            {
+                                                                newKeywords.map((nk, i) => <span style={{ color: 'blue' }} key={i}>{ nk }</span>)
+                                                            }
+                                                            <form onSubmit={addKeyword}>
+                                                                <input type='text' placeholder='keyword name' required/>
+                                                                <button type='submit'>add</button>
+                                                            </form>
+                                                            <button onClick={updateKeyword}>update</button>
                                                         </div>
-                                                    </div> 
-
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className={styles.category}> 
+                                                <h3>Category</h3>
+                                                <div className={styles.newCategories}>
+                                                    <h4>Add new categories:</h4>     
+                                                    <div>
+                                                        {
+                                                            newCategories.map((nc, i) =><span style={{ color: 'blue' }} key={i}>{ nc }</span>) 
+                                                        }
+                                                        <form onSubmit={addCategory}>
+                                                            <input type='text' placeholder='category name' required/>
+                                                            <button type='submit'>add</button>
+                                                        </form>
+                                                    </div>                         
+                                                    <button onClick={updateCategory}>Update</button>
+                                                </div>
+                                                <div className={styles.currCategories}>
+                                                    <h4>Current categories:</h4> 
+                                                    <div>
+                                                        {
+                                                            orderform.category.length > 0 ?
+                                                                orderform.category.map((c, i) => <button  style={{ backgroundColor: selectedCategroy === c ? 'crimson' : 'inherit' }} onClick={() => setSelectedCategory(c)} key={i}>{ c }</button>) :
+                                                                <p>empty</p>
+                                                        }
+                                                    </div>
                                                     <div className={styles.item_container}>
                                                         <div className={styles.curr_items}>
                                                             {
-                                                                orderform.item.map((item, i) => item.category === selectedCategroy && <p key={i}>{ item.name }</p>)
+                                                                orderform.item.map((item, i) => item.category === selectedCategroy && <p key={i}>${ item.price } { item.name }</p>)
                                                             }
                                                         </div>
                                                         {
@@ -348,28 +353,35 @@ export default function ManageOrderform() {
                                                                 }))} type='text' placeholder='name' required/>
                                                                 <input onChange={(e) => setNewItem(prev => ({
                                                                     ...prev,
-                                                                    price: e.target.value
+                                                                    price: Number(e.target.value)
                                                                 }))} type='number' placeholder='price' required/>
                                                                 <div>
                                                                     <h4>Filters</h4>
                                                                     <hr/>
                                                                     <br/>
                                                                     {
-                                                                        Object.keys(orderform.filter).map((f, i) => 
-                                                                        <div key={i}>
-                                                                            <h4>{ f }</h4>   
-                                                                            {
-                                                                                orderform.filter[f].map(
-                                                                                    (keyword, i) => 
-                                                                                        <div key={i}>
-                                                                                            <input onChange={(e) => updateFilterOfItem(e, f, keyword)} value={keyword} type='checkbox'/>
-                                                                                            <label>{ keyword }</label>
-                                                                                        </div>
-                                                                                )
-                                                                            } 
-                                                                        </div>    
-                                                                        )
+                                                                        Object.keys(orderform.filter).length > 0 ? 
+                                                                            <div>
+                                                                                {
+                                                                                    Object.keys(orderform.filter).map((f, i) => 
+                                                                                    <div key={i}>
+                                                                                        <h4>{ f }</h4>   
+                                                                                        {
+                                                                                            orderform.filter[f].map(
+                                                                                                (keyword, i) => 
+                                                                                                    <div key={i}>
+                                                                                                        <input onChange={(e) => updateFilterOfItem(e, f, keyword)} value={keyword} type='checkbox'/>
+                                                                                                        <label>{ keyword }</label>
+                                                                                                    </div>
+                                                                                            )
+                                                                                        } 
+                                                                                    </div>    
+                                                                                    )
+                                                                                }
+                                                                            </div> :
+                                                                            <p>Empty</p>
                                                                     }
+                                                            
                                                                 </div>
                                                                 <br/>
                                                                 <div>
@@ -380,8 +392,8 @@ export default function ManageOrderform() {
                                                                         )
                                                                     }
                                                                     <div>
-                                                                        <input onChange={e => setNewOption(prev => ({...prev, name: e.target.value}))} type='text' placeholder='option name'/>
-                                                                        <input onChange={e => setNewOption(prev => ({...prev, charge: e.target.value}))} type='number' placeholder='option charge' defaultValue={0}/>
+                                                                        <input onChange={e => setNewOption(prev => ({...prev, name: e.target.value}))} type='text' placeholder='option name' value={newOption.name}/>
+                                                                        <input onChange={e => setNewOption(prev => ({...prev, charge: Number(e.target.value)}))} type='number' placeholder='option charge' value={newOption.charge} defaultValue={0}/>
                                                                         <button type='button' onClick={addOption}>add option</button>
                                                                     </div>
                                                                     <hr/>
@@ -390,19 +402,14 @@ export default function ManageOrderform() {
                                                             </form>
                                                         }
                                                     </div>
-                                                </div> :
-                                                <div>
-                                                    You have no category yet.
                                                 </div>
-                                            }
+                                            </div>
+                                        </div> :
+                                        <div>
+                                            <h3>You have no orderform</h3>
+                                            <button onClick={initializeOrderform}>Initialize</button>
                                         </div>
-                                    </div> :
-                                    <div>
-                                        <h3>You have no orderform</h3>
-                                        <button onClick={initializeOrderform}>Initialize</button>
-                                    </div>
                                 }
-
                             </div>
                         }
                     </div> :
