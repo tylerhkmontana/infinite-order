@@ -20,6 +20,7 @@ export default function Management() {
         charge: 0
     })
     const [newItem, setNewItem] = useState({
+        id: null,
         name: '',
         price: 0,
         category: '',
@@ -41,6 +42,15 @@ export default function Management() {
                 setIsLoading(false)
             }
         }
+
+        setNewItem({
+            id: null,
+            name: '',
+            price: 0,
+            category: '',
+            allergies: [],
+            options: []
+        })
 
         getOrderform()
     }, [user])
@@ -194,12 +204,12 @@ export default function Management() {
         setIsLoading(false)
     }
 
-    async function updateItem(e) {
+    async function addItem(e) {
         e.preventDefault()
         setIsLoading(true)
         let updatingItem = {
-            id: uuid4(),
             ...newItem,
+            id: uuid4(),
             category: selectedCategory
         }
         const currItems = [...orderform.item]
@@ -236,6 +246,20 @@ export default function Management() {
             }
         }
         setIsLoading(false)
+    }
+
+    async function updateItem(e) {
+        e.preventDefault()
+        let currItems = [...orderform.item]
+        let foundIndex
+
+        let foundItem = currItems.find((item, i) => {
+            foundIndex = i
+            return item.id === newItem.id
+        })
+
+        console.log(foundItem)
+        console.log(newItem)
     }
 
     // Remove
@@ -484,7 +508,17 @@ export default function Management() {
                                                     {
                                                         orderform.category.map((category, i) => 
                                                         <button 
-                                                            onClick={() => setSelectedCategory(category)}
+                                                            onClick={() => {
+                                                                setSelectedCategory(category)
+                                                                setNewItem({
+                                                                    id: null,
+                                                                    name: '',
+                                                                    price: 0,
+                                                                    category: '',
+                                                                    allergies: [],
+                                                                    options: []
+                                                                })
+                                                            }}
                                                             style={{ 
                                                                 backgroundColor: selectedCategory === category && '#121212',
                                                                 color: selectedCategory === category && 'white'
@@ -501,6 +535,7 @@ export default function Management() {
                                                         orderform.item.map((item, i) => item.category === selectedCategory && 
                                                         <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
                                                             <span key={i}>${ item.price } { item.name }</span>&nbsp;
+                                                            <button onClick={() => setNewItem({...item})}>update</button>&nbsp;
                                                             <Modal btn_name='delete' color='crimson'>
                                                                 <div className={styles.delete_item}>
                                                                     <h2>Delete Item "{ item.name }"</h2>
@@ -514,22 +549,26 @@ export default function Management() {
                                                 <br/>
                                                 {
                                                     selectedCategory && 
-                                                    <form onSubmit={updateItem} className={styles.newItem_form}>
-                                                        <h3>New Item</h3>
+                                                    <form onSubmit={(e) => newItem.id ? updateItem(e) : addItem(e)} className={styles.newItem_form}>
+                                                        <h3>{
+                                                            newItem.id ? 'Update Item' : 'New Item'
+                                                        }</h3>
                                                         <br/>
                                                         <br/>
                                                         <p><strong>Category:</strong> { selectedCategory }</p>
                                                         <br/>
+                                                        <label>Name: </label>
                                                         <input onChange={(e) => setNewItem(prev => ({
                                                             ...prev,
                                                             name: e.target.value
-                                                        }))} type='text' placeholder='name' required/>
+                                                        }))} type='text' placeholder='name' value={newItem.name} required/>
                                                         <br/>
                                                         <br/>
+                                                        <label>Price: </label>
                                                         <input onChange={(e) => setNewItem(prev => ({
                                                             ...prev,
                                                             price: Number(e.target.value)
-                                                        }))} type='number' placeholder='price' required/>
+                                                        }))} type='number' placeholder='price' value={Number(newItem.price)} required/>
                                                         <br/>
                                                         <br/>
                                                         <div>
@@ -538,7 +577,7 @@ export default function Management() {
                                                             {
                                                                 orderform.allergy.map((allergy, i) => 
                                                                     <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                        <input onChange={updateAllergyOfItem} value={allergy} type='checkbox'/>&nbsp;
+                                                                        <input onChange={updateAllergyOfItem} value={allergy} type='checkbox' checked={newItem.allergies.includes(allergy)}/>&nbsp;
                                                                         <label>{ allergy }</label>
                                                                     </div>)   
                                                             }
@@ -559,7 +598,7 @@ export default function Management() {
                                                             </div>
                                                         </div>
                                                         <br/>
-                                                        <button type='submit'>add item</button>
+                                                        <button type='submit'>update</button>
                                                     </form>
                                                 }
                                             </div>
