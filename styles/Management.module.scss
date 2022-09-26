@@ -1,11 +1,89 @@
 @import './libs/theme.scss';
 
 .container {
-    @extend %container;
+    width: 100%;
 }
 
 .dashboard {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    width: 100%;
+}
+
+.profile {
+    & > h3 {
+        margin-bottom: 20px;
+    }
+}
+
+.orderform_container {
+    width: 100%;
+}
+
+.initialize_orderform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & > button {
+        margin-top: 50px;
+    }
+}
+
+.orderform{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 0 0 0;
+}
+
+.delete_orderform_container {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.delete_orderform, .delete_allergy, .delete_category, .delete_item {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.allergy_container, .category_container, .item_container {
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+.curr_allergy, .new_allergy, .curr_category, .new_category, .select_category, .curr_items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    span {
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+    }
+}
+
+.curr_allergy, .new_allergy {
+    span { background-color: rgb(242, 103, 60); }
+}
+
+.curr_category, .new_category {
+    span { background-color: rgb(41, 159, 77); }
+}
+
+.curr_items {
+    span { background-color: rgb(49, 62, 182); }
+}
+
+.newItem_form {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
 }

@@ -6,8 +6,10 @@ export default function Home() {
     <>
       <div className={styles.container}>
         <h1>Welcome to Infinite-Order</h1>
-        <Link href='/management'><a href='/orderform'>Management</a></Link><br/>
-        <Link href='/server'><a href='/checkOrders'>Server</a></Link>
+        <div className={styles.login_option}>
+          <Link href='/management'><a className={styles.management_btn} href='/orderform'>Management</a></Link><br/>
+          <Link href='/server'><a className={styles.server_btn} href='/checkOrders'>Server</a></Link>
+        </div>
       </div> 
     </>
   )

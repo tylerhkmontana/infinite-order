@@ -28,42 +28,6 @@ export default function ManageOrderform() {
         options: []
     })
 
-    useEffect(() => {
-        const getOrderform = async () => {
-            if(user && isAuthenticated()) {
-                const q = query(collection(db, "orderforms"), where("userId", "==", user.id), limit(1))
-                let foundOrderform
-                const querySnapshot = await getDocs(q)
-                querySnapshot.forEach(doc => {
-                    foundOrderform = doc.data()
-                })
-
-                foundOrderform && setOrderform({...foundOrderform})
-                setIsLoading(false)
-            }
-        }
-
-        getOrderform()
-    }, [user])
-
-    async function initializeOrderform() {
-        setIsLoading(true)
-        if(user && isAuthenticated) {
-            const orderformId = uuid4()
-            const updated = new Date()
-            const newOrderform = {
-                id: orderformId,
-                userId: user.id,
-                updated: updated,
-                category: [],
-                filter: {},
-                item: []
-                }
-            await setDoc(doc(db, "orderforms", orderformId), newOrderform);
-            setOrderform({...newOrderform})
-            setIsLoading(false)
-        }
-    }
 
     // Local update
     function addCategory(e) {
@@ -77,16 +41,6 @@ export default function ManageOrderform() {
         }
     }
 
-    function addFilter(e) {
-        e.preventDefault()
-        const newFilter = (e.target.firstChild.value).toLowerCase()
-        if (newFilters.includes(newFilter) || Object.keys(orderform.filter).includes(newFilter)) {
-            console.log("this filter already exsits")
-        } else {
-            setNewFilters(prev => [...prev, newFilter])
-            e.target.firstChild.value = ''
-        }
-    }
 
     function addKeyword(e) {
         e.preventDefault()
@@ -160,30 +114,7 @@ export default function ManageOrderform() {
         setIsLoading(false)
     }
 
-     async function updateFilter() {
-        setIsLoading(true)
-        if(newFilters.length > 0) {
-            let updatedFilters = {...orderform.filter}
-            newFilters.forEach(f => {
-                updatedFilters[f] = []
-            })
-
-            const orderformRef = doc(db, "orderforms", orderform.id)
-            const updated = new Date()
-
-            await updateDoc(orderformRef, {
-                filter: updatedFilters,
-                updated
-            })
-            setOrderform(prev => ({
-                ...prev,
-                filter: updatedFilters,
-                updated
-            }))
-            setNewFilters([])
-        }
-        setIsLoading(false)
-    }
+   
 
     async function updateKeyword() {
         setIsLoading(true)
@@ -272,10 +203,11 @@ export default function ManageOrderform() {
                                             <div className={styles.filter}> 
                                                 <h3>Filter</h3>
                                                 <div className={styles.newFilters}>
-                                                    <h4>Newly added filters:</h4>        
+                                                    <h4>Add new filters:</h4>        
                                                     <div>
                                                         {
-                                                            newFilters.map((nf, i) =><span style={{ color: 'blue' }} key={i}>{ nf }</span>) 
+                                                            newFilters.map((nf, i) =>
+                                                            <span style={{ color: 'blue' }} key={i}>{ nf }</span>) 
                                                         }
                                                         <form onSubmit={addFilter}>
                                                             <input type='text' placeholder='filter name' required/>
@@ -298,7 +230,12 @@ export default function ManageOrderform() {
                                                         <div>
                                                             <h4>Keywords:</h4>
                                                             {
-                                                                orderform.filter[selectedFilter].map((keyword, i) => <span key={i}>{ keyword }</span>)
+                                                                orderform.filter[selectedFilter].map((keyword, i) => 
+                                                                <div className={styles.element}>
+                                                                    <span key={i}>{ keyword }</span>
+                                                                    <p>x</p>
+                                                                </div>
+                                                                )
                                                             }
                                                             {
                                                                 newKeywords.map((nk, i) => <span style={{ color: 'blue' }} key={i}>{ nk }</span>)
