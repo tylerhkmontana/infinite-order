@@ -23,6 +23,7 @@ export default function Management() {
         id: null,
         name: '',
         price: 0,
+        description: '',
         category: '',
         allergies: [],
         options: []
@@ -47,6 +48,7 @@ export default function Management() {
             id: null,
             name: '',
             price: 0,
+            description: '',
             category: '',
             allergies: [],
             options: []
@@ -64,6 +66,7 @@ export default function Management() {
             const updated = new Date()
             const newOrderform = {
                 id: orderformId,
+                businessName: user.businessName,
                 userId: user.id,
                 updated: updated,
                 category: [],
@@ -234,7 +237,9 @@ export default function Management() {
                     updated
                 }))
                 setNewItem({
+                    id: null,
                     name: '',
+                    description: '',
                     price: 0,
                     category: '',
                     allergies: [],
@@ -249,17 +254,48 @@ export default function Management() {
     }
 
     async function updateItem(e) {
+        setIsLoading(true)
         e.preventDefault()
         let currItems = [...orderform.item]
         let foundIndex
 
-        let foundItem = currItems.find((item, i) => {
+        currItems.find((item, i) => {
             foundIndex = i
             return item.id === newItem.id
         })
 
-        console.log(foundItem)
-        console.log(newItem)
+        currItems[foundIndex] = {
+            ...newItem
+        }
+
+        if(isAuthenticated()) {
+            const orderformRef = doc(db, "orderforms", orderform.id)
+            const updated = new Date()
+            try {
+                await updateDoc(orderformRef, {
+                    item: currItems,
+                    updated
+                })
+                setOrderform(prev => ({
+                    ...prev,
+                    item: currItems,
+                    updated
+                }))
+                setNewItem({
+                    id: null,
+                    name: '',
+                    price: 0,
+                    description: '',
+                    category: '',
+                    allergies: [],
+                    options: []
+                })
+            } catch (err) {
+                console.log('failed to add the item')
+                console.error(err)
+            }
+        }
+        setIsLoading(false)
     }
 
     // Remove
@@ -273,16 +309,12 @@ export default function Management() {
             updatedItems = updatedItems.map(item => {
                 if(item.allergies.includes(allergy)) {
                     let allergies = [...item.allergies]
-                    console.log(allergies)
                     allergies.splice(allergies.indexOf(allergy), 1)
-
-                    console.log(allergies)
                     item.allergies = allergies
                 }
 
                 return item
             })
-
             
             try {
                 const orderformRef = doc(db, "orderforms", orderform.id)
@@ -359,6 +391,15 @@ export default function Management() {
                     item: currItems,
                     updated
                 }))
+                setNewItem({
+                    id: null,
+                    name: '',
+                    price: 0,
+                    description: '',
+                    category: '',
+                    allergies: [],
+                    options: []
+                })
                 setNewCategories([])
             } catch (err) {
                 console.log("failed to update category")
@@ -571,6 +612,12 @@ export default function Management() {
                                                         }))} type='number' placeholder='price' value={Number(newItem.price)} required/>
                                                         <br/>
                                                         <br/>
+                                                        <textarea onChange={(e) => setNewItem(prev => ({
+                                                            ...prev,
+                                                            description: e.target.value
+                                                        }))} type='text' placeholder='description' value={newItem.description}/>
+                                                        <br/>
+                                                        <br/>
                                                         <div>
                                                             <h4>Allergy</h4>
                                                             <br/>
@@ -591,10 +638,12 @@ export default function Management() {
                                                                     <p key={i}>{ option.name }(+${ option.charge })</p>
                                                                 )
                                                             }
+                                                            <br/>
                                                             <div>
                                                                 <input onChange={e => setNewOption(prev => ({...prev, name: e.target.value}))} type='text' placeholder='option name' value={newOption.name}/>&nbsp;
                                                                 <input onChange={e => setNewOption(prev => ({...prev, charge: Number(e.target.value)}))} type='number' placeholder='option charge' value={newOption.charge}/>&nbsp;
-                                                                <button type='button' onClick={addOption}>add option</button>
+                                                                <button type='button' onClick={addOption}>add option</button>&nbsp;
+                                                                <button type='button' onClick={() => setNewItem(prev => ({...prev, options: []}))}>reset</button>
                                                             </div>
                                                         </div>
                                                         <br/>

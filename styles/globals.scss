@@ -19,8 +19,14 @@ button {
   cursor: pointer;
 }
 
-input {
+input, textarea {
   padding: 5px;
+}
+
+textarea {
+  min-width: 200px;
+  max-width: 300px;
+  max-height: 150px;
 }
 
 * {
