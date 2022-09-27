@@ -1,33 +1,41 @@
 import { useEffect, useState } from 'react'
 import ServerLayout from '../../components/serverLayout'
+import Modal from '../../components/modal'
 import styles from '../../styles/Server.module.scss'
 import { db } from '../../modules/firebase'
 import { getDocs, query, where, collection, limit } from 'firebase/firestore'
 
 export default function Server() {
-    const [orders, setOrders] = useState({})
     const [orderform, setOrderform] = useState(null)
     const [orderformId, setOrderformId] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState('')
 
     useEffect(() => {   
         if(typeof window !== 'undefined') {
-            const orders = JSON.parse(window.localStorage.getItem('orders')) || {}
             const orderform = JSON.parse(window.localStorage.getItem('orderform')) || null
-            setOrders({...orders})
+    
             setOrderform(orderform)
+            setOrderformId(orderform ? orderform.id : null)
         }
     }, [isLoading])
 
-    function clearStorage() {
-        setIsLoading(true)
-        if(typeof window !== undefined) {
-            window.localStorage.removeItem('orders')
-            window.localStorage.removeItem('orderform')
-        }
-        setIsLoading(false)
+
+    // Local 
+    function secToDate(sec) {
+        return String(new Date(sec * 1000))
     }
 
+    function clearOrderform() {
+        if(typeof window !== undefined) {
+            window.localStorage.removeItem('orderform')
+        }
+        setOrderform(null)
+    }
+
+
+
+    // From the firebase server
     async function getOrderform(e) {
         e.preventDefault()
         setIsLoading(true)
@@ -44,6 +52,8 @@ export default function Server() {
             window.localStorage.setItem('orderform', JSON.stringify({
                 ...foundOrderform
             }))
+
+            console.log(foundOrderform)
             setOrderformId('')
         } catch(err) {
             console.log('failed to retrieve the orderform')
@@ -55,38 +65,77 @@ export default function Server() {
     
     return(
         <ServerLayout>
-            <h1>Current orders</h1>
-            <form className={styles.get_orderform_form} onSubmit={getOrderform}>
-                <input onChange={e => setOrderformId(e.target.value)} type='text' placeholder="Order Id" value={orderformId} required/>
-                <button type='submit'>get orderform</button>
-                <button onClick={() => clearStorage()}>Clear Storage</button>
-            </form>
-            <br/>
-          
             {
-                isLoading ? <div>Getting orderform from the server...</div> :
+                isLoading ? <div>Downloading orderform from the server...</div> :
                 <div>
-                    {
-                        orderform ? 
-                        <div>
-                            Yes orderform
-                            <button onClick={() => console.log(orderform)}>check orderform</button>
-                        </div> :
-                        <div>
-                            No orderform
+                {
+                    !orderform ? 
+                    <form onSubmit={getOrderform}>
+                        <h2>You have no orderform downloaded to your device.</h2>
+                        <br/>
+                        <p>Download the orderform by typing the unique id of the orderform</p>
+                        <br/>
+                        <br/>
+                        <input onChange={e => setOrderformId(e.target.value)} type='text' placeholder="Order Id" value={orderformId} required/>&nbsp;
+                        <button type='submit'>get orderform</button>
+                    </form> :
+                    <div>
+                        <h2>Current Orderform</h2>
+                        <br/>
+                        <p>Business Name: { orderform.businessName }</p>
+                        <p>Last Updated Date: { secToDate(orderform.updated.seconds) }</p>
+                        <br/>
+                        <button onClick={getOrderform}>update</button>&nbsp;
+                        <button onClick={clearOrderform}>reset</button>
+                    </div>
+                }
+                <br/>
+                <br/>
+                <br/>
+                {
+                    orderform &&
+                    <div className={styles.orderform}>
+                         <h1>Orderpad</h1>
+                        <br/>
+                        <br/>
+                        <div className={styles.category_container}> 
+                            {
+                                orderform.category.map((category, i) => 
+                                    <button 
+                                        style={{ 
+                                            backgroundColor: category === selectedCategory ? 'black' : 'transparent',
+                                            color:  category === selectedCategory ? 'white' : 'black'
+                                        }}
+                                        onClick={() => setSelectedCategory(category)}
+                                        key={i}>{ category }</button>)
+                            }
                         </div>
-                    }
+                        <br/>
+                        <br/>
+                        <div className={styles.item_container}>
+                            {
+                                orderform.item.map((item, i) => item.category === selectedCategory &&
+                                    <div className={styles.item} key={i}>
+                                        <span>${ item.price } { item.name }</span>&nbsp;
+                                        {
+                                            item.options.length > 0 &&
+                                            <Modal btn_name='options'>
+                                                <div className={styles.item_options}>
+                                                    <h4>Options</h4>
+                                                    <br/>
+                                                    {
+                                                        item.options.map((option ,i) => <p key={i}>{ option.name }(+${ option.charge })</p>)
+                                                    }
+                                                </div>
+                                            </Modal>
+                                        }
+                                    </div>)
+                            }
+                        </div>
+                    </div>
+                }
                 </div>
             }
-            <div className={styles.order_container}>
-                {
-                    Object.keys(orders).map((orderId, id) => 
-                    <button key={orderId}>
-                        { orders[orderId].name } : { orders[orderId].time }
-                    </button>
-                    )
-                }
-            </div>
         </ServerLayout>
     )   
 }
