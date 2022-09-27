@@ -28,6 +28,8 @@ export default function Management() {
         allergies: [],
         options: []
     })
+    const [currItemOrder, setCurrItemOrder] = useState([])
+    const [newItemOrder, setNewItemOrder] = useState([])
 
     useEffect(() => {
         const getOrderform = async () => {
@@ -146,6 +148,43 @@ export default function Management() {
             ...prev,
             allergies: currAllergies
         }))
+    }
+
+    function selectCategory(category) {
+        setSelectedCategory(category)
+        setNewItem({
+            id: null,
+            name: '',
+            price: 0,
+            category: '',
+            allergies: [],
+            options: []
+        })
+        const currOrder = orderform.item.filter(item => item.category === category)
+        setCurrItemOrder([...currOrder])
+        setNewItemOrder([])
+    }
+
+    function reorganizeItemOrder(item) {
+        if(currItemOrder.length > 0) {
+            let selectedItemIndex
+            currItemOrder.find((itm, i) => {
+                if(itm.id === item.id) selectedItemIndex = i
+            })
+    
+            let newCurrItemOrder = [...currItemOrder]
+            newCurrItemOrder.splice(selectedItemIndex, 1)
+            setNewItemOrder(prev => [...prev, item])
+            setCurrItemOrder(newCurrItemOrder)
+        }
+    }
+
+    function resetItemOrder() {
+        if(selectedCategory) {
+            const currOrder = orderform.item.filter(item => item.category === selectedCategory)
+            setCurrItemOrder([...currOrder])
+            setNewItemOrder([])
+        }
     }
 
     // Firestore Update
@@ -295,6 +334,44 @@ export default function Management() {
                 console.error(err)
             }
         }
+        setIsLoading(false)
+    }
+
+    async function updateItemOrder() {
+        setIsLoading(true)
+        if(selectedCategory && currItemOrder.length < 1) {
+            const itemIdList = newItemOrder.map(item => item.id)
+
+            const nonUpdatingItems = orderform.item.filter(item => !itemIdList.includes(item.id))
+            const newItemList = [...nonUpdatingItems, ...newItemOrder]
+
+            if(isAuthenticated()) {
+                const orderformRef = doc(db, "orderforms", orderform.id)
+                const updated = new Date()
+                try {
+                    await updateDoc(orderformRef, {
+                        item: newItemList,
+                        updated
+                    })
+                    setOrderform(prev => ({
+                        ...prev,
+                        item: newItemList,
+                        updated
+                    }))
+                } catch (err) {
+                    console.log('failed to update the item order')
+                    console.error(err)
+                }
+
+                setCurrItemOrder([])
+                setNewItemOrder([])
+                setSelectedCategory('')
+            }
+        } else {
+            console.log("Failed to update item order")
+            console.error('Either you did not select a category or did not complete new item order')
+        }
+
         setIsLoading(false)
     }
 
@@ -549,17 +626,7 @@ export default function Management() {
                                                     {
                                                         orderform.category.map((category, i) => 
                                                         <button 
-                                                            onClick={() => {
-                                                                setSelectedCategory(category)
-                                                                setNewItem({
-                                                                    id: null,
-                                                                    name: '',
-                                                                    price: 0,
-                                                                    category: '',
-                                                                    allergies: [],
-                                                                    options: []
-                                                                })
-                                                            }}
+                                                            onClick={() => selectCategory(category)}
                                                             style={{ 
                                                                 backgroundColor: selectedCategory === category && '#121212',
                                                                 color: selectedCategory === category && 'white'
@@ -649,6 +716,36 @@ export default function Management() {
                                                         <br/>
                                                         <button type='submit'>update</button>
                                                     </form>
+                                                }
+                                                <br/>
+                                                <br/>
+                                                {
+                                                    selectedCategory &&
+                                                    <div>
+                                                        <h3>Reorganize the order of the items</h3>
+                                                        <br/>
+                                                        <br/>
+                                                        <h4>Current Order of the items</h4>
+                                                        <br/>
+                                                        <div className={styles.curr_item_order}>
+                                                        {
+                                                            currItemOrder.map((item, i) => <span onClick={() => reorganizeItemOrder(item)} key={i}>{ item.name }</span>)
+                                                        }
+                                                        </div>
+                                                        <br/>
+                                                        <h4>New Order of the items</h4>
+                                                        <br/>
+                                                        <div className={styles.new_item_order}>
+                                                        {
+                                                            newItemOrder.map((item, i) => <span key={i}>{ item.name }</span>)
+                                                        }
+                                                        </div>
+                                                        <br/>
+                                                        <div>
+                                                            <button onClick={updateItemOrder}>update</button>&nbsp;
+                                                            <button onClick={resetItemOrder}>reset</button>
+                                                        </div>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>

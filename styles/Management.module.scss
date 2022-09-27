@@ -58,7 +58,7 @@
     background-color: #f2f2f2;
 }
 
-.curr_allergy, .new_allergy, .curr_category, .new_category, .select_category, .curr_items {
+.curr_allergy, .new_allergy, .curr_category, .new_category, .select_category, .curr_items, .curr_item_order, .new_item_order {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -80,6 +80,17 @@
 
 .curr_items {
     span { background-color: rgb(49, 62, 182); }
+}
+
+.curr_item_order {
+    span { 
+        cursor: pointer;
+        background-color: rgb(173, 49, 182); 
+    }
+}
+
+.new_item_order {
+    span { background-color: rgb(243, 202, 23); }
 }
 
 .newItem_form {
