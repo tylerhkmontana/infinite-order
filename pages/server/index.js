@@ -116,7 +116,7 @@ export default function Server() {
                             {
                                 orderform.item.map((item, i) => item.category === selectedCategory &&
                                     <div className={styles.item} key={i}>
-                                        <span>${ item.price } { item.name }</span>&nbsp;
+                                        <span>{ item.name } ${ item.price }</span>&nbsp;
                                         {
                                             item.options.length > 0 &&
                                             <Modal btn_name='options'>

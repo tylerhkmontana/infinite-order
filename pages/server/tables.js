@@ -2,11 +2,13 @@ import styles from '../../styles/Tables.module.scss'
 import { useState, useEffect } from 'react'
 import Modal from '../../components/modal'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import ServerLayout from '../../components/serverLayout'
 import { v4 as uuid4 } from 'uuid'
 
 export default function Tables() {
-    const [tables, setTables] = useState([])
+    const router = useRouter()
+    const [tables, setTables] = useState({})
     const [newTable, setNewTable ] = useState({
         tableNumber: '',
         numParty: 0,
@@ -19,6 +21,14 @@ export default function Tables() {
             setTables(tables)
         }
     }, [])
+
+    function secToTime(sec) {
+        const time = new Date(sec)
+        const amOrPm = time.getHours() > 11 ? 'PM' : 'AM'
+        const hours = time.getHours() > 12 ? time.getHours() % 12 : time.getHours()
+        const minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
+        return `${hours}:${minutes} ${amOrPm}`
+    }
 
     function assignTableNumber(e) {
         const tableNumber = e.target.value
@@ -38,20 +48,26 @@ export default function Tables() {
 
     function createNewTable(e) {
         e.preventDefault()
-        const updated = new Date()
+        const arrival = secToTime(new Date())
         const tableId = uuid4()
         const orders = []
+        const allergies = []
+        const events = ''
 
         const createdTable = {
             ...newTable,
             tableId,
-            updated,
-            orders
+            arrival,
+            orders,
+            allergies,
+            events
         }
 
         if(typeof window !== 'undefined') {
-            let currTables = JSON.parse(window.localStorage.getItem('tables')) || []
-            currTables.push(createdTable)
+            let currTables = JSON.parse(window.localStorage.getItem('tables')) || {}
+            currTables[tableId] = {
+                ...createdTable
+            }
 
             window.localStorage.setItem('tables', JSON.stringify(currTables))
 
@@ -59,7 +75,7 @@ export default function Tables() {
                 tableNumber: '',
                 numParty: 0,
             })
-            setTables([...currTables])
+            setTables({...currTables})
         }
     }
 
@@ -72,36 +88,58 @@ export default function Tables() {
 
     return (
         <ServerLayout>
-            <form className={styles.create_new_table} onSubmit={createNewTable}>
-                <h2>Create New Table</h2>
-                <br/>
-                <label>Table Numer: </label>
-                <input onChange={assignTableNumber} type='text' placeholder="table number" value={tables.tableNumber} required/>
-                <br/>
-                <br/>
-                <labe># of Party: </labe>
-                <input onChange={assignNumParty} type='number' placeholder='# of party' value={tables.numParty} required/>
-                <br/>
-                <br/>
-                <button>create</button>
-            </form>
+            <div className={styles.create_or_clear}>
+                <Modal btn_name='Create Table'>
+                    <form className={styles.create_new_table} onSubmit={createNewTable}>
+                        <h2>Create New Table</h2>
+                        <div>
+                            <label>Table Numer: </label>
+                            <input onChange={assignTableNumber} type='text' placeholder="table number" value={newTable.tableNumber} required/>
+                            <br/>
+                            <br/>
+                            <label># of Party: </label>
+                            <input onChange={assignNumParty} type='number' placeholder='# of party' value={newTable.numParty} required/>
+                        </div>
+                        <button>create</button>
+                    </form>
+                </Modal>
+                <Modal btn_name='Clear Tables' color='crimson'>
+                    <form className={styles.clear_tables}>
+                        <h3>Clear Tables</h3>
+                        <p>All of your table informations will be deleted from your device storage. Do you really want to do this?</p>
+                        <button onClick={clearTables}>confirm</button>
+                    </form>
+                </Modal>
+            </div>
+            
             <br/>
             <br/>
-            <div className={styles.table_container}>
+            <div className={styles.curr_tables}>
                 <h2>Current Tables</h2>
                 <br/>
                 <br/>
-                {
-                    tables.length < 1 ?
-                        <p>You are not serving any table.</p> :
-                        tables.map((table, i) => 
-                            <div key={i}>
-                                { table.tableNumber }
-                            </div>)
-                }
-                <br/>
-                <br/>
-                <button onClick={clearTables}>Clear Tables</button>
+                <div className={styles.table_container}>
+                    {
+                        Object.keys(tables).length < 1 ?
+                            <p>You are not serving any table.</p> :
+                            Object.keys(tables).map((tableId, i) => {
+                            const table = tables[tableId]
+                            return <div key={i} className={styles.table_wrapper}>
+                                <Link href={`/server/updateTable?tableId=${table.tableId}`}>
+                                    <div className={styles.table}>
+                                        <span className={styles.table_number}>{ table.tableNumber }</span>
+                                        <span className={styles.num_party}>#{ table.numParty }</span>
+                                        <span className={styles.arrival}>{ table.arrival }</span>
+                                    </div>
+                                </Link>
+
+                                <Modal btn_name='status'>
+
+                                </Modal>
+                            </div>
+                            })
+                    }
+                </div>
             </div>
         </ServerLayout>
     )

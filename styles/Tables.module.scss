@@ -1,5 +1,78 @@
-.create_new_table, .table_container {
+@import './libs/theme.scss';
+
+.create_or_clear {
+    display: flex;
+    gap: 20px;
+}
+
+.create_new_table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.curr_tables {
     background-color: #f1f1f1;
     border-radius: 10px;
     padding: 20px;
+}
+
+.table_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.table_wrapper {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.table {
+    cursor: pointer;
+    position: relative;
+    border: 4px solid black;
+    width: 150px;
+    height: 100px;
+    border-radius: 10px;
+
+    &:hover {
+        transition: 0.2s;
+        background-color: $secondary_color;
+    }
+}
+
+.table_number, .num_party, .arrival, .status {
+    position: absolute;
+}
+
+.table_number {
+    top: 5px;
+    left: 5px;
+}
+
+.num_party {
+    top: 5px;
+    right: 5px;
+}
+
+.arrival {
+    bottom: 5px;
+    left: 5px;
+}
+
+.status {
+    top: 0px;
+    right: -40px;
+}
+
+.clear_tables {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
 }
