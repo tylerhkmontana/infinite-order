@@ -79,6 +79,24 @@ export default function Tables() {
         }
     }
 
+    function updateOrderStatus(tableId, orderIndex, targetItem) {
+        if(typeof window !== 'undefined') {
+            let tables = JSON.parse(window.localStorage.getItem('tables'))
+            let currTable = {...tables[tableId]}
+            console.log(currTable.orders[orderIndex].items)
+            currTable.orders[orderIndex].items = currTable.orders[orderIndex].items.map(item => 
+                item.name === targetItem.name ? ({...item, delivered: !item.delivered}) : item
+            )
+
+            console.log(currTable.orders[orderIndex].items)
+
+            tables[tableId] = currTable
+
+            window.localStorage.setItem('tables', JSON.stringify(tables))
+            setTables({...tables})
+        }
+    }
+
     return (
         <ServerLayout>
             <div className={styles.create_or_clear}>
@@ -127,7 +145,35 @@ export default function Tables() {
                                 </Link>
 
                                 <Modal btn_name='status'>
-
+                                    <div className={styles.table_status_container}>
+                                        <h4>Table Status</h4>
+                                        <br/>
+                                        {
+                                            tables[tableId].orders.length < 1 ? 
+                                            <p>
+                                                No order's been placed.
+                                            </p> :
+                                            tables[tableId].orders.map((order, i) => 
+                                                <div key={i} className={styles.table_status}>
+                                                
+                                                    {
+                                                        order.items.map((item, i) => 
+                                                            <div key={i} className={styles.order_status}>
+                                                                <p>{ item.name } X { item.quantity }</p>
+                                                                <button onClick={() => updateOrderStatus(tableId, i, item)}>
+                                                                    {
+                                                                        item.delivered ? 'delivered!' : 'waiting...'
+                                                                    }   
+                                                                </button>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    <br/>
+                                                    <p><i>placed at { order.updatedAt }</i></p>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
                                 </Modal>
                             </div>
                             })

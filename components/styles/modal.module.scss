@@ -26,13 +26,12 @@
     border-radius: 10px;
     position: relative;
     background-color: white;
-    max-width: 500px;
-    max-height: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 50px;
+    padding: 40px 25px;
+    overflow-y: auto;
 }
 
 .close_btn {

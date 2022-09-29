@@ -180,7 +180,6 @@ export default function UpdateTable() {
                         <h2>Table Status</h2>
                         <br/>
                         {
-                            table.orders.length > 0 &&
                             table.orders.map((order, i) => 
                                 <div key={i} className={styles.table_status}>
                                     {
