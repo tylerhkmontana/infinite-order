@@ -47,3 +47,52 @@
     gap: 10px;
 }
 
+.curr_order, .table_status {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.curr_order {
+    position: relative;
+    gap: 15px;
+}
+
+.reset_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 10px;
+    width: 75px;
+    border-color: crimson;
+    color: crimson;
+}
+
+.added_item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    button {
+        border: 1px solid;
+        border-radius: 5px;
+    }
+}
+
+.remove_item_btn {
+    border-color: crimson;
+    color: crimson;
+}
+
+.place_order_btn {
+    width: 150px;
+    border-radius: 10px;
+    padding: 15px 10px;
+}
+
+.table_status {
+    margin-bottom: 10px;
+}

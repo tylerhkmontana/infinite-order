@@ -12,41 +12,18 @@ const Context = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currUser) => {
       // Check if user logged in with google account
       if (currUser) {
-        const { displayName, email } = currUser
-
-        // Check if the user signed up on the platform
-        try {
-          const foundUser = await findUser(email)
-
-          if(foundUser) {
-            // Update context with the stored user information
-            setUser({
-              id: foundUser.id,
-              name: foundUser.name,
-              email: foundUser.email,
-              businessName: foundUser.businessName
-            })
-          } else {
-            setUser({
-              name: displayName,
-              email: email
-            })
-            // Send the user to sign up page
-            if(router.pathname.split('/')[1] === 'management') {
-              router.push("/management/signup")
-            }
-          }
-        } catch (err) {
-          router.push('/500')
-          console.log("Failed to access firestore")
-          console.error(err)
-        }
+        const { displayName, email, uid } = currUser
+        setUser({
+          uid,
+          name: displayName,
+          email: email
+        })
+      
       } else {
         // User not logged in
         setUser(null)
@@ -85,45 +62,8 @@ export function AuthProvider({ children }) {
     await signOut(auth)
   }
 
-  const signup = async (businessName) => {
-    let id = uuid4()
-
-    try {
-      await setDoc(doc(db, "users", id), {
-        id: id,
-        name: user.name,
-        email: user.email,
-        businessName
-      });
-      
-      setUser(prev => ({
-        ...prev,
-        id,
-        businessName
-      }))
-    } catch(err) {
-      router.push('/500')
-    }
-  }
-
-  const findUser = async (email) => {
-    let foundUser
-    try {
-      const q = query(collection(db, "users"), where("email", "==", email || ''), limit(1))
-      const querySnapshot = await getDocs(q)
-      querySnapshot.forEach(doc => {
-        foundUser = doc.data()
-      })
-    } catch(err) {
-      router.push('/500')
-    }
-
-    return foundUser
-  }
-
-
   return (
-    <Context.Provider value={{ user, isLoading, isAuthenticated, login, logout, signup }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, isLoading, isAuthenticated, login, logout }}>{children}</Context.Provider>
   );
 }
 

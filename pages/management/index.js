@@ -2,6 +2,7 @@ import styles from '../../styles/Management.module.scss'
 import { useAuthContext } from '../../context/authContext'
 import ManagementLayout from '../../components/managementLayout'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { db } from '../../modules/firebase'
 import { getDocs, setDoc, updateDoc, deleteDoc, doc, query, where, collection, limit } from 'firebase/firestore'
@@ -9,6 +10,7 @@ import { v4 as uuid4 } from 'uuid'
 import Modal from '../../components/modal'
 
 export default function Management() {
+    const router = useRouter()
     const { user, isAuthenticated } = useAuthContext()
     const [isLoading, setIsLoading] = useState(true)
     const [orderform, setOrderform] = useState(null)
@@ -34,14 +36,19 @@ export default function Management() {
     useEffect(() => {
         const getOrderform = async () => {
             if(user && isAuthenticated()) {
-                const q = query(collection(db, "orderforms"), where("userId", "==", user.id), limit(1))
-                let foundOrderform
-                const querySnapshot = await getDocs(q)
-                querySnapshot.forEach(doc => {
-                    foundOrderform = doc.data()
-                })
-
-                foundOrderform && setOrderform({...foundOrderform})
+                try {
+                    const q = query(collection(db, "orderforms"), where("userId", "==", user.uid), limit(1))
+                    let foundOrderform
+                    const querySnapshot = await getDocs(q)
+                    querySnapshot.forEach(doc => {
+                        foundOrderform = doc.data()
+                    })
+    
+                    foundOrderform && setOrderform({...foundOrderform})
+                } catch (err) {
+                    console.error(err)
+                    router.push('/500')
+                }
                 setIsLoading(false)
             }
         }
@@ -61,15 +68,19 @@ export default function Management() {
 
 
     // Initialize and Delete Orderform
-    async function initializeOrderform() {
+    async function initializeOrderform(e) {
+        e.preventDefault()
         setIsLoading(true)
+
+        const formData = new FormData(e.target);
+        const { businessName } = Object.fromEntries(formData);
         if(user && isAuthenticated()) {
             const orderformId = uuid4()
             const updated = new Date()
             const newOrderform = {
                 id: orderformId,
-                businessName: user.businessName,
-                userId: user.id,
+                businessName: businessName,
+                userId: user.uid,
                 updated: updated,
                 category: [],
                 allergy: [],
@@ -77,8 +88,8 @@ export default function Management() {
                 }
             await setDoc(doc(db, "orderforms", orderformId), newOrderform);
             setOrderform({...newOrderform})
-            setIsLoading(false)
         }
+        setIsLoading(false)
     }
 
     async function deleteOrderform() {
@@ -86,8 +97,8 @@ export default function Management() {
         if(orderform && isAuthenticated()) {
             try {
                 await deleteDoc(doc(db, "orderforms", orderform.id)); 
+                setOrderform(null)
                 console.log('Orderform has been successfully deleted.')
-                setIsLoading(false)
             } catch (err) {
                 console.log("Failed to delete the orderform.")
                 console.error(err)
@@ -495,7 +506,6 @@ export default function Management() {
                     <div className={styles.profile}>
                         <h3>[Management Page]</h3>
                         <p>Welcome { user.name }</p>
-                        <p>Business Name: { user.businessName }</p>
                     </div>
                     {
                         isLoading ? 
@@ -503,10 +513,12 @@ export default function Management() {
                             <div className={styles.orderform_container}>
                                 {
                                     !orderform ? 
-                                        <div className={styles.initialize_orderform}>
+                                        <form onSubmit={initializeOrderform} className={styles.initialize_orderform}>
                                             <h2>You currently have no orderform</h2>
-                                            <button onClick={initializeOrderform}>Initialize Orderform</button>
-                                        </div> :
+                                            <p>Type your business name below and initialize your orderform for your business.</p>
+                                            <input type='text' placeholder='business name' name='businessName' required/>
+                                            <button>Initialize Orderform</button>
+                                        </form> :
                                         <div className={styles.orderform}>
                                             {/* Delete Orderform */}
                                             <div className={styles.delete_orderform_container}>
@@ -519,6 +531,11 @@ export default function Management() {
                                                 </Modal>
                                             </div>
 
+                                            <div className={styles.business_name}>
+                                                <p><strong>Business Name:</strong> { orderform.businessName }</p>
+                                                <p><strong>Orderform Id:</strong> { orderform.id }</p>
+                                            </div>
+                                            <br/>
                                             {/* Allergy */}
                                             <div className={styles.allergy_container}>
                                                 <h2>Allergy Chart</h2>

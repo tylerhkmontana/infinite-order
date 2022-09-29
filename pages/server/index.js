@@ -79,11 +79,12 @@ export default function Server() {
                         <input onChange={e => setOrderformId(e.target.value)} type='text' placeholder="Order Id" value={orderformId} required/>&nbsp;
                         <button type='submit'>get orderform</button>
                     </form> :
-                    <div>
+                    <div className={styles.curr_orderform}>
                         <h2>Current Orderform</h2>
                         <br/>
-                        <p>Business Name: { orderform.businessName }</p>
-                        <p>Last Updated Date: { secToDate(orderform.updated.seconds) }</p>
+                        <p><strong>Business Name:</strong> { orderform.businessName }</p>
+                        <p><strong>Orderform Id:</strong> { orderform.id }</p>
+                        <p><strong>Last Updated Date:</strong> { secToDate(orderform.updated.seconds) }</p>
                         <br/>
                         <button onClick={getOrderform}>update</button>&nbsp;
                         <button onClick={clearOrderform}>reset</button>

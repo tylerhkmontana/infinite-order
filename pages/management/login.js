@@ -1,6 +1,5 @@
 import styles from '../../styles/Login.module.scss'
 import { useAuthContext } from '../../context/authContext'
-import { auth } from '../../modules/firebase'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
@@ -10,7 +9,7 @@ export default function Login() {
 
     useEffect(() => {
         if(!isLoading && user) {
-            user.businessName ? router.push('/management') : router.push("/management/signup")
+            router.push('/management')
         } 
     }, [user, isLoading])
 

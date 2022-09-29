@@ -4,6 +4,7 @@ import Modal from '../../components/modal'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import ServerLayout from '../../components/serverLayout'
+import secToTime from '../../modules/secToTime'
 import { v4 as uuid4 } from 'uuid'
 
 export default function Tables() {
@@ -21,14 +22,6 @@ export default function Tables() {
             setTables(tables)
         }
     }, [])
-
-    function secToTime(sec) {
-        const time = new Date(sec)
-        const amOrPm = time.getHours() > 11 ? 'PM' : 'AM'
-        const hours = time.getHours() > 12 ? time.getHours() % 12 : time.getHours()
-        const minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
-        return `${hours}:${minutes} ${amOrPm}`
-    }
 
     function assignTableNumber(e) {
         const tableNumber = e.target.value
