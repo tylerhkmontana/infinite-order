@@ -21,22 +21,31 @@ export function AuthProvider({ children }) {
         const { displayName, email } = currUser
 
         // Check if the user signed up on the platform
-        const foundUser = await findUser(email)
-        if(foundUser) {
-          // Update context with the stored user information
-          setUser({
-            id: foundUser.id,
-            name: foundUser.name,
-            email: foundUser.email,
-            businessName: foundUser.businessName
-          })
-        } else {
-          setUser({
-            name: displayName,
-            email: email
-          })
-          // Send the user to sign up page
-          router.push("/management/signup")
+        try {
+          const foundUser = await findUser(email)
+
+          if(foundUser) {
+            // Update context with the stored user information
+            setUser({
+              id: foundUser.id,
+              name: foundUser.name,
+              email: foundUser.email,
+              businessName: foundUser.businessName
+            })
+          } else {
+            setUser({
+              name: displayName,
+              email: email
+            })
+            // Send the user to sign up page
+            if(router.pathname.split('/')[1] === 'management') {
+              router.push("/management/signup")
+            }
+          }
+        } catch (err) {
+          router.push('/500')
+          console.log("Failed to access firestore")
+          console.error(err)
         }
       } else {
         // User not logged in
@@ -53,10 +62,16 @@ export function AuthProvider({ children }) {
   const isAuthenticated = async () => {
     const currUser = auth.currentUser
     if (currUser) {
-      const idToken = await currUser.getIdToken(true)
-      const { exp } = jwt_decode(idToken)
-      const currTime = Math.floor(Date.now()/1000)
-      return exp > currTime
+      try {
+        const idToken = await currUser.getIdToken(true)
+        const { exp } = jwt_decode(idToken)
+        const currTime = Math.floor(Date.now()/1000)
+        return exp > currTime
+      } catch (err) {
+        console.log("failed to authenticate")
+        console.error(err)
+        return false
+      }
     } else {
       return false
     }
@@ -72,27 +87,36 @@ export function AuthProvider({ children }) {
 
   const signup = async (businessName) => {
     let id = uuid4()
-    await setDoc(doc(db, "users", id), {
-      id: id,
-      name: user.name,
-      email: user.email,
-      businessName
-    });
-    
-    setUser(prev => ({
-      ...prev,
-      id,
-      businessName
-    }))
+
+    try {
+      await setDoc(doc(db, "users", id), {
+        id: id,
+        name: user.name,
+        email: user.email,
+        businessName
+      });
+      
+      setUser(prev => ({
+        ...prev,
+        id,
+        businessName
+      }))
+    } catch(err) {
+      router.push('/500')
+    }
   }
 
   const findUser = async (email) => {
-    const q = query(collection(db, "users"), where("email", "==", email), limit(1))
     let foundUser
-    const querySnapshot = await getDocs(q)
-    querySnapshot.forEach(doc => {
-      foundUser = doc.data()
-    })
+    try {
+      const q = query(collection(db, "users"), where("email", "==", email || ''), limit(1))
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach(doc => {
+        foundUser = doc.data()
+      })
+    } catch(err) {
+      router.push('/500')
+    }
 
     return foundUser
   }

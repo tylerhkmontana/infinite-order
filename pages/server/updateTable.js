@@ -9,6 +9,8 @@ export default function UpdateTable() {
     const [table, setTable] = useState({})
     const [orderform, setOrderform] = useState({})
     const [selectedCategory, setSelectedCategory] = useState('')
+    const [currOrder, setCurrOrder] = useState([])
+    const [itemList, setItemList] = useState([])
 
     useEffect(() => {
         if(typeof window !== 'undefined') {
@@ -22,7 +24,16 @@ export default function UpdateTable() {
     }, [router.isReady])
 
     function addItem(item) {
-        console.log(item)
+        const currItem = {...item}
+        if (itemList.includes(currItem.name)) {
+            const updatedOrder = currOrder.map(item => item.name === currItem.name ? {...item, quantity: item.quantity + 1} : item)
+            setCurrOrder([...updatedOrder])
+
+        } else {
+            currItem.quantity = 1
+            setItemList(prev => [...prev, currItem.name])
+            setCurrOrder(prev => [...prev, currItem])
+        }
     }
 
     function addItemWithOptions(item) {
@@ -64,7 +75,7 @@ export default function UpdateTable() {
                                     <div className={styles.item}>
                                         {
                                             item.options.length > 0 ? 
-                                            <Modal btn_name={item.name}>
+                                            <Modal btn_name={item.name} key={i}>
                                                 <form onSubmit={addItemWithOptions} className={styles.option_container}>
                                                     <h4>Options</h4>
                                                     <div className={styles.options}>
@@ -88,7 +99,12 @@ export default function UpdateTable() {
                                     </div>
                                 )
                             }
-                        </div>               
+                        </div>  
+                        <div className={styles.currOrder}>
+                            {
+                                currOrder.map((item, i) => <p key={i}>{ item.name } x { item.quantity }</p>)
+                            }
+                        </div>             
                     </div>
                 </div>
             }
