@@ -131,7 +131,7 @@ export default function UpdateTable() {
                             <h3>arrived at { table.arrival }</h3>
                         </div>
                         <div>
-                            <Modal btn_name='Allergy Setting' backgroundColor="coral" color="white">
+                            <Modal btn_name='Allergy Setting' backgroundColor="crimson" color="white">
                                 <form onSubmit={updateAllergy} className={styles.allergy_chart}>
                                     <h3>Allergy Chart</h3>
                                     <div className={styles.allergy_container}>

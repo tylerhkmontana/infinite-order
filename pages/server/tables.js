@@ -146,7 +146,7 @@ export default function Tables() {
                             Object.keys(tables).map((tableId, i) => {
                             const table = tables[tableId]
                             return <div key={i} className={styles.table_wrapper}>
-                                <Modal btn_name='status' backgroundColor='#F9CE0B'>
+                                <Modal btn_name='status'>
                                     <div className={styles.table_status_container}>
                                         <h4>Table Status</h4>
                                         <br/>
