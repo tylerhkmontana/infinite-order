@@ -1,16 +1,26 @@
-.orderform {
-   
+@import './libs/theme.scss';
+
+.update_btn, .reset_btn {
+    width: 100px;
 }
 
+.update_btn {
+    background-color: rgb(76, 115, 221);
+    color: white;
+}
+
+.reset_btn {
+    background-color: red;
+    color: white;
+}
 .category_container, .item_container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 5px;
 }
 
 .category_container {
     button {
-        width: 150px;
         border: 3px solid black;
         padding: 15px;
 
@@ -24,7 +34,6 @@
 .item {
     display: flex;
     align-items: center;
-    background-color: #e2e2e2;
-    border-radius: 10px;
+    background-color: $component_color;
     padding: 10px;
 }

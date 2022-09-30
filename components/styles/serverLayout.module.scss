@@ -1,3 +1,5 @@
+@import '../../styles/libs/theme.scss';
+
 .container {
     position: relative;
     width: 100%;
@@ -5,6 +7,10 @@
     padding: 50px 100px;
     height: 100vh;
     overflow-y: auto;
+
+    @include breakpoint(tablet_mobile) {
+        padding: 50px 25px 100px 25px;
+    }
 }
 
 .nav {
@@ -21,7 +27,7 @@
 
     a {
         border: none;
-        background-color: rgb(74, 111, 74);
+        background-color: rgb(3, 124, 78);
         text-align: center;
         color: white;
         padding: 10px;

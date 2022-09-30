@@ -124,7 +124,7 @@ export default function Tables() {
                         <button>create</button>
                     </form>
                 </Modal>
-                <Modal btn_name='Clear Tables' color='crimson'>
+                <Modal btn_name='Clear Tables' color='white' backgroundColor='red'>
                     <form className={styles.clear_tables}>
                         <h3>Clear Tables</h3>
                         <p>All of your table informations will be deleted from your device storage. Do you really want to do this?</p>
@@ -146,23 +146,7 @@ export default function Tables() {
                             Object.keys(tables).map((tableId, i) => {
                             const table = tables[tableId]
                             return <div key={i} className={styles.table_wrapper}>
-                                <Modal btn_name='delete' color='crimson'>
-                                    <form onSubmit={() => removeTable(tableId)} className={styles.remove_table}>
-                                        <h3>Remove the table</h3>
-                                        <p>Do you really want to remove this table?</p>
-                                        <button>confirm</button>
-                                    </form>
-                                </Modal>
-
-                                <Link href={`/server/updateTable?tableId=${table.tableId}`}>
-                                    <div className={styles.table}>
-                                        <span className={styles.table_number}>{ table.tableNumber }</span>
-                                        <span className={styles.num_party}>#{ table.numParty }</span>
-                                        <span className={styles.arrival}>{ table.arrival }</span>
-                                    </div>
-                                </Link>
-
-                                <Modal btn_name='status'>
+                                <Modal btn_name='status' backgroundColor='#F9CE0B'>
                                     <div className={styles.table_status_container}>
                                         <h4>Table Status</h4>
                                         <br/>
@@ -198,6 +182,22 @@ export default function Tables() {
                                         }
                                     </div>
                                 </Modal>     
+
+                                <Link href={`/server/updateTable?tableId=${table.tableId}`}>
+                                    <div className={styles.table}>
+                                        <span className={styles.table_number}>{ table.tableNumber }</span>
+                                        <span className={styles.num_party}>#{ table.numParty }</span>
+                                        <span className={styles.arrival}>{ table.arrival }</span>
+                                    </div>
+                                </Link>
+
+                                <Modal btn_name='delete' color='white' backgroundColor='red'>
+                                    <form onSubmit={() => removeTable(tableId)} className={styles.remove_table}>
+                                        <h3>Remove the table</h3>
+                                        <p>Do you really want to remove this table?</p>
+                                        <button>confirm</button>
+                                    </form>
+                                </Modal>
                             </div>
                             })
                     }

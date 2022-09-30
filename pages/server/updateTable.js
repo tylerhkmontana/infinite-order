@@ -128,10 +128,10 @@ export default function UpdateTable() {
                     <div className={styles.table_info}>
                         <div>
                             <h3>{ table.tableNumber }&nbsp;&nbsp;#{ table.numParty }</h3>
-                            <h3>Arrived at { table.arrival }</h3>
+                            <h3>arrived at { table.arrival }</h3>
                         </div>
                         <div>
-                            <Modal btn_name='Allergy Setting'>
+                            <Modal btn_name='Allergy Setting' backgroundColor="coral" color="white">
                                 <form onSubmit={updateAllergy} className={styles.allergy_chart}>
                                     <h3>Allergy Chart</h3>
                                     <div className={styles.allergy_container}>
@@ -154,67 +154,75 @@ export default function UpdateTable() {
                     <div className={styles.table_allergies}>
                         <h4>Table Allergies</h4>
                         <br/>
-                        {
-                            table.allergies.map((allergy, i) => <span key={i}>{ i > 0 ? `, ${allergy}` : allergy }</span>)
+                        {   
+                            table.allergies.length > 0 ?
+                            table.allergies.map((allergy, i) => <span key={i}>{ i > 0 ? `, ${allergy}` : allergy }</span>) :
+                            <p>No allergy.</p>
                         }
                     </div>
                     <br/>
+                    <br/>
                     <div className={styles.orderpad}>
-                        <div className={styles.category_container}>
-                            {
-                                orderform.category.map((category, i) => 
-                                    <button 
-                                        className={styles.category}
-                                        style={{ 
-                                            backgroundColor: category === selectedCategory ? 'black' : 'transparent',
-                                            color:  category === selectedCategory ? 'white' : 'black'
-                                        }}
-                                        onClick={() => setSelectedCategory(category)} 
-                                        key={i}>
-                                        { category }
-                                    </button>
-                                )
-                            }
+                        <div className={styles.category_container_wrapper}>
+                            <div className={styles.category_container}>
+                                {
+                                    orderform.category.map((category, i) => 
+                                        <button 
+                                            className={styles.category}
+                                            style={{ 
+                                                backgroundColor: category === selectedCategory ? 'black' : 'transparent',
+                                                color:  category === selectedCategory ? 'white' : 'black'
+                                            }}
+                                            onClick={() => setSelectedCategory(category)} 
+                                            key={i}>
+                                            { category }
+                                        </button>
+                                    )
+                                }
+                            </div>
+                        </div>
+                        <br/>
+                        <div className={styles.item_container_wrapper}>
+                            <div className={styles.item_container}>
+                                {
+                                    selectedCategory && 
+                                    orderform.item.map((item, i) => item.category === selectedCategory &&
+                                        <div key={i} className={styles.item}>
+                                            {
+                                                item.options.length > 0 ? 
+                                                <Modal btn_name={item.name} backgroundColor='#f1f1f1'>
+                                                    <form onSubmit={e => addItemWithOptions(e, item)} className={styles.option_container}>
+                                                        <h4>Options</h4>
+                                                        <div className={styles.options}>
+                                                            {
+                                                                item.options.map((option, j) => 
+                                                                <div key={j} className={styles.option}>
+                                                                    <input id={`option${i}-${j}`} type='checkbox' value={option.name} name={`option${j}`}/>
+                                                                    <label htmlFor={`option${i}-${j}`}>{ option.name }</label>
+                                                                </div>)
+                                                            }
+                                                        </div>
+                                                        <button className="confirm_btn">add</button>
+                                                    </form>
+                                                </Modal> :
+                                                <button onClick={() => addItem(item)}>
+                                                    { item.name }<span style={{ color: 'red' }}>{ allergyCheck(item.allergies) }</span>
+                                                </button>
+                                            }
+                                        </div>
+                                    )
+                                }
+                            </div>  
                         </div>
                         <br/>
                         <br/>
-                        <div className={styles.item_container}>
-                            {
-                                selectedCategory && 
-                                orderform.item.map((item, i) => item.category === selectedCategory &&
-                                    <div key={i} className={styles.item}>
-                                        {
-                                            item.options.length > 0 ? 
-                                            <Modal btn_name={item.name}>
-                                                <form onSubmit={e => addItemWithOptions(e, item)} className={styles.option_container}>
-                                                    <h4>Options</h4>
-                                                    <div className={styles.options}>
-                                                        {
-                                                            item.options.map((option, j) => 
-                                                            <div key={j} className={styles.option}>
-                                                                <input id={`option${i}-${j}`} type='checkbox' value={option.name} name={`option${j}`}/>
-                                                                <label htmlFor={`option${i}-${j}`}>{ option.name }</label>
-                                                            </div>)
-                                                        }
-                                                    </div>
-                                                    <button className="confirm_btn">add</button>
-                                                </form>
-                                            </Modal> :
-                                            <button onClick={() => addItem(item)}>
-                                                { item.name }<span style={{ color: 'red' }}>{ allergyCheck(item.allergies) }</span>
-                                            </button>
-                                        }
-                                    </div>
-                                )
-                            }
-                        </div>  
                         <br/>
                         <br/>
                         {
                             currOrder.length > 0 &&
                             <div className={styles.curr_order}>
                                 <button onClick={() => setCurrOrder([])} className={styles.reset_btn}>reset</button>
-                                <br/>
+                                <h3>New Order</h3>
                                 <br/>
                                 {
                                     currOrder.map((item, i) =>

@@ -2,10 +2,15 @@
 
 .container {
     @extend %container;
+    position: relative;
 }
 
 .logout_btn {
-    position: fixed;
+    position: absolute;
     top: 50px;
     right: 50px;
-}
+
+    @include breakpoint(mobile) {
+        right: 25px;
+    }
+} 

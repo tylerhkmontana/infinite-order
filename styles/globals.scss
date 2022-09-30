@@ -1,9 +1,27 @@
+@import './libs/theme.scss';
+
 html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-family: 'NanumPenScript';
+    font-size: 1.2em;
     scroll-behavior: smooth;
+    background-color: $background_color;
 }
+
+// button font
+@font-face {
+  font-display: swap;
+  font-family: 'vt323';
+  src: url('/fonts/VT323-Regular.ttf');
+}
+
+// text font
+@font-face {
+  font-display: swap;
+  font-family: 'NanumPenScript';
+  src: url('/fonts/NanumPenScript-Regular.ttf');
+}
+
 
 a {
   color: inherit;
@@ -15,15 +33,19 @@ a {
 }
 
 button {
+  font-family: 'vt323';
   padding: 5px;
   background-color: white;
   border: 3px solid black;
   border-radius: 5px;
+  font-size: 0.7em;
   cursor: pointer;
 }
 
 input, textarea {
   padding: 5px;
+  border-radius: 5px;
+  border: 3px solid black;
 }
 
 textarea {

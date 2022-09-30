@@ -12,7 +12,7 @@ export default function serverLayout({ children, title }) {
     return (
         <>
             <Head>
-                <title>Infinite-Order | Server </title>
+                <title>Infinite-Order | Server</title>
             </Head>
             <div className={styles.container}>
                 <motion.main

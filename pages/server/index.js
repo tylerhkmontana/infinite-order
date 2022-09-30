@@ -86,18 +86,16 @@ export default function Server() {
                         <p><strong>Orderform Id:</strong> { orderform.id }</p>
                         <p><strong>Last Updated Date:</strong> { secToDate(orderform.updated.seconds) }</p>
                         <br/>
-                        <button onClick={getOrderform}>update</button>&nbsp;
-                        <button onClick={clearOrderform}>reset</button>
+                        <button className={styles.update_btn} onClick={getOrderform}>update</button>&nbsp;
+                        <button className={styles.reset_btn} onClick={clearOrderform}>reset</button>
                     </div>
                 }
-                <br/>
                 <br/>
                 <br/>
                 {
                     orderform &&
                     <div className={styles.orderform}>
                          <h1>Orderpad</h1>
-                        <br/>
                         <br/>
                         <div className={styles.category_container}> 
                             {

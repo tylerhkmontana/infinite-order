@@ -1,3 +1,5 @@
+@import './breakpoints.scss';
+
 %container {
     display: flex;
     flex-direction: column;
@@ -5,4 +7,8 @@
     padding: 100px 150px;
     width: 100%;
     min-height: 100%;
+
+    @include breakpoint(tablet_mobile) {
+        padding: 50px 25px;
+    }
 }

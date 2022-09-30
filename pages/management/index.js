@@ -522,7 +522,7 @@ export default function Management() {
                                         <div className={styles.orderform}>
                                             {/* Delete Orderform */}
                                             <div className={styles.delete_orderform_container}>
-                                                <Modal color='crimson' btn_name='Delete Orderform'>
+                                                <Modal color='white' backgroundColor='crimson' btn_name='Delete Orderform'>
                                                     <div className={styles.delete_orderform}>
                                                         <h2>Delete Orderform</h2>
                                                         <p>Do you really want to delete your current orderform?</p>
@@ -554,8 +554,8 @@ export default function Management() {
                                                 </div>
                                                 <br/>
                                                 <div>
-                                                    <button onClick={() => setNewAllergies([])}>reset</button>&nbsp;
-                                                    <button onClick={updateAllergy}>update</button>
+                                                    <button onClick={updateAllergy}>update</button>&nbsp;
+                                                    <button className={styles.reset_btn} onClick={() => setNewAllergies([])}>reset</button>
                                                 </div>
                                                 <br/>
                                                 <br/>
@@ -568,7 +568,7 @@ export default function Management() {
                                                             orderform.allergy.map((allergy, i) => 
                                                             <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
                                                                 <span >{ allergy }</span>&nbsp;
-                                                                <Modal btn_name='delete' color='crimson'>
+                                                                <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_allergy}>
                                                                         <h2>Delete Allergy "{ allergy }"</h2>
                                                                         <p>Do you really want to remove this allergy from your allergy list?</p>
@@ -602,8 +602,8 @@ export default function Management() {
                                                 </div>
                                                 <br/>
                                                 <div>
-                                                    <button onClick={() => setNewCategories([])}>reset</button>&nbsp;
-                                                    <button onClick={updateCategory}>update</button>
+                                                    <button onClick={updateCategory}>update</button>&nbsp;
+                                                    <button className={styles.reset_btn} onClick={() => setNewCategories([])}>reset</button>
                                                 </div>
                                                 <br/>
                                                 <br/>
@@ -616,10 +616,13 @@ export default function Management() {
                                                             orderform.category.map((category, i) => 
                                                             <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
                                                                 <span >{ category }</span>&nbsp;
-                                                                <Modal btn_name='delete' color='crimson'>
+                                                                <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_category}>
                                                                         <h2>Delete Category "{ category }"</h2>
-                                                                        <p>Do you really want to remove this category from your category list?</p>
+                                                                        <p>
+                                                                            Do you really want to remove this category from your category list? All the items associated with the 
+                                                                            category will be deleted as well.
+                                                                        </p>
                                                                         <button onClick={() => deleteCategory(category)}>confirm</button>
                                                                     </div>
                                                                 </Modal>
@@ -661,7 +664,7 @@ export default function Management() {
                                                         <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
                                                             <span key={i}>${ item.price } { item.name }</span>&nbsp;
                                                             <button onClick={() => setNewItem({...item})}>update</button>&nbsp;
-                                                            <Modal btn_name='delete' color='crimson'>
+                                                            <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                 <div className={styles.delete_item}>
                                                                     <h2>Delete Item "{ item.name }"</h2>
                                                                     <p>Do you really want to remove this item from the selected category?</p>
@@ -676,9 +679,10 @@ export default function Management() {
                                                     selectedCategory && 
                                                     <form onSubmit={(e) => newItem.id ? updateItem(e) : addItem(e)} className={styles.newItem_form}>
                                                         <h3>{
-                                                            newItem.id ? 'Update Item' : 'New Item'
+                                                            newItem.id ? 'Update Item' : 'Add New Item'
                                                         }</h3>
                                                         <br/>
+                                                        <hr/>
                                                         <br/>
                                                         <p><strong>Category:</strong> { selectedCategory }</p>
                                                         <br/>
@@ -702,6 +706,8 @@ export default function Management() {
                                                         }))} type='text' placeholder='description' value={newItem.description}/>
                                                         <br/>
                                                         <br/>
+                                                        <hr/>
+                                                        <br/>
                                                         <div>
                                                             <h4>Allergy</h4>
                                                             <br/>
@@ -714,26 +720,45 @@ export default function Management() {
                                                             }
                                                         </div>
                                                         <br/>
+                                                        <hr/>
+                                                        <br/>
                                                         <div>
                                                             <h4>Options</h4>
                                                             <br/>
-                                                            {
-                                                                newItem.options.map((option, i) => 
-                                                                    <p key={i}>{ option.name }(+${ option.charge })</p>
-                                                                )
-                                                            }
-                                                            <br/>
                                                             <div>
-                                                                <input onChange={e => setNewOption(prev => ({...prev, name: e.target.value}))} type='text' placeholder='option name' value={newOption.name}/>&nbsp;
-                                                                <input onChange={e => setNewOption(prev => ({...prev, charge: Number(e.target.value)}))} type='number' placeholder='option charge' value={newOption.charge}/>&nbsp;
+                                                                {
+                                                                    newItem.options.length > 0 ? 
+                                                                    <div>
+                                                                        {
+                                                                            newItem.options.map((option, i) => 
+                                                                                <p key={i}>- { option.name }(+${ option.charge })</p>
+                                                                            )
+                                                                        }
+                                                                    </div> :
+                                                                    <div>
+                                                                        No option added.
+                                                                    </div>
+                                                                }
+                                                                <br/>
+                                                                <label>Option Name: </label>
+                                                                <input onChange={e => setNewOption(prev => ({...prev, name: e.target.value}))} type='text' placeholder='option name' value={newOption.name}/>
+                                                                <br/>
+                                                                <label>Option Charge: </label>
+                                                                <input onChange={e => setNewOption(prev => ({...prev, charge: Number(e.target.value)}))} type='number' placeholder='option charge' value={newOption.charge}/>
+                                                                <br/>
+                                                                <br/>
                                                                 <button type='button' onClick={addOption}>add option</button>&nbsp;
-                                                                <button type='button' onClick={() => setNewItem(prev => ({...prev, options: []}))}>reset</button>
+                                                                <button className={styles.reset_btn} type='button' onClick={() => setNewItem(prev => ({...prev, options: []}))}>reset</button>
                                                             </div>
+                                                            <br/>
                                                         </div>
                                                         <br/>
-                                                        <button type='submit'>update</button>
+                                                        <hr/>
+                                                        <br/>
+                                                        <button className={styles.add_item_btn} type='submit'>Add Item</button>
                                                     </form>
                                                 }
+                                                <br/>
                                                 <br/>
                                                 <br/>
                                                 {
@@ -758,9 +783,10 @@ export default function Management() {
                                                         }
                                                         </div>
                                                         <br/>
+                                                        <br/>
                                                         <div>
                                                             <button onClick={updateItemOrder}>update</button>&nbsp;
-                                                            <button onClick={resetItemOrder}>reset</button>
+                                                            <button className={styles.reset_btn} onClick={resetItemOrder}>reset</button>
                                                         </div>
                                                     </div>
                                                 }
