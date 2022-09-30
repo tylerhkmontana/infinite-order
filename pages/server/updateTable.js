@@ -101,6 +101,23 @@ export default function UpdateTable() {
                     <h2>{ table.tableNumber }&nbsp;&nbsp;#{ table.numParty }</h2>
                     <h2>Arrived at { table.arrival }</h2>
                     <br/>
+                    <Modal btn_name='Allergy/Dietary Restrictions'>
+                        <form className={styles.allergy_chart}>
+                            <h3>Allergy Chart</h3>
+                            <div className={styles.allergy_container}>
+                                {
+                                    orderform.allergy.map((a, i) => 
+                                        <div className={styles.allergy} key={i}>
+                                            <input id={a} type='checkbox' value={a}/>
+                                            <label htmlFor={a}>{ a }</label>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </form>
+                    </Modal>
+                    <br/>
+                    <br/>
 
                     <div className={styles.orderpad}>
                         <div className={styles.category_container}>
@@ -179,11 +196,15 @@ export default function UpdateTable() {
                         <br/>
                         <h2>Table Status</h2>
                         <br/>
-                        {
+                        {   
+                            table.orders.length < 1 ? 
+                            <p>
+                                No order's been placed.
+                            </p> :
                             table.orders.map((order, i) => 
                                 <div key={i} className={styles.table_status}>
                                     {
-                                        order.items.map((item, i) => <p key={i}>{ item.name } X { item.quantity }</p>)
+                                        order.items.map((item, i) => <p style={{ textDecoration: item.delivered && 'line-through red' }} key={i}>{ item.name } X { item.quantity }</p>)
                                     }
                                     <br/>
                                     <p><i>placed at { order.updatedAt }</i></p>

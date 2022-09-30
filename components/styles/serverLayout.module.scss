@@ -16,12 +16,13 @@
     border: 3px solid black;
 
     hr {
-        border: 1.5px solid black;
+        border: 2px solid black;
     }
 
-    button {
+    a {
         border: none;
         background-color: rgb(74, 111, 74);
+        text-align: center;
         color: white;
         padding: 10px;
         flex: 1;

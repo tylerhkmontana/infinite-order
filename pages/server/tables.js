@@ -79,11 +79,21 @@ export default function Tables() {
         }
     }
 
+    function removeTable(tableId) {
+        if(typeof window !== 'undefined') {
+            let tables = JSON.parse(window.localStorage.getItem('tables'))
+            
+           delete tables[tableId]
+            
+            window.localStorage.setItem('tables', JSON.stringify(tables))
+            setTables({...tables})
+        }
+    }
+
     function updateOrderStatus(tableId, orderIndex, targetItem) {
         if(typeof window !== 'undefined') {
             let tables = JSON.parse(window.localStorage.getItem('tables'))
             let currTable = {...tables[tableId]}
-            console.log(currTable.orders[orderIndex].items)
             currTable.orders[orderIndex].items = currTable.orders[orderIndex].items.map(item => 
                 item.name === targetItem.name ? ({...item, delivered: !item.delivered}) : item
             )
@@ -136,6 +146,14 @@ export default function Tables() {
                             Object.keys(tables).map((tableId, i) => {
                             const table = tables[tableId]
                             return <div key={i} className={styles.table_wrapper}>
+                                <Modal btn_name='delete' color='crimson'>
+                                    <form onSubmit={() => removeTable(tableId)} className={styles.remove_table}>
+                                        <h3>Remove the table</h3>
+                                        <p>Do you really want to remove this table?</p>
+                                        <button>confirm</button>
+                                    </form>
+                                </Modal>
+
                                 <Link href={`/server/updateTable?tableId=${table.tableId}`}>
                                     <div className={styles.table}>
                                         <span className={styles.table_number}>{ table.tableNumber }</span>
@@ -153,14 +171,19 @@ export default function Tables() {
                                             <p>
                                                 No order's been placed.
                                             </p> :
-                                            tables[tableId].orders.map((order, i) => 
-                                                <div key={i} className={styles.table_status}>
+                                            tables[tableId].orders.map((order, orderIndex) => 
+                                                <div key={orderIndex} className={styles.table_status}>
                                                 
                                                     {
                                                         order.items.map((item, i) => 
                                                             <div key={i} className={styles.order_status}>
-                                                                <p>{ item.name } X { item.quantity }</p>
-                                                                <button onClick={() => updateOrderStatus(tableId, i, item)}>
+                                                                <p style={{ 
+                                                                    textDecoration: item.delivered && 'line-through red'
+                                                                 }}>{ item.name } X { item.quantity }</p>
+                                                                <button style={{
+                                                                    backgroundColor: item.delivered && 'green',
+                                                                    color: item.delivered && 'white'
+                                                                }} onClick={() => updateOrderStatus(tableId, orderIndex, item)}>
                                                                     {
                                                                         item.delivered ? 'delivered!' : 'waiting...'
                                                                     }   
@@ -174,7 +197,7 @@ export default function Tables() {
                                             )
                                         }
                                     </div>
-                                </Modal>
+                                </Modal>     
                             </div>
                             })
                     }
