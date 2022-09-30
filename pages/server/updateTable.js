@@ -114,6 +114,7 @@ export default function UpdateTable() {
                                     )
                                 }
                             </div>
+                            <button>update</button>
                         </form>
                     </Modal>
                     <br/>
