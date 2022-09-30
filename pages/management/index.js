@@ -548,13 +548,13 @@ export default function Management() {
                                                         newAllergies.map((na, i) => <span key={i}>{ na }</span>)
                                                     }
                                                     <form onSubmit={addAllergy}>
-                                                        <input type='text' placeholder='allergy name' required/>&nbsp;
+                                                        <input type='text' placeholder='allergy name' required/><span>&nbsp;</span>
                                                         <button>add allergy</button>
                                                     </form>
                                                 </div>
                                                 <br/>
                                                 <div>
-                                                    <button onClick={updateAllergy}>update</button>&nbsp;
+                                                    <button onClick={updateAllergy}>update</button><span>&nbsp;</span>
                                                     <button className={styles.reset_btn} onClick={() => setNewAllergies([])}>reset</button>
                                                 </div>
                                                 <br/>
@@ -567,7 +567,7 @@ export default function Management() {
                                                             <p>Empty</p> :
                                                             orderform.allergy.map((allergy, i) => 
                                                             <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                <span >{ allergy }</span>&nbsp;
+                                                                <span className={styles.item_wrapper}>{ allergy }</span><span>&nbsp;</span>
                                                                 <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_allergy}>
                                                                         <h2>Delete Allergy "{ allergy }"</h2>
@@ -596,13 +596,13 @@ export default function Management() {
                                                         newCategories.map((na, i) => <span key={i}>{ na }</span>)
                                                     }
                                                     <form onSubmit={addCategory}>
-                                                        <input type='text' placeholder='category name' required/>&nbsp;
+                                                        <input type='text' placeholder='category name' required/><span>&nbsp;</span>
                                                         <button>add category</button>
                                                     </form>
                                                 </div>
                                                 <br/>
                                                 <div>
-                                                    <button onClick={updateCategory}>update</button>&nbsp;
+                                                    <button onClick={updateCategory}>update</button><span>&nbsp;</span>
                                                     <button className={styles.reset_btn} onClick={() => setNewCategories([])}>reset</button>
                                                 </div>
                                                 <br/>
@@ -615,7 +615,7 @@ export default function Management() {
                                                             <p>Empty</p> :
                                                             orderform.category.map((category, i) => 
                                                             <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                <span >{ category }</span>&nbsp;
+                                                                <span className={styles.item_wrapper}>{ category }</span><span>&nbsp;</span>
                                                                 <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_category}>
                                                                         <h2>Delete Category "{ category }"</h2>
@@ -662,8 +662,8 @@ export default function Management() {
                                                     {
                                                         orderform.item.map((item, i) => item.category === selectedCategory && 
                                                         <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                            <span key={i}>${ item.price } { item.name }</span>&nbsp;
-                                                            <button onClick={() => setNewItem({...item})}>update</button>&nbsp;
+                                                            <span className={styles.item_wrapper} key={i}>${ item.price } { item.name }</span><span>&nbsp;</span>
+                                                            <button onClick={() => setNewItem({...item})}>update</button><span>&nbsp;</span>
                                                             <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                 <div className={styles.delete_item}>
                                                                     <h2>Delete Item "{ item.name }"</h2>
@@ -714,7 +714,7 @@ export default function Management() {
                                                             {
                                                                 orderform.allergy.map((allergy, i) => 
                                                                     <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                        <input onChange={updateAllergyOfItem} value={allergy} type='checkbox' checked={newItem.allergies.includes(allergy)}/>&nbsp;
+                                                                        <input onChange={updateAllergyOfItem} value={allergy} type='checkbox' checked={newItem.allergies.includes(allergy)}/><span>&nbsp;</span>
                                                                         <label>{ allergy }</label>
                                                                     </div>)   
                                                             }
@@ -747,7 +747,7 @@ export default function Management() {
                                                                 <input onChange={e => setNewOption(prev => ({...prev, charge: Number(e.target.value)}))} type='number' placeholder='option charge' value={newOption.charge}/>
                                                                 <br/>
                                                                 <br/>
-                                                                <button type='button' onClick={addOption}>add option</button>&nbsp;
+                                                                <button type='button' onClick={addOption}>add option</button><span>&nbsp;</span>
                                                                 <button className={styles.reset_btn} type='button' onClick={() => setNewItem(prev => ({...prev, options: []}))}>reset</button>
                                                             </div>
                                                             <br/>
@@ -771,7 +771,7 @@ export default function Management() {
                                                         <br/>
                                                         <div className={styles.curr_item_order}>
                                                         {
-                                                            currItemOrder.map((item, i) => <span onClick={() => reorganizeItemOrder(item)} key={i}>{ item.name }</span>)
+                                                            currItemOrder.map((item, i) => <span className={styles.item_wrapper} onClick={() => reorganizeItemOrder(item)} key={i}>{ item.name }</span>)
                                                         }
                                                         </div>
                                                         <br/>
@@ -779,13 +779,13 @@ export default function Management() {
                                                         <br/>
                                                         <div className={styles.new_item_order}>
                                                         {
-                                                            newItemOrder.map((item, i) => <span key={i}>{ item.name }</span>)
+                                                            newItemOrder.map((item, i) => <span className={styles.item_wrapper} key={i}>{ item.name }</span>)
                                                         }
                                                         </div>
                                                         <br/>
                                                         <br/>
                                                         <div>
-                                                            <button onClick={updateItemOrder}>update</button>&nbsp;
+                                                            <button onClick={updateItemOrder}>update</button><span>&nbsp;</span>
                                                             <button className={styles.reset_btn} onClick={resetItemOrder}>reset</button>
                                                         </div>
                                                     </div>

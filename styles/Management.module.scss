@@ -62,14 +62,15 @@
 }
 
 .delete_orderform, .delete_allergy, .delete_category, .delete_item {
-    height: 100%;
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     gap: 30px;
 
+    @include breakpoint(mobile) {
+        width: 80vw;
+    }
     & > p {
         text-align: center;
     }
@@ -89,7 +90,7 @@
     display: flex;
     flex-wrap: wrap;
 
-    span {
+    .item_wrapper {
         color: white;
         padding: 5px 10px;
         border-radius: 20px;
@@ -107,26 +108,26 @@
 }
 
 .curr_allergy, .new_allergy {
-    span { background-color: rgb(247, 125, 88); }
+    .item_wrapper { background-color: rgb(247, 125, 88); }
 }
 
 .curr_category, .new_category {
-    span { background-color: rgb(54, 90, 168); }
+    .item_wrapper { background-color: rgb(54, 90, 168); }
 }
 
 .curr_items {
-    span { background-color: rgb(82, 87, 80); }
+    .item_wrapper { background-color: rgb(82, 87, 80); }
 }
 
 .curr_item_order {
-    span { 
+    .item_wrapper { 
         cursor: pointer;
         background-color: rgb(152, 72, 158); 
     }
 }
 
 .new_item_order {
-    span { background-color: rgb(228, 198, 64); }
+    .item_wrapper { background-color: rgb(228, 198, 64); }
 }
 
 .newItem_form {

@@ -76,7 +76,7 @@ export default function Server() {
                         <p>Download the orderform by typing the unique id of the orderform</p>
                         <br/>
                         <br/>
-                        <input onChange={e => setOrderformId(e.target.value)} type='text' placeholder="Order Id" value={orderformId} required/>&nbsp;
+                        <input onChange={e => setOrderformId(e.target.value)} type='text' placeholder="Order Id" value={orderformId} required/><span>&nbsp;</span>
                         <button type='submit'>get orderform</button>
                     </form> :
                     <div className={styles.curr_orderform}>
@@ -86,7 +86,7 @@ export default function Server() {
                         <p><strong>Orderform Id:</strong> { orderform.id }</p>
                         <p><strong>Last Updated Date:</strong> { secToDate(orderform.updated.seconds) }</p>
                         <br/>
-                        <button className={styles.update_btn} onClick={getOrderform}>update</button>&nbsp;
+                        <button className={styles.update_btn} onClick={getOrderform}>update</button><span>&nbsp;</span>
                         <button className={styles.reset_btn} onClick={clearOrderform}>reset</button>
                     </div>
                 }
@@ -115,7 +115,7 @@ export default function Server() {
                             {
                                 orderform.item.map((item, i) => item.category === selectedCategory &&
                                     <div className={styles.item} key={i}>
-                                        <span>{ item.name } ${ item.price }</span>&nbsp;
+                                        <span>{ item.name } ${ item.price }&nbsp;</span>
                                         {
                                             item.options.length > 0 &&
                                             <Modal btn_name='options'>
