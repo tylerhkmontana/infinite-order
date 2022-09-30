@@ -23,6 +23,7 @@ export default function Login() {
                         <div className={styles.container}>
                             <div className={styles.main}>
                                 <h1>Welcome to infinite order</h1>
+                                <p>Please login with your google account.</p>
                                 <img onClick={login} className={styles.google_signin_btn} alt='google signin button' src='/icons/google_signin_btn.png'/>
                             </div>
                         </div>
