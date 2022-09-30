@@ -92,34 +92,73 @@ export default function UpdateTable() {
             setCurrOrder([])
         }
     }
-    
+
+    function updateAllergy(e) {
+        e.preventDefault()
+        const formData = new FormData(e.target);
+        const formProps = Object.fromEntries(formData);
+        const allergies = Object.keys(formProps).map(allergy => formProps[allergy])
+
+        if(typeof window !== 'undefined') {
+            let tables = JSON.parse(window.localStorage.getItem('tables'))
+            tables[table.tableId].allergies = allergies
+
+            window.localStorage.setItem('tables', JSON.stringify(tables))
+            setTable({...tables[table.tableId]})
+        }
+    }
+
+    function allergyCheck(itemAllergies) {
+        let checkedAllergies = itemAllergies.filter(alg => table.allergies.includes(alg)) 
+        let allergyIndication = ''
+        if (checkedAllergies.length > 0 ) {
+            checkedAllergies.forEach((alg, i) => {
+                allergyIndication += i > 0 ? `, ${alg}` : alg
+            })
+        }
+
+        return allergyIndication ? `(${allergyIndication})` : ''
+    }
+
     return (
         <ServerLayout>
             {
                 Object.keys(table).length < 1 ? <div>Table not found</div> :
                 <div>
-                    <h2>{ table.tableNumber }&nbsp;&nbsp;#{ table.numParty }</h2>
-                    <h2>Arrived at { table.arrival }</h2>
+                    <div className={styles.table_info}>
+                        <div>
+                            <h3>{ table.tableNumber }&nbsp;&nbsp;#{ table.numParty }</h3>
+                            <h3>Arrived at { table.arrival }</h3>
+                        </div>
+                        <div>
+                            <Modal btn_name='Allergy Setting'>
+                                <form onSubmit={updateAllergy} className={styles.allergy_chart}>
+                                    <h3>Allergy Chart</h3>
+                                    <div className={styles.allergy_container}>
+                                        {
+                                            orderform.allergy.map((a, i) => 
+                                                <div className={styles.allergy} key={i}>
+                                                    <input id={a} type='checkbox' value={a} name={`allergy${i}`} defaultChecked={table.allergies.includes(a)}/>
+                                                    <label htmlFor={a}>{ a }</label>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <button>update</button>
+                                </form>
+                            </Modal>
+                        </div>
+                    </div>
                     <br/>
-                    <Modal btn_name='Allergy/Dietary Restrictions'>
-                        <form className={styles.allergy_chart}>
-                            <h3>Allergy Chart</h3>
-                            <div className={styles.allergy_container}>
-                                {
-                                    orderform.allergy.map((a, i) => 
-                                        <div className={styles.allergy} key={i}>
-                                            <input id={a} type='checkbox' value={a}/>
-                                            <label htmlFor={a}>{ a }</label>
-                                        </div>
-                                    )
-                                }
-                            </div>
-                            <button>update</button>
-                        </form>
-                    </Modal>
                     <br/>
+                    <div className={styles.table_allergies}>
+                        <h4>Table Allergies</h4>
+                        <br/>
+                        {
+                            table.allergies.map((allergy, i) => <span key={i}>{ i > 0 ? `, ${allergy}` : allergy }</span>)
+                        }
+                    </div>
                     <br/>
-
                     <div className={styles.orderpad}>
                         <div className={styles.category_container}>
                             {
@@ -158,11 +197,11 @@ export default function UpdateTable() {
                                                             </div>)
                                                         }
                                                     </div>
-                                                    <button className="confirm_btn">confirm</button>
+                                                    <button className="confirm_btn">add</button>
                                                 </form>
                                             </Modal> :
                                             <button onClick={() => addItem(item)}>
-                                                { item.name }
+                                                { item.name }<span style={{ color: 'red' }}>{ allergyCheck(item.allergies) }</span>
                                             </button>
                                         }
                                     </div>
@@ -175,6 +214,7 @@ export default function UpdateTable() {
                             currOrder.length > 0 &&
                             <div className={styles.curr_order}>
                                 <button onClick={() => setCurrOrder([])} className={styles.reset_btn}>reset</button>
+                                <br/>
                                 <br/>
                                 {
                                     currOrder.map((item, i) =>
