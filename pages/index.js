@@ -10,7 +10,7 @@ export default function Home() {
           <p>
             I created this application to help waiters/waitresses work more efficienlty and professionaly, and save tons of 
             paper from being wasted as orderpads to prevent pollution. <br/><br/>
-            You can create an orderform for your business through 'management' page, and use that orderform as a server through 'server' page.
+            You can create an orderform for your business through &apos;management&apos; page, and use that orderform as a server through &apos;server&apos; page.
           </p>
           <div className={styles.login_option}>
             <Link href='/management'><a className={styles.management_btn} href='/orderform'>Management</a></Link><br/>

@@ -153,7 +153,7 @@ export default function Tables() {
                                         {
                                             tables[tableId].orders.length < 1 ? 
                                             <p>
-                                                No order's been placed.
+                                                No order&apos;s been placed.
                                             </p> :
                                             tables[tableId].orders.map((order, orderIndex) => 
                                                 <div key={orderIndex} className={styles.table_status}>

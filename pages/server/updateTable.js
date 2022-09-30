@@ -248,7 +248,7 @@ export default function UpdateTable() {
                         {   
                             table.orders.length < 1 ? 
                             <p>
-                                No order's been placed.
+                                No order&apos;s been placed.
                             </p> :
                             table.orders.map((order, i) => 
                                 <div key={i} className={styles.table_status}>

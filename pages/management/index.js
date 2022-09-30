@@ -570,7 +570,7 @@ export default function Management() {
                                                                 <span className={styles.item_wrapper}>{ allergy }</span><span>&nbsp;</span>
                                                                 <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_allergy}>
-                                                                        <h2>Delete Allergy "{ allergy }"</h2>
+                                                                        <h2>Delete Allergy &quot;{ allergy }&quot;</h2>
                                                                         <p>Do you really want to remove this allergy from your allergy list?</p>
                                                                         <button onClick={() => deleteAllergy(allergy)}>confirm</button>
                                                                     </div>
@@ -618,7 +618,7 @@ export default function Management() {
                                                                 <span className={styles.item_wrapper}>{ category }</span><span>&nbsp;</span>
                                                                 <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_category}>
-                                                                        <h2>Delete Category "{ category }"</h2>
+                                                                        <h2>Delete Category &quot;{ category }&quot;</h2>
                                                                         <p>
                                                                             Do you really want to remove this category from your category list? All the items associated with the 
                                                                             category will be deleted as well.
@@ -666,7 +666,7 @@ export default function Management() {
                                                             <button onClick={() => setNewItem({...item})}>update</button><span>&nbsp;</span>
                                                             <Modal btn_name='X' color='white' backgroundColor='crimson'>
                                                                 <div className={styles.delete_item}>
-                                                                    <h2>Delete Item "{ item.name }"</h2>
+                                                                    <h2>Delete Item &quot;{ item.name }&quot;</h2>
                                                                     <p>Do you really want to remove this item from the selected category?</p>
                                                                     <button onClick={() => deleteItem(item.id)}>confirm</button>
                                                                 </div>
