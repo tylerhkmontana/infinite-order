@@ -68,7 +68,7 @@ export default function Server() {
             {
                 isLoading ? <div>Downloading orderform from the server...</div> :
                 <div>
-                    <Link href='/'><a href='/'>Home &rarr;</a></Link>
+                    <Link href='/'><a>Home &rarr;</a></Link>
                 {
                     !orderform ? 
                     <form onSubmit={getOrderform}>

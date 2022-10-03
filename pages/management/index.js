@@ -510,7 +510,7 @@ export default function Management() {
                     <div className={styles.profile}>
                         <h3>[Management Page]</h3>
                         <p>Welcome { user.name }</p>
-                        <Link href='/'><a href='/'>Home &rarr;</a></Link>
+                        <Link href='/'><a>Home &rarr;</a></Link>
                     </div>
                     {
                         isLoading ? 
