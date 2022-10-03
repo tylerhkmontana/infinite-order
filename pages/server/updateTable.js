@@ -183,14 +183,15 @@ export default function UpdateTable() {
                         </div>
                         <br/>
                         <div className={styles.item_container_wrapper}>
-                            <div className={styles.item_container}>
-                                {
-                                    selectedCategory && 
-                                    orderform.item.map((item, i) => item.category === selectedCategory &&
+                            {
+                                selectedCategory && 
+                                <div className={styles.item_container}>
+                                    {
+                                        orderform.item.map((item, i) => item.category === selectedCategory &&
                                         <div key={i} className={styles.item}>
                                             {
                                                 item.options.length > 0 ? 
-                                                <Modal btn_name={item.name} backgroundColor='#f1f1f1'>
+                                                <Modal btn_name={item.name} backgroundColor={item.color || '#f1f1f1'}>
                                                     <form onSubmit={e => addItemWithOptions(e, item)} className={styles.option_container}>
                                                         <h4>Options</h4>
                                                         <div className={styles.options}>
@@ -205,14 +206,15 @@ export default function UpdateTable() {
                                                         <button className="confirm_btn">add</button>
                                                     </form>
                                                 </Modal> :
-                                                <button onClick={() => addItem(item)}>
+                                                <button style={{ backgroundColor: item.color }} onClick={() => addItem(item)}>
                                                     { item.name }<span style={{ color: 'red' }}>{ allergyCheck(item.allergies) }</span>
                                                 </button>
                                             }
                                         </div>
-                                    )
-                                }
-                            </div>  
+                                        )
+                                    }
+                                </div>  
+                            }
                         </div>
                         <br/>
                         <br/>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ServerLayout from '../../components/serverLayout'
 import Modal from '../../components/modal'
+import Link from 'next/link'
 import styles from '../../styles/Server.module.scss'
 import { db } from '../../modules/firebase'
 import { getDocs, query, where, collection, limit } from 'firebase/firestore'
@@ -53,7 +54,6 @@ export default function Server() {
                 ...foundOrderform
             }))
 
-            console.log(foundOrderform)
             setOrderformId('')
         } catch(err) {
             console.log('failed to retrieve the orderform')
@@ -68,6 +68,7 @@ export default function Server() {
             {
                 isLoading ? <div>Downloading orderform from the server...</div> :
                 <div>
+                    <Link href='/'><a href='/'>Home &rarr;</a></Link>
                 {
                     !orderform ? 
                     <form onSubmit={getOrderform}>
@@ -114,7 +115,7 @@ export default function Server() {
                         <div className={styles.item_container}>
                             {
                                 orderform.item.map((item, i) => item.category === selectedCategory &&
-                                    <div className={styles.item} key={i}>
+                                    <div style={{ backgroundColor: item.color }} className={styles.item} key={i}>
                                         <span>{ item.name } ${ item.price }&nbsp;</span>
                                         {
                                             item.options.length > 0 &&

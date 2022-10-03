@@ -15,7 +15,7 @@ export default function Modal({ children, btn_name, backgroundColor='white', col
                     {children}
                 </div>
             </div> 
-            <button className={styles.toggle_btn} style={{ backgroundColor, color, borderRadius, borderColor }} onClick={() => setIsToggled(true)}><strong>{ btn_name }</strong></button>
+            <button className={styles.toggle_btn} style={{ backgroundColor, color, borderRadius, borderColor }} onClick={() => setIsToggled(true)}>{ btn_name }</button>
         </>
     )
 }

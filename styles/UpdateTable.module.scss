@@ -13,6 +13,7 @@
 
     @include breakpoint(mobile) {
         width: 80vw;
+        height: 70vh;
     }
 }
 
@@ -66,7 +67,7 @@
 
 .item_container {
     @include breakpoint(mobile) {
-        width: 600px;
+        width: 800px;
     }
 }
 

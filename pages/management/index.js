@@ -24,6 +24,7 @@ export default function Management() {
     const [newItem, setNewItem] = useState({
         id: null,
         name: '',
+        color: '#f1f1f1',
         price: 0,
         description: '',
         category: '',
@@ -56,6 +57,7 @@ export default function Management() {
         setNewItem({
             id: null,
             name: '',
+            color: '#f1f1f1',
             price: 0,
             description: '',
             category: '',
@@ -291,6 +293,7 @@ export default function Management() {
                     name: '',
                     description: '',
                     price: 0,
+                    color:'#f1f1f1',
                     category: '',
                     allergies: [],
                     options: []
@@ -481,6 +484,7 @@ export default function Management() {
                 }))
                 setNewItem({
                     id: null,
+                    color: '#f1f1f1',
                     name: '',
                     price: 0,
                     description: '',
@@ -506,6 +510,7 @@ export default function Management() {
                     <div className={styles.profile}>
                         <h3>[Management Page]</h3>
                         <p>Welcome { user.name }</p>
+                        <Link href='/'><a href='/'>Home &rarr;</a></Link>
                     </div>
                     {
                         isLoading ? 
@@ -545,7 +550,7 @@ export default function Management() {
                                                 <br/>
                                                 <div className={styles.new_allergy}>
                                                     {
-                                                        newAllergies.map((na, i) => <span key={i}>{ na }</span>)
+                                                        newAllergies.map((na, i) => <span className={styles.item_wrapper} key={i}>{ na }</span>)
                                                     }
                                                     <form onSubmit={addAllergy}>
                                                         <input type='text' placeholder='allergy name' required/><span>&nbsp;</span>
@@ -568,7 +573,7 @@ export default function Management() {
                                                             orderform.allergy.map((allergy, i) => 
                                                             <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
                                                                 <span className={styles.item_wrapper}>{ allergy }</span><span>&nbsp;</span>
-                                                                <Modal btn_name='X' color='white' backgroundColor='crimson'>
+                                                                <Modal btn_name='delete' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_allergy}>
                                                                         <h2>Delete Allergy &quot;{ allergy }&quot;</h2>
                                                                         <p>Do you really want to remove this allergy from your allergy list?</p>
@@ -593,7 +598,7 @@ export default function Management() {
                                                 <br/>
                                                 <div className={styles.new_category}>
                                                     {
-                                                        newCategories.map((na, i) => <span key={i}>{ na }</span>)
+                                                        newCategories.map((na, i) => <span className={styles.item_wrapper} key={i}>{ na }</span>)
                                                     }
                                                     <form onSubmit={addCategory}>
                                                         <input type='text' placeholder='category name' required/><span>&nbsp;</span>
@@ -616,7 +621,7 @@ export default function Management() {
                                                             orderform.category.map((category, i) => 
                                                             <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
                                                                 <span className={styles.item_wrapper}>{ category }</span><span>&nbsp;</span>
-                                                                <Modal btn_name='X' color='white' backgroundColor='crimson'>
+                                                                <Modal btn_name='delete' color='white' backgroundColor='crimson'>
                                                                     <div className={styles.delete_category}>
                                                                         <h2>Delete Category &quot;{ category }&quot;</h2>
                                                                         <p>
@@ -662,9 +667,9 @@ export default function Management() {
                                                     {
                                                         orderform.item.map((item, i) => item.category === selectedCategory && 
                                                         <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                            <span className={styles.item_wrapper} key={i}>${ item.price } { item.name }</span><span>&nbsp;</span>
+                                                            <span style={{ backgroundColor: item.color }} className={styles.item_wrapper} key={i}>${ item.price } { item.name }</span><span>&nbsp;</span>
                                                             <button onClick={() => setNewItem({...item})}>update</button><span>&nbsp;</span>
-                                                            <Modal btn_name='X' color='white' backgroundColor='crimson'>
+                                                            <Modal btn_name='delete' color='white' backgroundColor='crimson'>
                                                                 <div className={styles.delete_item}>
                                                                     <h2>Delete Item &quot;{ item.name }&quot;</h2>
                                                                     <p>Do you really want to remove this item from the selected category?</p>
@@ -704,6 +709,15 @@ export default function Management() {
                                                             ...prev,
                                                             description: e.target.value
                                                         }))} type='text' placeholder='description' value={newItem.description}/>
+                                                        <br/>
+                                                        <br/>
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            <label>Button Color: </label><span>&nbsp;</span>
+                                                            <input onChange={(e) => setNewItem(prev => ({
+                                                                ...prev,
+                                                                color: e.target.value
+                                                            }))} value={newItem.color} type='color'/>
+                                                        </div>
                                                         <br/>
                                                         <br/>
                                                         <hr/>

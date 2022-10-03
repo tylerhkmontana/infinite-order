@@ -89,9 +89,12 @@
 .curr_allergy, .new_allergy, .curr_category, .new_category, .select_category, .curr_items, .curr_item_order, .new_item_order {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 
     .item_wrapper {
-        color: white;
+        border: 3px solid black;
+        background-color: white;
+        color: black;
         padding: 5px 10px;
         border-radius: 20px;
     }
@@ -107,27 +110,18 @@
     }
 }
 
-.curr_allergy, .new_allergy {
-    .item_wrapper { background-color: rgb(247, 125, 88); }
-}
-
-.curr_category, .new_category {
-    .item_wrapper { background-color: rgb(54, 90, 168); }
+.new_allergy, .new_category, .new_item_order {
+    .item_wrapper { background-color: rgb(255, 225, 90); }
 }
 
 .curr_items {
-    .item_wrapper { background-color: rgb(82, 87, 80); }
+    .item_wrapper { background-color: #f1f1f1; }
 }
 
 .curr_item_order {
     .item_wrapper { 
         cursor: pointer;
-        background-color: rgb(152, 72, 158); 
     }
-}
-
-.new_item_order {
-    .item_wrapper { background-color: rgb(228, 198, 64); }
 }
 
 .newItem_form {

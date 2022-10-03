@@ -2,10 +2,17 @@
 
 html,
 body {
-    font-family: 'NanumPenScript';
-    font-size: 1.2em;
+    font-family: 'Teko';
+    font-size: 1.1em;
     scroll-behavior: smooth;
     background-color: $background_color;
+}
+
+// text font
+@font-face {
+  font-display: swap;
+  font-family: 'Teko';
+  src: url('/fonts/Teko-Regular.ttf');
 }
 
 // button font
@@ -14,14 +21,6 @@ body {
   font-family: 'vt323';
   src: url('/fonts/VT323-Regular.ttf');
 }
-
-// text font
-@font-face {
-  font-display: swap;
-  font-family: 'NanumPenScript';
-  src: url('/fonts/NanumPenScript-Regular.ttf');
-}
-
 
 a {
   color: inherit;
@@ -38,7 +37,7 @@ button {
   background-color: white;
   border: 3px solid black;
   border-radius: 5px;
-  font-size: 0.7em;
+  font-size: 1em;
   cursor: pointer;
 }
 
