@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import ServerLayout from '../../components/serverLayout'
-import Modal from '../../components/modal'
+import ServerLayout from '../components/serverLayout'
+import Modal from '../components/modal'
 import Link from 'next/link'
-import styles from '../../styles/Server.module.scss'
-import { db } from '../../modules/firebase'
+import styles from '../styles/Server.module.scss'
+import { db } from '../modules/firebase'
 import { getDocs, query, where, collection, limit } from 'firebase/firestore'
 
 export default function Server() {

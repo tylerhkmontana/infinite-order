@@ -1,13 +1,13 @@
-import styles from '../../styles/Management.module.scss'
-import { useAuthContext } from '../../context/authContext'
-import ManagementLayout from '../../components/managementLayout'
+import styles from '../styles/Management.module.scss'
+import { useAuthContext } from '../context/authContext'
+import ManagementLayout from '../components/managementLayout'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { db } from '../../modules/firebase'
+import { db } from '../modules/firebase'
 import { getDocs, setDoc, updateDoc, deleteDoc, doc, query, where, collection, limit } from 'firebase/firestore'
 import { v4 as uuid4 } from 'uuid'
-import Modal from '../../components/modal'
+import Modal from '../components/modal'
 
 export default function Management() {
     const router = useRouter()
