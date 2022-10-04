@@ -123,147 +123,149 @@ export default function UpdateTable() {
     return (
         <ServerLayout>
             {
-                Object.keys(table).length < 1 ? <div>Table not found</div> :
-                <div>
-                    <div className={styles.table_info}>
-                        <div>
-                            <h3>{ table.tableNumber }&nbsp;&nbsp;#{ table.numParty }</h3>
-                            <h3>arrived at { table.arrival }</h3>
-                        </div>
-                        <div>
-                            <Modal btn_name='Allergy Setting' backgroundColor="crimson" color="white">
-                                <form onSubmit={updateAllergy} className={styles.allergy_chart}>
-                                    <h3>Allergy Chart</h3>
-                                    <div className={styles.allergy_container}>
-                                        {
-                                            orderform.allergy.map((a, i) => 
-                                                <div className={styles.allergy} key={i}>
-                                                    <input id={a} type='checkbox' value={a} name={`allergy${i}`} defaultChecked={table.allergies.includes(a)}/>
-                                                    <label htmlFor={a}>{ a }</label>
-                                                </div>
-                                            )
-                                        }
-                                    </div>
-                                    <button>update</button>
-                                </form>
-                            </Modal>
-                        </div>
-                    </div>
-                    <br/>
-                    <br/>
-                    <div className={styles.table_allergies}>
-                        <h4>Table Allergies</h4>
-                        <br/>
-                        {   
-                            table.allergies.length > 0 ?
-                            table.allergies.map((allergy, i) => <span key={i}>{ i > 0 ? `, ${allergy}` : allergy }</span>) :
-                            <p>No allergy.</p>
-                        }
-                    </div>
-                    <br/>
-                    <br/>
-                    <div className={styles.orderpad}>
-                        <div className={styles.category_container_wrapper}>
-                            <div className={styles.category_container}>
-                                {
-                                    orderform.category.map((category, i) => 
-                                        <button 
-                                            className={styles.category}
-                                            style={{ 
-                                                backgroundColor: category === selectedCategory ? 'black' : 'transparent',
-                                                color:  category === selectedCategory ? 'white' : 'black'
-                                            }}
-                                            onClick={() => setSelectedCategory(category)} 
-                                            key={i}>
-                                            { category }
-                                        </button>
-                                    )
-                                }
+                Object.keys(orderform).length < 1 ? 
+                    <div>You have not downloaded any orderform. Please download one first.</div> :
+                    Object.keys(table).length < 1 ? <div>Table not found</div> :
+                    <div>
+                        <div className={styles.table_info}>
+                            <div>
+                                <h3>{ table.tableNumber }&nbsp;&nbsp;#{ table.numParty }</h3>
+                                <h3>arrived at { table.arrival }</h3>
+                            </div>
+                            <div>
+                                <Modal btn_name='Allergy Setting' backgroundColor="crimson" color="white">
+                                    <form onSubmit={updateAllergy} className={styles.allergy_chart}>
+                                        <h3>Allergy Chart</h3>
+                                        <div className={styles.allergy_container}>
+                                            {
+                                                orderform.allergy.map((a, i) => 
+                                                    <div className={styles.allergy} key={i}>
+                                                        <input id={a} type='checkbox' value={a} name={`allergy${i}`} defaultChecked={table.allergies.includes(a)}/>
+                                                        <label htmlFor={a}>{ a }</label>
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                        <button>update</button>
+                                    </form>
+                                </Modal>
                             </div>
                         </div>
                         <br/>
-                        <div className={styles.item_container_wrapper}>
-                            {
-                                selectedCategory && 
-                                <div className={styles.item_container}>
-                                    {
-                                        orderform.item.map((item, i) => item.category === selectedCategory &&
-                                        <div key={i} className={styles.item}>
-                                            {
-                                                item.options.length > 0 ? 
-                                                <Modal btn_name={item.name} backgroundColor={item.color || '#f1f1f1'}>
-                                                    <form onSubmit={e => addItemWithOptions(e, item)} className={styles.option_container}>
-                                                        <h4>Options</h4>
-                                                        <div className={styles.options}>
-                                                            {
-                                                                item.options.map((option, j) => 
-                                                                <div key={j} className={styles.option}>
-                                                                    <input id={`option${i}-${j}`} type='checkbox' value={option.name} name={`option${j}`}/>
-                                                                    <label htmlFor={`option${i}-${j}`}>{ option.name }</label>
-                                                                </div>)
-                                                            }
-                                                        </div>
-                                                        <button className="confirm_btn">add</button>
-                                                    </form>
-                                                </Modal> :
-                                                <button style={{ backgroundColor: item.color }} onClick={() => addItem(item)}>
-                                                    { item.name }<span style={{ color: 'red' }}>{ allergyCheck(item.allergies) }</span>
-                                                </button>
-                                            }
-                                        </div>
-                                        )
-                                    }
-                                </div>  
+                        <br/>
+                        <div className={styles.table_allergies}>
+                            <h4>Table Allergies</h4>
+                            <br/>
+                            {   
+                                table.allergies.length > 0 ?
+                                table.allergies.map((allergy, i) => <span key={i}>{ i > 0 ? `, ${allergy}` : allergy }</span>) :
+                                <p>No allergy.</p>
                             }
                         </div>
                         <br/>
                         <br/>
-                        <br/>
-                        <br/>
-                        {
-                            currOrder.length > 0 &&
-                            <div className={styles.curr_order}>
-                                <button onClick={() => setCurrOrder([])} className={styles.reset_btn}>reset</button>
-                                <h3>New Order</h3>
-                                <br/>
-                                {
-                                    currOrder.map((item, i) =>
-                                        <div className={styles.added_item} key={i}>
-                                            <button onClick={() => removeItem(item)} className={styles.remove_item_btn}>X</button>
-                                            <p>{ item.name } X { item.quantity }</p>
-                                            <button onClick={() => decreaseItem(item)}>-</button>
-                                            {
-                                                item.memo.map((option, i) => <p key={i}>&nbsp;&nbsp;- { option }</p>)
-                                            }
-                                        </div>
-                                    )
-                                }
-                                <br/>
-                                <br/>
-                                <button onClick={placeOrder} className={styles.place_order_btn}>place order</button>
-                            </div> 
-                        }
-                        <br/>
-                        <br/>
-                        <h2>Table Status</h2>
-                        <br/>
-                        {   
-                            table.orders.length < 1 ? 
-                            <p>
-                                No order&apos;s been placed.
-                            </p> :
-                            table.orders.map((order, i) => 
-                                <div key={i} className={styles.table_status}>
+                        <div className={styles.orderpad}>
+                            <div className={styles.category_container_wrapper}>
+                                <div className={styles.category_container}>
                                     {
-                                        order.items.map((item, i) => <p style={{ textDecoration: item.delivered && 'line-through red' }} key={i}>{ item.name } X { item.quantity }</p>)
+                                        orderform.category.map((category, i) => 
+                                            <button 
+                                                className={styles.category}
+                                                style={{ 
+                                                    backgroundColor: category === selectedCategory ? 'black' : 'transparent',
+                                                    color:  category === selectedCategory ? 'white' : 'black'
+                                                }}
+                                                onClick={() => setSelectedCategory(category)} 
+                                                key={i}>
+                                                { category }
+                                            </button>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                            <br/>
+                            <div className={styles.item_container_wrapper}>
+                                {
+                                    selectedCategory && 
+                                    <div className={styles.item_container}>
+                                        {
+                                            orderform.item.map((item, i) => item.category === selectedCategory &&
+                                            <div key={i} className={styles.item}>
+                                                {
+                                                    item.options.length > 0 ? 
+                                                    <Modal btn_name={item.name} backgroundColor={item.color || '#f1f1f1'}>
+                                                        <form onSubmit={e => addItemWithOptions(e, item)} className={styles.option_container}>
+                                                            <h4>Options</h4>
+                                                            <div className={styles.options}>
+                                                                {
+                                                                    item.options.map((option, j) => 
+                                                                    <div key={j} className={styles.option}>
+                                                                        <input id={`option${i}-${j}`} type='checkbox' value={option.name} name={`option${j}`}/>
+                                                                        <label htmlFor={`option${i}-${j}`}>{ option.name }</label>
+                                                                    </div>)
+                                                                }
+                                                            </div>
+                                                            <button className="confirm_btn">add</button>
+                                                        </form>
+                                                    </Modal> :
+                                                    <button style={{ backgroundColor: item.color }} onClick={() => addItem(item)}>
+                                                        { item.name }<span style={{ color: 'red' }}>{ allergyCheck(item.allergies) }</span>
+                                                    </button>
+                                                }
+                                            </div>
+                                            )
+                                        }
+                                    </div>  
+                                }
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            {
+                                currOrder.length > 0 &&
+                                <div className={styles.curr_order}>
+                                    <button onClick={() => setCurrOrder([])} className={styles.reset_btn}>reset</button>
+                                    <h3>New Order</h3>
+                                    <br/>
+                                    {
+                                        currOrder.map((item, i) =>
+                                            <div className={styles.added_item} key={i}>
+                                                <button onClick={() => removeItem(item)} className={styles.remove_item_btn}>X</button>
+                                                <p>{ item.name } X { item.quantity }</p>
+                                                <button onClick={() => decreaseItem(item)}>-</button>
+                                                {
+                                                    item.memo.map((option, i) => <p key={i}>&nbsp;&nbsp;- { option }</p>)
+                                                }
+                                            </div>
+                                        )
                                     }
                                     <br/>
-                                    <p><i>placed at { order.updatedAt }</i></p>
-                                </div>
-                            )   
-                        }  
+                                    <br/>
+                                    <button onClick={placeOrder} className={styles.place_order_btn}>place order</button>
+                                </div> 
+                            }
+                            <br/>
+                            <br/>
+                            <h2>Table Status</h2>
+                            <br/>
+                            {   
+                                table.orders.length < 1 ? 
+                                <p>
+                                    No order&apos;s been placed.
+                                </p> :
+                                table.orders.map((order, i) => 
+                                    <div key={i} className={styles.table_status}>
+                                        {
+                                            order.items.map((item, i) => <p style={{ textDecoration: item.delivered && 'line-through red' }} key={i}>{ item.name } X { item.quantity }</p>)
+                                        }
+                                        <br/>
+                                        <p><i>placed at { order.updatedAt }</i></p>
+                                    </div>
+                                )   
+                            }  
+                        </div>
                     </div>
-                </div>
             }
         </ServerLayout>
     )

@@ -48,11 +48,15 @@ export default function Server() {
             querySnapshot.forEach(doc => {
             foundOrderform = doc.data()
             })
-            
-            setOrderform({...foundOrderform})
-            window.localStorage.setItem('orderform', JSON.stringify({
-                ...foundOrderform
-            }))
+
+            if(Object.keys(foundOrderform).length < 1) {
+                setOrderform(null)
+            } else {
+                setOrderform({...foundOrderform})
+                window.localStorage.setItem('orderform', JSON.stringify({
+                    ...foundOrderform
+                }))
+            }
 
             setOrderformId('')
         } catch(err) {
