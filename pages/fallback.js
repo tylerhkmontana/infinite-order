@@ -1,4 +1,4 @@
-export default function Offline() {
+export default function fallback() {
     return(
         <div>
             <h1>Welcome to Infinite Order</h1>

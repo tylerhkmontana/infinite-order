@@ -11,6 +11,7 @@ export default function UpdateTable() {
     const [orderform, setOrderform] = useState({})
     const [selectedCategory, setSelectedCategory] = useState('')
     const [currOrder, setCurrOrder] = useState([])
+    const [event, setEvent] = useState('')
 
     useEffect(() => {
         if(typeof window !== 'undefined') {
@@ -18,68 +19,66 @@ export default function UpdateTable() {
             const tables = JSON.parse(window.localStorage.getItem('tables')) || {}
             const orderform = JSON.parse(window.localStorage.getItem('orderform')) || {}
     
+            const prepareCurrOrder = orderform.item.map(item => ({...item, quantity: 0, delivered: false}))
+            Object.keys(orderform).length > 0 && setCurrOrder([...prepareCurrOrder])
             setOrderform(orderform)
             setTable({...tables[tableId]})
         }
     }, [router.isReady])
 
-    function addItem(item) {
-        let currItem = {...item}
-        let targetItem = currOrder.find(item => item.name === currItem.name)
-
-        if (targetItem) {
-            const updatedOrder = currOrder.map(item => item.name === currItem.name ? {...item, quantity: item.quantity + 1} : item)
-            setCurrOrder([...updatedOrder])
-
-        } else {
-            currItem.quantity = 1
-            currItem.memo = []
-            currItem.delivered = false
-            setCurrOrder(prev => [...prev, currItem])
-        }
+    function addItem(targetItem) {
+        const updatedOrder = currOrder.map(item => item.name === targetItem.name ? ({...item, quantity: item.quantity + 1}) : item)
+        setCurrOrder([...updatedOrder])
     }
 
-    function addItemWithOptions(e, item) {
+    function addItemWithOptions(e, targetItem) {
         e.preventDefault()
         const formData = new FormData(e.target);
         const formProps = Object.fromEntries(formData);
-        let currItem = {...item}
+
+        let currItem = {...targetItem}
         let selectedOptions = Object.keys(formProps).map(option => formProps[option])
         let options = ''
         selectedOptions.forEach((option, i) => {
             options += i > 0 ? `, ${option}` : option
         })
+
+        const prevItemName = currItem.name
         currItem.name = selectedOptions.length > 0 ? `${currItem.name}(${options})` : currItem.name
         
-        let targetItem = currOrder.find(item => item.name === currItem.name)
-        
-        if (targetItem) {
-            const updatedOrder = currOrder.map(item => item.name === currItem.name ? {...item, quantity: item.quantity + 1} : item)
-            setCurrOrder([...updatedOrder])
+        const foundItem = currOrder.find(item => item.name === currItem.name)
+        let updatedOrder
+        if(foundItem) { 
+            updatedOrder = currOrder.map(item => item.name === currItem.name ? ({...item, quantity: item.quantity + 1}): item)
         } else {
-            currItem.quantity = 1
-            currItem.memo = []
-            currItem.delivered = false
-            setCurrOrder(prev => [...prev, currItem])
+            let foundIndex 
+            currOrder.map((item, i) => {
+                if(item.name === prevItemName) {
+                    foundIndex = i
+                }
+            })
+
+            updatedOrder = [...currOrder]
+            updatedOrder.splice(foundIndex + 1, 0, {...currItem, quantity: 1, delivered: false})
         }
+        setCurrOrder([...updatedOrder])
     }
 
     function decreaseItem(targetItem) {
-        let newOrder = currOrder.map(item => item.name === targetItem.name ? ({...item, quantity: item.quantity - 1}) : item)
-        newOrder = newOrder.filter(item => item.quantity > 0)
-        setCurrOrder([...newOrder])
+        let updatedOrder = currOrder.map(item => item.name === targetItem.name ? ({...item, quantity: item.quantity > 0 ? item.quantity - 1 : 0}) : item)
+        setCurrOrder([...updatedOrder])
     }
 
     function removeItem(targetItem) {
-        let newOrder = currOrder.filter(item => item.name !== targetItem.name)
-        setCurrOrder([...newOrder])
+        let updatedOrder = currOrder.map(item => item.name === targetItem.name ? ({...item, quantity: 0}) : item)
+        setCurrOrder([...updatedOrder])
     }
 
     function placeOrder() {
         let updatedAt = secToTime(new Date())
         let newOrder = {
             updatedAt,
-            items: [...currOrder]
+            items: currOrder.filter(item => item.quantity > 0)
         }
 
         if(typeof window !== 'undefined') {
@@ -87,9 +86,11 @@ export default function UpdateTable() {
             tables[table.tableId].orders.push(newOrder)
 
             window.localStorage.setItem('tables', JSON.stringify(tables))
-            console.log(tables[table.tableId])
+
+            const prepareCurrOrder = orderform.item.map(item => ({...item, quantity: 0, delivered: false}))
+
             setTable({...tables[table.tableId]})
-            setCurrOrder([])
+            setCurrOrder([...prepareCurrOrder])
         }
     }
 
@@ -120,6 +121,18 @@ export default function UpdateTable() {
         return allergyIndication ? `(${allergyIndication})` : ''
     }
 
+    function updateEvent(e) {
+        e.preventDefault()
+
+        if(typeof window !== 'undefined') {
+            let tables = JSON.parse(window.localStorage.getItem('tables'))
+            tables[table.tableId].event = event
+
+            window.localStorage.setItem('tables', JSON.stringify(tables))
+            setTable({...tables[table.tableId]})
+        }
+    }
+
     return (
         <ServerLayout>
             {
@@ -132,7 +145,7 @@ export default function UpdateTable() {
                                 <h3>{ table.tableNumber }&nbsp;&nbsp;#{ table.numParty }</h3>
                                 <h3>arrived at { table.arrival }</h3>
                             </div>
-                            <div>
+                            <div className={styles.allergy_event_setting}>
                                 <Modal btn_name='Allergy Setting' backgroundColor="crimson" color="white">
                                     <form onSubmit={updateAllergy} className={styles.allergy_chart}>
                                         <h3>Allergy Chart</h3>
@@ -149,9 +162,25 @@ export default function UpdateTable() {
                                         <button>update</button>
                                     </form>
                                 </Modal>
+                                <Modal btn_name='event setting'>
+                                    <form onSubmit={updateEvent} className={styles.event_setting}>
+                                        <h3>Event Setting</h3>
+                                        <div>
+                                            <label>Event: </label>
+                                            <input onChange={e => setEvent(e.target.value)} type='text' value={event}/>
+                                        </div>
+                                        <button>update</button>
+                                    </form>
+                                </Modal>
                             </div>
                         </div>
                         <br/>
+                        <br/>
+                      
+                        {
+                            table.event && <h3>Event: { table.event }</h3>
+                        }
+
                         <br/>
                         <div className={styles.table_allergies}>
                             <h4>Table Allergies</h4>
@@ -229,14 +258,11 @@ export default function UpdateTable() {
                                     <h3>New Order</h3>
                                     <br/>
                                     {
-                                        currOrder.map((item, i) =>
+                                        currOrder.map((item, i) => item.quantity > 0 &&
                                             <div className={styles.added_item} key={i}>
                                                 <button onClick={() => removeItem(item)} className={styles.remove_item_btn}>X</button>
                                                 <p>{ item.name } X { item.quantity }</p>
                                                 <button onClick={() => decreaseItem(item)}>-</button>
-                                                {
-                                                    item.memo.map((option, i) => <p key={i}>&nbsp;&nbsp;- { option }</p>)
-                                                }
                                             </div>
                                         )
                                     }

@@ -6,6 +6,12 @@
     justify-content: space-between;
 }
 
+.allergy_event_setting {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .allergy_chart {
     display: flex;
     flex-direction: column;
@@ -15,6 +21,13 @@
         width: 80vw;
         height: 70vh;
     }
+}
+
+.event_setting {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: space-between;
 }
 
 .allergy_container {

@@ -2,10 +2,12 @@
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "Standalone",
+    "orientation": "portrait",
     "scope": "/",
     "start_url": "/",
     "name": "Infinite Order",
     "short_name": "Infinite Order",
+    "description": "Application that helps a professional waite to take order infinitely.",
     "icons": [
         {
             "src": "/icons/icon-192x192.png",

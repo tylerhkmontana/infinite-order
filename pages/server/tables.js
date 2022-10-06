@@ -45,7 +45,7 @@ export default function Tables() {
         const tableId = uuid4()
         const orders = []
         const allergies = []
-        const events = ''
+        const event = ''
 
         const createdTable = {
             ...newTable,
@@ -53,7 +53,7 @@ export default function Tables() {
             arrival,
             orders,
             allergies,
-            events
+            event
         }
 
         if(typeof window !== 'undefined') {
@@ -150,6 +150,13 @@ export default function Tables() {
                                     <div className={styles.table_status_container}>
                                         <h4>Table Status</h4>
                                         <br/>
+                                        {
+                                            table.event && <p>Event: { table.event }</p>
+                                        }   
+                                        {
+                                            table.allergies.length > 0 && 
+                                                <p>Allergies: { table.allergies.map((alg, i) => <span key={i}>{ i > 0 ? `, ${alg}` : alg }</span>) }</p>
+                                        }
                                         {
                                             tables[tableId].orders.length < 1 ? 
                                             <p>
