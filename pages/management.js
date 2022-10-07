@@ -169,6 +169,7 @@ export default function Management() {
             id: null,
             name: '',
             price: 0,
+            color: "#f1f1f1",
             category: '',
             allergies: [],
             options: []
@@ -338,6 +339,7 @@ export default function Management() {
                     id: null,
                     name: '',
                     price: 0,
+                    color: '#f1f1f1',
                     description: '',
                     category: '',
                     allergies: [],
