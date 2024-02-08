@@ -86,7 +86,14 @@
     align-self: flex-start;
 }
 
-.curr_allergy, .new_allergy, .curr_category, .new_category, .select_category, .curr_items, .curr_item_order, .new_item_order {
+.curr_allergy {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.new_allergy, .curr_category, .new_category, .select_category, .curr_items, .curr_item_order, .new_item_order {
     display: flex;
     flex-wrap: wrap;
     align-items: center;

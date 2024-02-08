@@ -1,7 +1,7 @@
 import styles from './styles/modal.module.scss'
 import { useState } from 'react'
 
-export default function Modal({ children, btn_name, backgroundColor='white', color='black', borderRadius='5px', borderColor='black' }) {
+export default function Modal({ children, btn_name, btn_style }) {
     const [isToggled, setIsToggled] = useState(false)
     
     return(
@@ -15,7 +15,7 @@ export default function Modal({ children, btn_name, backgroundColor='white', col
                     {children}
                 </div>
             </div> 
-            <button className={styles.toggle_btn} style={{ backgroundColor, color, borderRadius, borderColor }} onClick={() => setIsToggled(true)}>{ btn_name }</button>
+            <button className={styles.toggle_btn} style={btn_style} onClick={() => setIsToggled(true)}>{ btn_name }</button>
         </>
     )
 }

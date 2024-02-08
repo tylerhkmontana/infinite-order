@@ -511,7 +511,6 @@ export default function Management() {
                 <div className={styles.dashboard}>
                     <div className={styles.profile}>
                         <h3>[Management Page]</h3>
-                        <p>Welcome { user.name }</p>
                         <Link href='/'><a>Home &rarr;</a></Link>
                     </div>
                     {
@@ -539,10 +538,12 @@ export default function Management() {
                                             </div>
 
                                             <div className={styles.business_name}>
+                                                <p><strong>User Name:</strong> { user.name }</p>
                                                 <p><strong>Business Name:</strong> { orderform.businessName }</p>
                                                 <p><strong>Orderform Id:</strong> { orderform.id }</p>
                                             </div>
                                             <br/>
+                                            
                                             {/* Allergy */}
                                             <div className={styles.allergy_container}>
                                                 <h2>Allergy Chart</h2>
@@ -573,9 +574,11 @@ export default function Management() {
                                                         orderform.allergy.length < 1 ?
                                                             <p>Empty</p> :
                                                             orderform.allergy.map((allergy, i) => 
-                                                            <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                <span className={styles.item_wrapper}>{ allergy }</span><span>&nbsp;</span>
-                                                                <Modal btn_name='delete' color='white' backgroundColor='crimson'>
+                                                            <div className={styles.item_wrapper} style={{ display: 'flex', alignItems: 'center' }} key={i}>
+                                                                <span>{ allergy }</span><span>&nbsp;</span>
+                                                                <Modal btn_name='X' btn_style={{
+                                                                    border: 'none'
+                                                                }}>
                                                                     <div className={styles.delete_allergy}>
                                                                         <h2>Delete Allergy &quot;{ allergy }&quot;</h2>
                                                                         <p>Do you really want to remove this allergy from your allergy list?</p>

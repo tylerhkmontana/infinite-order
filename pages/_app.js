@@ -23,7 +23,9 @@ function MyApp({ Component, pageProps }) {
     <Head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icons/logo.png"></link>
+        <link rel='icon' href='/icons/logo.png'></link>
         <meta name="theme-color" content="#fff" />
+        <title>Infinite-Order</title>
     </Head>
   <AuthProvider>
     <Component {...pageProps} />
