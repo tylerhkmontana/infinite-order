@@ -652,9 +652,11 @@ export default function Management() {
                                             <div className={styles.item_container}>
                                                 <h2>Item</h2>
                                                 <br/>
-                                                <br/>
+                            
+                                                <div className={styles.manage_items}>
+
+                                                {/* Select Category */}
                                                 <h3>Select Category</h3>
-                                                <br/>
                                                 <div className={styles.select_category}>    
                                                     {
                                                         orderform.category.map((category, i) => 
@@ -671,13 +673,17 @@ export default function Management() {
                                                     }
                                                 </div>
                                                 <br/>
+
+                                                {/* Items under the selected Category */}
                                                 <div className={styles.curr_items}>
                                                     {
                                                         orderform.item.map((item, i) => item.category === selectedCategory && 
-                                                        <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                            <span style={{ backgroundColor: item.color }} className={styles.item_wrapper} key={i}>${ item.price } { item.name }</span><span>&nbsp;</span>
-                                                            <button onClick={() => setNewItem({...item})}>update</button><span>&nbsp;</span>
-                                                            <Modal btn_name='delete' color='white' backgroundColor='crimson'>
+                                                        <div className={styles.item_wrapper} style={{ backgroundColor: item.color }} key={i}>
+                                                            <span style={{ }} key={i}>${ item.price } { item.name }</span>
+                                                            <span>|</span>
+                                                            <button className={styles.update_btn} onClick={() => setNewItem({...item})}>update</button>
+                                                            <span>|</span>
+                                                            <Modal btn_name='X' btn_style={{ color: 'crimson', backgroundColor: 'transparent', border: 'none', padding: 0 }}>
                                                                 <div className={styles.delete_item}>
                                                                     <h2>Delete Item &quot;{ item.name }&quot;</h2>
                                                                     <p>Do you really want to remove this item from the selected category?</p>
@@ -688,62 +694,68 @@ export default function Management() {
                                                     }
                                                 </div>
                                                 <br/>
+
+                                                {/* Selected Item */}
                                                 {
                                                     selectedCategory && 
                                                     <form onSubmit={(e) => newItem.id ? updateItem(e) : addItem(e)} className={styles.newItem_form}>
                                                         <h3>{
                                                             newItem.id ? 'Update Item' : 'Add New Item'
                                                         }</h3>
-                                                        <br/>
-                                                        <hr/>
-                                                        <br/>
-                                                        <p><strong>Category:</strong> { selectedCategory }</p>
-                                                        <br/>
-                                                        <label>Name: </label>
-                                                        <input onChange={(e) => setNewItem(prev => ({
-                                                            ...prev,
-                                                            name: e.target.value
-                                                        }))} type='text' placeholder='name' value={newItem.name} required/>
-                                                        <br/>
-                                                        <br/>
-                                                        <label>Price: </label>
-                                                        <input onChange={(e) => setNewItem(prev => ({
-                                                            ...prev,
-                                                            price: Number(e.target.value)
-                                                        }))} type='number' placeholder='price' value={Number(newItem.price)} required/>
-                                                        <br/>
-                                                        <br/>
-                                                        <textarea onChange={(e) => setNewItem(prev => ({
-                                                            ...prev,
-                                                            description: e.target.value
-                                                        }))} type='text' placeholder='description' value={newItem.description}/>
-                                                        <br/>
-                                                        <br/>
-                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                            <label>Button Color: </label><span>&nbsp;</span>
-                                                            <input onChange={(e) => setNewItem(prev => ({
-                                                                ...prev,
-                                                                color: e.target.value
-                                                            }))} value={newItem.color} type='color'/>
+
+                                                        {/* Basic information of the item */}
+                                                        <div className={styles.item_basic_info}>
+                                                            <div className={styles.input_container}>
+                                                                <label><strong>Category:</strong></label>
+                                                                <p style={{textTransform: 'capitalize'}}>{ selectedCategory }</p>
+                                                            </div>
+                                                            
+                                                            <div className={styles.input_container}>
+                                                                <label><strong>[Name]</strong></label>
+                                                                <input onChange={(e) => setNewItem(prev => ({
+                                                                    ...prev,
+                                                                    name: e.target.value
+                                                                }))} type='text' placeholder='name' value={newItem.name} required/>
+                                                            </div>
+                                                        
+                                                            <div className={styles.input_container}>
+                                                                <label><strong>[Price]</strong></label>
+                                                                <input onChange={(e) => setNewItem(prev => ({
+                                                                    ...prev,
+                                                                    price: Number(e.target.value)
+                                                                }))} type='number' placeholder='price' value={Number(newItem.price)} required/>
+                                                            </div>
+                                                            
+                                                            <div className={styles.input_container}>
+                                                                <label><strong>[Food Description]</strong></label>
+                                                                <textarea onChange={(e) => setNewItem(prev => ({
+                                                                    ...prev,
+                                                                    description: e.target.value
+                                                                }))} type='text' placeholder='food description' value={newItem.description}/>
+                                                            </div>
+                                                    
+                                                            <div className={styles.input_container}>
+                                                                <label><strong>[Button Color]</strong></label>
+                                                                <input onChange={(e) => setNewItem(prev => ({
+                                                                    ...prev,
+                                                                    color: e.target.value
+                                                                }))} value={newItem.color} type='color'/>
+                                                            </div>
                                                         </div>
-                                                        <br/>
-                                                        <br/>
-                                                        <hr/>
-                                                        <br/>
-                                                        <div>
+                                                            
+                                                        {/* Allergy information of the item */}
+                                                        <div className={styles.item_allergy}>
                                                             <h4>Allergy</h4>
-                                                            <br/>
-                                                            {
-                                                                orderform.allergy.map((allergy, i) => 
-                                                                    <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                        <input onChange={updateAllergyOfItem} value={allergy} type='checkbox' checked={newItem.allergies.includes(allergy)}/><span>&nbsp;</span>
-                                                                        <label>{ allergy }</label>
-                                                                    </div>)   
-                                                            }
+                                                            <div className={styles.allergy_list}>
+                                                                {
+                                                                    orderform.allergy.map((allergy, i) => 
+                                                                        <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
+                                                                            <input onChange={updateAllergyOfItem} value={allergy} type='checkbox' checked={newItem.allergies.includes(allergy)}/><span>&nbsp;</span>
+                                                                            <label>{ allergy }</label>
+                                                                        </div>)   
+                                                                }
+                                                            </div>
                                                         </div>
-                                                        <br/>
-                                                        <hr/>
-                                                        <br/>
                                                         <div>
                                                             <h4>Options</h4>
                                                             <br/>
@@ -780,6 +792,8 @@ export default function Management() {
                                                         <button className={styles.add_item_btn} type='submit'>Add Item</button>
                                                     </form>
                                                 }
+                                                </div>                                          
+                                               
                                                 <br/>
                                                 <br/>
                                                 <br/>
