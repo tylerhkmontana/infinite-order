@@ -515,7 +515,6 @@ export default function Management() {
                             <span>|</span>
                             <a href='#' onClick={logout}>Logout</a>
                         </div>
-                        <h3>[Management Page]</h3>
                     </div>
                     {
                         isLoading ? 
@@ -531,121 +530,121 @@ export default function Management() {
                                         </form> :
                                         <div className={styles.orderform}>
                                             {/* Delete Orderform */}
-                                            <div className={styles.delete_orderform_container}>
-                                                <Modal color='white' backgroundColor='crimson' btn_name='Delete Orderform'>
+
+                                            <div className={styles.business_name}>
+                                                <p><strong>[User Name]</strong> { user.name }</p>
+                                                <p><strong>[Business Name]</strong> { orderform.businessName }</p>
+                                                <p><strong>[Orderform Id]</strong> { orderform.id }</p>
+                                                <br/>
+                                                <Modal btn_style={{border: 'none', color: 'crimson', backgroundColor: 'transparent', padding: 0,}} btn_name='Delete Current Orderform'>
                                                     <div className={styles.delete_orderform}>
                                                         <h2>Delete Orderform</h2>
                                                         <p>Do you really want to delete your current orderform?</p>
                                                         <button onClick={deleteOrderform}>Confirm</button>
                                                     </div>
-                                                </Modal>
-                                            </div>
-
-                                            <div className={styles.business_name}>
-                                                <p><strong>User Name:</strong> { user.name }</p>
-                                                <p><strong>Business Name:</strong> { orderform.businessName }</p>
-                                                <p><strong>Orderform Id:</strong> { orderform.id }</p>
+                                                </Modal> 
                                             </div>
                                             <br/>
                                             
-                                            {/* Allergy */}
-                                            <div className={styles.allergy_container}>
-                                                <h2>Allergy Chart</h2>
-                                                <br/>
-                                                <br/>
-                                                <h3>New Allergy List</h3>
-                                                <br/>
-                                                <div className={styles.new_allergy}>
-                                                    {
-                                                        newAllergies.map((na, i) => <span className={styles.item_wrapper} key={i}>{ na }</span>)
-                                                    }
-                                                    <form onSubmit={addAllergy}>
-                                                        <input type='text' placeholder='allergy name' required/><span>&nbsp;</span>
-                                                        <button>add allergy</button>
-                                                    </form>
+                                            <div className={styles.allergy_category_container}>
+                                                    {/* Allergy */}
+                                                <div className={styles.allergy_container}>
+                                                    <h2>Allergy Chart</h2>
+                                                    <br/>
+                                                    <br/>
+                                                    <h3>Current Allergy List</h3>
+                                                    <div className={styles.curr_allergy}>
+                                                        {
+                                                            orderform.allergy.length < 1 ?
+                                                                <p>Empty</p> :
+                                                                orderform.allergy.map((allergy, i) => 
+                                                                <div className={styles.item_wrapper} style={{ display: 'flex', alignItems: 'center' }} key={i}>
+                                                                    <span>{ allergy }</span><span>&nbsp;</span>
+                                                                    <Modal btn_name='X' btn_style={{
+                                                                        border: 'none',
+                                                                        color: 'crimson',
+                                                                        backgroundColor: 'transparent'
+                                                                    }}>
+                                                                        <div className={styles.delete_allergy}>
+                                                                            <h2>Delete Allergy &quot;{ allergy }&quot;</h2>
+                                                                            <p>Do you really want to remove this allergy from your allergy list?</p>
+                                                                            <button onClick={() => deleteAllergy(allergy)}>confirm</button>
+                                                                        </div>
+                                                                    </Modal>
+                                                                </div>
+                                                                )
+                                                        }
+                                                    </div>
+                                                    <br/>
+                                                    <br/> 
+                                                    <h3>Update new allergy</h3>
+                                                    <div className={styles.update_allergy}>
+                                                        <form className={styles.add_allergy} onSubmit={addAllergy}>
+                                                            <input type='text' placeholder='new allergy' required/>
+                                                            <button>add allergy</button>
+                                                            <button className={styles.reset_btn} onClick={() => setNewAllergies([])}>reset</button>
+                                                        </form>
+                                                        <div className={styles.new_allergy}>
+                                                        {
+                                                           newAllergies.length > 0 ?
+                                                            newAllergies.map((na, i) => <span className={styles.item_wrapper} key={i}>- { na }</span>) : <span>*list is empty</span>
+                                                        }
+                                                        </div>
+                                                        <button className={styles.update_btn} onClick={updateAllergy}>update</button>
+                                                    </div>
                                                 </div>
-                                                <br/>
-                                                <div>
-                                                    <button onClick={updateAllergy}>update</button><span>&nbsp;</span>
-                                                    <button className={styles.reset_btn} onClick={() => setNewAllergies([])}>reset</button>
+
+                                                {/* Category */}
+                                                <div className={styles.category_container}>
+                                                    <h2>Category</h2>
+                                                    <br/>
+                                                    <br/>
+                                                    <h3>Current Category List</h3>
+                                                    <div className={styles.curr_category}>
+                                                        {
+                                                            orderform.category.length < 1 ?
+                                                                <p>Empty</p> :
+                                                                orderform.category.map((category, i) => 
+                                                                <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
+                                                                    <span className={styles.item_wrapper}>{ category }</span><span>&nbsp;</span>
+                                                                    <Modal btn_name='X' btn_style={{
+                                                                          border: 'none',
+                                                                          color: 'crimson',
+                                                                          backgroundColor: 'transparent'
+                                                                    }}>
+                                                                        <div className={styles.delete_category}>
+                                                                            <h2>Delete Category &quot;{ category }&quot;</h2>
+                                                                            <p>
+                                                                                Do you really want to remove this category from your category list? All the items associated with the 
+                                                                                category will be deleted as well.
+                                                                            </p>
+                                                                            <button onClick={() => deleteCategory(category)}>confirm</button>
+                                                                        </div>
+                                                                    </Modal>
+                                                                </div>
+                                                                )
+                                                        }
+                                                    </div>
+                                                    <br/>
+                                                    <br/>
+                                                    <h3>Update new category</h3>
+                                                    <div className={styles.update_category}>
+                                                        <form className={styles.add_category} onSubmit={addCategory}>
+                                                            <input type='text' placeholder='new category' required/>
+                                                            <button>add category</button>
+                                                            <button className={styles.reset_btn} onClick={() => setNewCategories([])}>reset</button>
+                                                        </form>
+                                                        <div className={styles.new_category}>
+                                                        {
+                                                            newCategories.length > 0 ?
+                                                            newCategories.map((na, i) => <span className={styles.item_wrapper} key={i}>- { na }</span>) : <span>*list is empty</span>
+                                                        }
+                                                        </div>
+                                                        <button className={styles.update_btn} onClick={updateCategory}>update</button>
+                                                    </div>
                                                 </div>
-                                                <br/>
-                                                <br/>
-                                                <h3>Current Allergy List</h3>
-                                                <br/>
-                                                <div className={styles.curr_allergy}>
-                                                    {
-                                                        orderform.allergy.length < 1 ?
-                                                            <p>Empty</p> :
-                                                            orderform.allergy.map((allergy, i) => 
-                                                            <div className={styles.item_wrapper} style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                <span>{ allergy }</span><span>&nbsp;</span>
-                                                                <Modal btn_name='X' btn_style={{
-                                                                    border: 'none'
-                                                                }}>
-                                                                    <div className={styles.delete_allergy}>
-                                                                        <h2>Delete Allergy &quot;{ allergy }&quot;</h2>
-                                                                        <p>Do you really want to remove this allergy from your allergy list?</p>
-                                                                        <button onClick={() => deleteAllergy(allergy)}>confirm</button>
-                                                                    </div>
-                                                                </Modal>
-                                                            </div>
-                                                            )
-                                                    }
-                                                </div>  
                                             </div>
-
-                                            <br/>
-                                            <br/>
-
-                                            {/* Category */}
-                                            <div className={styles.category_container}>
-                                                <h2>Category</h2>
-                                                <br/>
-                                                <br/>
-                                                <h3>New Category List</h3>
-                                                <br/>
-                                                <div className={styles.new_category}>
-                                                    {
-                                                        newCategories.map((na, i) => <span className={styles.item_wrapper} key={i}>{ na }</span>)
-                                                    }
-                                                    <form onSubmit={addCategory}>
-                                                        <input type='text' placeholder='category name' required/><span>&nbsp;</span>
-                                                        <button>add category</button>
-                                                    </form>
-                                                </div>
-                                                <br/>
-                                                <div>
-                                                    <button onClick={updateCategory}>update</button><span>&nbsp;</span>
-                                                    <button className={styles.reset_btn} onClick={() => setNewCategories([])}>reset</button>
-                                                </div>
-                                                <br/>
-                                                <br/>
-                                                <h3>Current Category List</h3>
-                                                <br/>
-                                                <div className={styles.curr_category}>
-                                                    {
-                                                        orderform.category.length < 1 ?
-                                                            <p>Empty</p> :
-                                                            orderform.category.map((category, i) => 
-                                                            <div style={{ display: 'flex', alignItems: 'center' }} key={i}>
-                                                                <span className={styles.item_wrapper}>{ category }</span><span>&nbsp;</span>
-                                                                <Modal btn_name='delete' color='white' backgroundColor='crimson'>
-                                                                    <div className={styles.delete_category}>
-                                                                        <h2>Delete Category &quot;{ category }&quot;</h2>
-                                                                        <p>
-                                                                            Do you really want to remove this category from your category list? All the items associated with the 
-                                                                            category will be deleted as well.
-                                                                        </p>
-                                                                        <button onClick={() => deleteCategory(category)}>confirm</button>
-                                                                    </div>
-                                                                </Modal>
-                                                            </div>
-                                                            )
-                                                    }
-                                                </div>
-                                            </div>
-
+                                            
                                             <br/>
                                             <br/>
 
