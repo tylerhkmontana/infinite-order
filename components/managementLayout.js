@@ -6,7 +6,7 @@ import styles from './styles/managementLayout.module.scss'
 import Head from 'next/head'
 
 export default function ManagementLayout({ children }) {
-    const {user, isLoading, logout} = useAuthContext()
+    const {user, isLoading } = useAuthContext()
     const router = useRouter()
 
     useEffect(() => {
@@ -23,7 +23,6 @@ export default function ManagementLayout({ children }) {
             {
                 isLoading ? <div>Loading...</div> :
                 <main className={styles.container}>
-                    <button className={styles.logout_btn} onClick={logout}>logout</button> 
                     { children }
                 </main> 
             }

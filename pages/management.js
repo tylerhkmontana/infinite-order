@@ -11,7 +11,7 @@ import Modal from '../components/modal'
 
 export default function Management() {
     const router = useRouter()
-    const { user, isAuthenticated } = useAuthContext()
+    const { user, isAuthenticated, logout } = useAuthContext()
     const [isLoading, setIsLoading] = useState(true)
     const [orderform, setOrderform] = useState(null)
     const [newAllergies, setNewAllergies] = useState([])
@@ -510,8 +510,12 @@ export default function Management() {
                 user ?  
                 <div className={styles.dashboard}>
                     <div className={styles.profile}>
+                        <div className={styles.profile_btn_group}>
+                            <Link href='/'><a>Home </a></Link>
+                            <span>|</span>
+                            <a href='#' onClick={logout}>Logout</a>
+                        </div>
                         <h3>[Management Page]</h3>
-                        <Link href='/'><a>Home &rarr;</a></Link>
                     </div>
                     {
                         isLoading ? 
