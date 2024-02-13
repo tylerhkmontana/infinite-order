@@ -1,13 +1,39 @@
 @import './libs/theme.scss';
 
-.update_btn, .reset_btn {
-    width: 100px;
+.orderpad_container {
+    display: flex;
+    flex-direction: column;
+
+    .orderpad_route_container {
+        align-self: flex-end;
+        display: flex;
+        gap: 5px;
+
+        button {
+            padding: 0;
+            background-color: transparent;
+            border: none;
+        }
+
+        .reset_btn {
+            color: crimson;
+        }
+    }
 }
 
-.reset_btn {
-    background-color: red;
-    color: white;
+.curr_orderform {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+
+    p {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        justify-content: space-between;
+    }
 }
+
 .category_container, .item_container {
     display: flex;
     flex-wrap: wrap;
@@ -17,7 +43,7 @@
 .category_container {
     button {
         border: 3px solid black;
-        padding: 15px;
+        padding: 5px 20px;
 
         &:hover {
             background-color: black;
@@ -27,6 +53,7 @@
 }
 
 .item {
+    color: black;
     display: flex;
     align-items: center;
     background-color: $component_color;

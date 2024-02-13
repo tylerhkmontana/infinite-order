@@ -511,7 +511,7 @@ export default function Management() {
                 <div className={styles.dashboard}>
                     <div className={styles.profile}>
                         <div className={styles.profile_btn_group}>
-                            <Link href='/'><a>Home </a></Link>
+                            <Link href='/'><a>Home</a></Link>
                             <span>|</span>
                             <a href='#' onClick={logout}>Logout</a>
                         </div>
@@ -532,9 +532,9 @@ export default function Management() {
                                             {/* Delete Orderform */}
 
                                             <div className={styles.business_name}>
-                                                <p><strong>[User Name]</strong> { user.name }</p>
-                                                <p><strong>[Business Name]</strong> { orderform.businessName }</p>
-                                                <p><strong>[Orderform Id]</strong> { orderform.id }</p>
+                                                <p><strong>User Name</strong> { user.name }</p>
+                                                <p><strong>Business Name</strong> { orderform.businessName }</p>
+                                                <p><strong>Orderform Id</strong> { orderform.id }</p>
                                                 <br/>
                                                 <Modal btn_style={{border: 'none', color: 'crimson', backgroundColor: 'transparent', padding: 0,}} btn_name='Delete Current Orderform'>
                                                     <div className={styles.delete_orderform}>
@@ -549,10 +549,10 @@ export default function Management() {
                                             <div className={styles.allergy_category_container}>
                                                     {/* Allergy */}
                                                 <div className={styles.allergy_container}>
-                                                    <h2>Allergy Chart</h2>
+                                                    <h1>ALLERGENS</h1>
                                                     <br/>
                                                     <br/>
-                                                    <h3>Current Allergy List</h3>
+                                                    <h3>List of allegens</h3>
                                                     <div className={styles.curr_allergy}>
                                                         {
                                                             orderform.allergy.length < 1 ?
@@ -577,11 +577,11 @@ export default function Management() {
                                                     </div>
                                                     <br/>
                                                     <br/> 
-                                                    <h3>Update new allergy</h3>
+                                                    <h3>Update allegens</h3>
                                                     <div className={styles.update_allergy}>
                                                         <form className={styles.add_allergy} onSubmit={addAllergy}>
                                                             <input type='text' placeholder='new allergy' required/>
-                                                            <button>add allergy</button>
+                                                            <button>add</button>
                                                             <button className={styles.reset_btn} onClick={() => setNewAllergies([])}>reset</button>
                                                         </form>
                                                         <div className={styles.new_allergy}>
@@ -590,13 +590,14 @@ export default function Management() {
                                                             newAllergies.map((na, i) => <span className={styles.item_wrapper} key={i}>- { na }</span>) : <span>*list is empty</span>
                                                         }
                                                         </div>
+                                                        <br/>
                                                         <button className={styles.update_btn} onClick={updateAllergy}>update</button>
                                                     </div>
                                                 </div>
 
                                                 {/* Category */}
                                                 <div className={styles.category_container}>
-                                                    <h2>Category</h2>
+                                                    <h1>CATEGORY</h1>
                                                     <br/>
                                                     <br/>
                                                     <h3>Current Category List</h3>
@@ -627,11 +628,11 @@ export default function Management() {
                                                     </div>
                                                     <br/>
                                                     <br/>
-                                                    <h3>Update new category</h3>
+                                                    <h3>Update category</h3>
                                                     <div className={styles.update_category}>
                                                         <form className={styles.add_category} onSubmit={addCategory}>
                                                             <input type='text' placeholder='new category' required/>
-                                                            <button>add category</button>
+                                                            <button>add</button>
                                                             <button className={styles.reset_btn} onClick={() => setNewCategories([])}>reset</button>
                                                         </form>
                                                         <div className={styles.new_category}>
@@ -640,6 +641,7 @@ export default function Management() {
                                                             newCategories.map((na, i) => <span className={styles.item_wrapper} key={i}>- { na }</span>) : <span>*list is empty</span>
                                                         }
                                                         </div>
+                                                        <br/>
                                                         <button className={styles.update_btn} onClick={updateCategory}>update</button>
                                                     </div>
                                                 </div>
@@ -650,13 +652,18 @@ export default function Management() {
 
                                             {/* Item */}
                                             <div className={styles.item_container}>
-                                                <h2>Item</h2>
+                                                <h1>ITEM</h1>
                                                 <br/>
-                            
+                                                <br/>
+                                                
+                                                <h2>
+                                                    { newItem.id ? 'Add Item' : 'Update Item' }
+                                                </h2>
+                                                <br/>
                                                 <div className={styles.manage_items}>
-
                                                 {/* Select Category */}
-                                                <h3>Select Category</h3>
+                                                <h3>Category</h3>
+                                                <br/>
                                                 <div className={styles.select_category}>    
                                                     {
                                                         orderform.category.map((category, i) => 
@@ -694,24 +701,22 @@ export default function Management() {
                                                     }
                                                 </div>
                                                 <br/>
-
+                                                <br/>
                                                 {/* Selected Item */}
                                                 {
                                                     selectedCategory && 
                                                     <form onSubmit={(e) => newItem.id ? updateItem(e) : addItem(e)} className={styles.newItem_form}>
-                                                        <h3>{
-                                                            newItem.id ? 'Update Item' : 'Add New Item'
-                                                        }</h3>
-
                                                         {/* Basic information of the item */}
+                                                        <br/>
+                                                        <h3>Item Properties</h3>
                                                         <div className={styles.item_basic_info}>
                                                             <div className={styles.input_container}>
-                                                                <label><strong>Category:</strong></label>
+                                                                <label><strong>Category</strong></label>
                                                                 <p style={{textTransform: 'capitalize'}}>{ selectedCategory }</p>
                                                             </div>
                                                             
                                                             <div className={styles.input_container}>
-                                                                <label><strong>[Name]</strong></label>
+                                                                <label><strong>Name</strong></label>
                                                                 <input onChange={(e) => setNewItem(prev => ({
                                                                     ...prev,
                                                                     name: e.target.value
@@ -719,7 +724,7 @@ export default function Management() {
                                                             </div>
                                                         
                                                             <div className={styles.input_container}>
-                                                                <label><strong>[Price]</strong></label>
+                                                                <label><strong>Price</strong></label>
                                                                 <input onChange={(e) => setNewItem(prev => ({
                                                                     ...prev,
                                                                     price: Number(e.target.value)
@@ -727,7 +732,7 @@ export default function Management() {
                                                             </div>
                                                             
                                                             <div className={styles.input_container}>
-                                                                <label><strong>[Food Description]</strong></label>
+                                                                <label><strong>Food Description</strong></label>
                                                                 <textarea onChange={(e) => setNewItem(prev => ({
                                                                     ...prev,
                                                                     description: e.target.value
@@ -735,17 +740,17 @@ export default function Management() {
                                                             </div>
                                                     
                                                             <div className={styles.input_container}>
-                                                                <label><strong>[Button Color]</strong></label>
+                                                                <label><strong>Button Color</strong></label>
                                                                 <input onChange={(e) => setNewItem(prev => ({
                                                                     ...prev,
                                                                     color: e.target.value
                                                                 }))} value={newItem.color} type='color'/>
                                                             </div>
                                                         </div>
-                                                            
+                                                        <br/>
                                                         {/* Allergy information of the item */}
+                                                        <h3>Allergens</h3>
                                                         <div className={styles.item_allergy}>
-                                                            <h4>Allergy</h4>
                                                             <div className={styles.allergy_list}>
                                                                 {
                                                                     orderform.allergy.map((allergy, i) => 
@@ -756,77 +761,80 @@ export default function Management() {
                                                                 }
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <h4>Options</h4>
-                                                            <br/>
-                                                            <div>
-                                                                {
-                                                                    newItem.options.length > 0 ? 
-                                                                    <div>
-                                                                        {
-                                                                            newItem.options.map((option, i) => 
-                                                                                <p key={i}>- { option.name }(+${ option.charge })</p>
-                                                                            )
-                                                                        }
-                                                                    </div> :
-                                                                    <div>
-                                                                        No option added.
-                                                                    </div>
-                                                                }
-                                                                <br/>
+                                                        <br/>
+                                                        {/* Additional options of the ite  */}
+                                                        <h3>Options</h3>
+                                                        <div className={styles.item_option}>
+                                                            {
+                                                                newItem.options.length > 0 ? 
+                                                                <div>
+                                                                    {
+                                                                        newItem.options.map((option, i) => 
+                                                                            <p key={i}>- { option.name }(+${ option.charge })</p>
+                                                                        )
+                                                                    }
+                                                                </div> :
+                                                                <div>
+                                                                    - No option added.
+                                                                </div>
+                                                            }
+                                                            <div className={styles.input_container}>
                                                                 <label>Option Name: </label>
                                                                 <input onChange={e => setNewOption(prev => ({...prev, name: e.target.value}))} type='text' placeholder='option name' value={newOption.name}/>
-                                                                <br/>
-                                                                <label>Option Charge: </label>
+                                                            </div>
+                                                            <div className={styles.input_container}>
+                                                                <label>Option Price: </label>
                                                                 <input onChange={e => setNewOption(prev => ({...prev, charge: Number(e.target.value)}))} type='number' placeholder='option charge' value={newOption.charge}/>
-                                                                <br/>
-                                                                <br/>
-                                                                <button type='button' onClick={addOption}>add option</button><span>&nbsp;</span>
+                                                            </div>
+                                                            
+                                                            <div className={styles.btn_container}>
+                                                                <button type='button' onClick={addOption}>add option</button>
                                                                 <button className={styles.reset_btn} type='button' onClick={() => setNewItem(prev => ({...prev, options: []}))}>reset</button>
                                                             </div>
-                                                            <br/>
                                                         </div>
                                                         <br/>
-                                                        <hr/>
-                                                        <br/>
-                                                        <button className={styles.add_item_btn} type='submit'>Add Item</button>
+                                                        <button className={styles.add_item_btn} type='submit'>{ newItem.id ? 'Update Item' : 'Add Item' }</button>
                                                     </form>
                                                 }
                                                 </div>                                          
-                                               
-                                                <br/>
-                                                <br/>
-                                                <br/>
-                                                {
+                                            </div>
+
+                                            <br/>
+                                            <br/>
+
+                                            {/* Re-order items in a category */}
+                                            {
                                                     selectedCategory &&
-                                                    <div>
-                                                        <h3>Reorganize the order of the items</h3>
+                                                    <div className={styles.reorganize_container}>
+                                                        <h2>Order of Items in {selectedCategory}</h2>
                                                         <br/>
-                                                        <br/>
-                                                        <h4>Current Order of the items</h4>
-                                                        <br/>
-                                                        <div className={styles.curr_item_order}>
-                                                        {
-                                                            currItemOrder.map((item, i) => <span className={styles.item_wrapper} onClick={() => reorganizeItemOrder(item)} key={i}>{ item.name }</span>)
-                                                        }
+
+                                                        <div>
+                                                            <h3>Current Order of the items</h3>
+                                                            <br/>
+                                                            <div className={styles.curr_item_order}>
+                                                            {
+                                                                currItemOrder.map((item, i) => <span className={styles.item_wrapper} style={{ backgroundColor: item.color }} onClick={() => reorganizeItemOrder(item)} key={i}>{ item.name }</span>)
+                                                            }
+                                                            </div>
                                                         </div>
-                                                        <br/>
-                                                        <h4>New Order of the items</h4>
-                                                        <br/>
-                                                        <div className={styles.new_item_order}>
-                                                        {
-                                                            newItemOrder.map((item, i) => <span className={styles.item_wrapper} key={i}>{ item.name }</span>)
-                                                        }
-                                                        </div>
-                                                        <br/>
                                                         <br/>
                                                         <div>
+                                                            <h3>New Order of the items</h3>
+                                                            <br/>
+                                                            <div className={styles.new_item_order}>
+                                                            {
+                                                                newItemOrder.map((item, i) => <span className={styles.item_wrapper} style={{ backgroundColor: item.color }} key={i}>{ item.name }</span>)
+                                                            }
+                                                            </div>
+                                                        </div>
+                                                
+                                                        <div className={styles.btn_container}>
                                                             <button onClick={updateItemOrder}>update</button><span>&nbsp;</span>
                                                             <button className={styles.reset_btn} onClick={resetItemOrder}>reset</button>
                                                         </div>
                                                     </div>
                                                 }
-                                            </div>
                                         </div>
                                 }
                             </div>

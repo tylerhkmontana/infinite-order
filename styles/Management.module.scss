@@ -9,10 +9,6 @@
     color: white;
 }
 
-.add_item_btn {
-    width: 200px;
-    padding: 10px 20px;
-}
 
 .dashboard {
     display: flex;
@@ -23,7 +19,7 @@
 .profile {
     display: flex;
     flex-direction: column;
-
+    
     .profile_btn_group {
         align-self: flex-end;
         display: flex;
@@ -45,9 +41,7 @@
 }
 
 .initialize_orderform {
-    border: 3px solid black;
     padding: 20px;
-    border-radius: 5px;
     margin-top: 100px;
     width: 500px;
     align-self: flex-start;
@@ -55,7 +49,7 @@
     flex-direction: column;
     align-items: center;
     gap: 50px;
-
+    
     & > h2, & > p {
         text-align: center;
     }
@@ -75,13 +69,13 @@
     align-items: center;
     justify-content: space-between;
     gap: 30px;
-
+    
     button {
         color: crimson;
         border-color: crimson;
         padding: 5px;
     }
-
+    
     @include breakpoint(mobile) {
         width: 80vw;
     }
@@ -93,19 +87,21 @@
 .allergy_category_container {
     display: flex;
     gap: 10px;
+
+    @include breakpoint(mobile) {
+        flex-direction: column;
+    }
 }
 
 .allergy_container, .category_container {
     flex: 1;
-
+    
     .update_btn {
         width: 100%;
     }
 }
 
-.allergy_container, .category_container, .item_container, .business_name {
-    // border: 3px solid black;
-    border-radius: 5px;
+.allergy_container, .category_container, .item_container, .business_name, .reorganize_container {
     padding: 20px;
     background-color: $component_color;
     -webkit-box-shadow: 10px 10px 12px -4px rgba(173,173,173,1);
@@ -118,24 +114,21 @@
 }
 
 .curr_allergy, .curr_category {
-    border: 3px solid black;
     display: flex;
     flex-direction: column;
     height: 300px;
     overflow-y: auto;
     background-color: white;
-    border-radius: 5px;
     padding: 10px;
 }
 
 .update_allergy, .update_category {
     display: flex;
     flex-direction: column;
-    border: 3px solid black;
-    padding: 20px;
+    background-color: white;
+    padding: 10px;
     gap: 10px;
     justify-content: space-between;
-    border-radius: 5px;
 }
 
 .new_allergy, .new_category {
@@ -153,11 +146,6 @@
     }
 }
 
-.manage_items {
-    border: 3px solid black;
-    padding: 20px;
-    border-radius: 5px;
-}
 .select_category {
     display: flex;
     flex-wrap: wrap;
@@ -171,8 +159,6 @@
     max-height: 300px;
     overflow-y: auto;
     background-color: white;
-    border: 3px solid black;
-    border-radius: 5px;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -184,7 +170,6 @@
         align-items: center;
         padding: 5px 10px;
         gap: 10px;
-        border-radius: 5px;
     }
 
     .update_btn {
@@ -199,23 +184,35 @@
 .newItem_form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: stretch;
+    gap: 30px;
 }
 
-.item_basic_info, .item_allergy {
+.item_basic_info, .item_allergy, .item_option {
     display: flex;
     flex-direction: column;
-    max-width: 500px;
+    background-color: white;
+    padding: 10px;
     gap: 10px;
-    border: 3px solid black;
-    padding: 20px;
-    border-radius: 5px;
 
     .input_container {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 20px;
+
+        input, label, textarea {
+            flex: 1;
+            min-height: 40px;
+        }
+    }
+
+    .btn_container {
+        display: flex;
+        gap: 10px;
+        button {
+            flex: 1;
+        }
     }
 }
 
@@ -225,18 +222,36 @@
     height: 300px;
     background-color: white;
     overflow-y: auto;
-    border: 3px solid black;
-    padding: 20px;
+    padding: 10px;
 }
 
-.curr_item_order {
-    .item_wrapper { 
-        cursor: pointer;
+.add_item_btn {
+    padding: 10px 20px;
+}
+
+.reorganize_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .btn_container {
+        display: flex;
+        
+        button {
+            flex: 1;
+        }
     }
 }
 
-.newItem_form {
-    border: 3px solid black;
-    border-radius: 10px;
-    padding: 20px;
+.curr_item_order, .new_item_order {
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .item_wrapper { 
+        cursor: pointer;
+        padding: 5px 10px;
+    }
 }

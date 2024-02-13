@@ -24,7 +24,7 @@ export default function Server() {
 
     // Local 
     function secToDate(sec) {
-        return String(new Date(sec * 1000))
+        return String(new Date(sec * 1000)).split(" ").slice(0, 5).join(' ')
     }
 
     function clearOrderform() {
@@ -71,8 +71,14 @@ export default function Server() {
         <ServerLayout>
             {
                 isLoading ? <div>Downloading orderform from the server...</div> :
-                <div>
-                    <Link href='/'><a>Home &rarr;</a></Link>
+                <div className={styles.orderpad_container}>
+                    <div className={styles.orderpad_route_container}>
+                        <Link href='/'><a>Home</a></Link>
+                        <span>|</span>
+                        <button className={styles.update_btn} onClick={getOrderform}>update</button>
+                        <span>|</span>
+                        <button className={styles.reset_btn} onClick={clearOrderform}>reset</button>
+                    </div>
                 {
                     !orderform ? 
                     <form onSubmit={getOrderform}>
@@ -85,23 +91,16 @@ export default function Server() {
                         <button type='submit'>get orderform</button>
                     </form> :
                     <div className={styles.curr_orderform}>
-                        <h2>Current Orderform</h2>
+                        <p><strong>Business Name</strong> { orderform.businessName }</p>
+                        <p><strong>Orderform Id</strong> { orderform.id }</p>
+                        <p><strong>Last Updated Date</strong> { secToDate(orderform.updated.seconds) }</p>
                         <br/>
-                        <p><strong>Business Name:</strong> { orderform.businessName }</p>
-                        <p><strong>Orderform Id:</strong> { orderform.id }</p>
-                        <p><strong>Last Updated Date:</strong> { secToDate(orderform.updated.seconds) }</p>
-                        <br/>
-                        <button className={styles.update_btn} onClick={getOrderform}>update</button><span>&nbsp;</span>
-                        <button className={styles.reset_btn} onClick={clearOrderform}>reset</button>
                     </div>
                 }
-                <br/>
                 <br/>
                 {
                     orderform &&
                     <div className={styles.orderform}>
-                         <h1>Orderpad</h1>
-                        <br/>
                         <div className={styles.category_container}> 
                             {
                                 orderform.category.map((category, i) => 
@@ -115,7 +114,6 @@ export default function Server() {
                             }
                         </div>
                         <br/>
-                        <br/>
                         <div className={styles.item_container}>
                             {
                                 orderform.item.map((item, i) => item.category === selectedCategory &&
@@ -123,7 +121,7 @@ export default function Server() {
                                         <span>{ item.name } ${ item.price }&nbsp;</span>
                                         {
                                             item.options.length > 0 &&
-                                            <Modal btn_name='options'>
+                                            <Modal btn_name='option' btn_style={{ backgroundColor: 'white', padding: '0.5px 5px', marginLeft: 2 }}>
                                                 <div className={styles.item_options}>
                                                     <h4>Options</h4>
                                                     <br/>

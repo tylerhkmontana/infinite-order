@@ -26,7 +26,7 @@ export default function serverLayout({ children, title }) {
                     { children }
                 </motion.main>
                 <div className={styles.nav}>
-                    <Link href="/server"><a>Home</a></Link>
+                    <Link href="/server"><a>Order Pad</a></Link>
                     <hr/>
                     <Link href="/server/tables"><a>Orders</a></Link>
                 </div>
