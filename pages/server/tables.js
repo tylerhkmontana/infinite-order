@@ -124,7 +124,7 @@ export default function Tables() {
                         <button>create</button>
                     </form>
                 </Modal>
-                <Modal btn_name='Clear Tables' color='white' backgroundColor='red'>
+                <Modal btn_name='Clear Tables' btn_style={{ borderColor: 'crimson', color: 'crimson' }}>
                     <form className={styles.clear_tables}>
                         <h3>Clear Tables</h3>
                         <p>All of your table informations will be deleted from your device storage. Do you really want to do this?</p>
@@ -198,7 +198,7 @@ export default function Tables() {
                                     </div>
                                 </Link>
 
-                                <Modal btn_name='delete' color='white' backgroundColor='red'>
+                                <Modal btn_name='delete' btn_style={{ borderColor: 'crimson', color: 'crimson' }}>
                                     <form onSubmit={() => removeTable(tableId)} className={styles.remove_table}>
                                         <h3>Remove the table</h3>
                                         <p>Do you really want to remove this table?</p>

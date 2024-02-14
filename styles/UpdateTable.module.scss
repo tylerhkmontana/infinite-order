@@ -46,9 +46,8 @@
 }
 
 .table_allergies {
-    border: 3px solid black;
+    background-color: $component_color;
     padding: 20px;
-    border-radius: 15px;
     max-width: 500px;
 }
 
@@ -56,7 +55,7 @@
     overflow-x: auto;
 }
 
-.category_container, .item_container {
+.category_container {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -64,12 +63,12 @@
 }
 
 .category_container {
-    @include breakpoint(mobile) {
-        width: 400px;
-    }
+    // @include breakpoint(mobile) {
+    //     width: 400px;
+    // }
     button {
         border: 3px solid black;
-        padding: 15px;
+        padding: 5px 10px;
 
         &:hover {
             background-color: black;
@@ -79,17 +78,20 @@
 }
 
 .item_container {
-    @include breakpoint(mobile) {
-        width: 800px;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    height: 150px;
+    overflow-y: auto;
 }
 
 .item {
     & > button {
+        width: 100%;
         border: none;
         background-color: $component_color;
-        border-radius: 0;
-        padding: 15px 10px;
+        padding: 5px 10px;
     }
 }
 
@@ -107,9 +109,8 @@
 }
 
 .curr_order, .table_status {
-    border: 3px solid black;
     padding: 20px;
-    border-radius: 10px;
+    background-color: $component_color;
     display: flex;
     flex-direction: column;
     max-width: 500px;
@@ -124,7 +125,6 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    border-radius: 10px;
     width: 75px;
     border-color: crimson;
     color: crimson;
@@ -138,7 +138,7 @@
 
     button {
         border: 1px solid;
-        border-radius: 5px;
+        padding: 1px 10px;
     }
 }
 
@@ -148,8 +148,7 @@
 }
 
 .place_order_btn {
-    border-radius: 10px;
-    padding: 15px 10px;
+    padding: 5px 10px;
 }
 
 .table_status {

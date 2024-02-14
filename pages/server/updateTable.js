@@ -69,6 +69,11 @@ export default function UpdateTable() {
         setCurrOrder([...updatedOrder])
     }
 
+    function increaseItem(targetItem) {
+        let updatedOrder = currOrder.map(item => item.name === targetItem.name ? ({...item, quantity: item.quantity + 1}) : item)
+        setCurrOrder([...updatedOrder])
+    }
+
     function removeItem(targetItem) {
         let updatedOrder = currOrder.map(item => item.name === targetItem.name ? ({...item, quantity: 0}) : item)
         setCurrOrder([...updatedOrder])
@@ -81,7 +86,7 @@ export default function UpdateTable() {
             items: currOrder.filter(item => item.quantity > 0)
         }
 
-        if(typeof window !== 'undefined') {
+        if(typeof window !== 'undefined' && newOrder.items.length > 0) {
             let tables = JSON.parse(window.localStorage.getItem('tables'))
             tables[table.tableId].orders.push(newOrder)
 
@@ -146,7 +151,7 @@ export default function UpdateTable() {
                                 <h3>arrived at { table.arrival }</h3>
                             </div>
                             <div className={styles.allergy_event_setting}>
-                                <Modal btn_name='Allergy Setting' backgroundColor="crimson" color="white">
+                                <Modal btn_name='allergy' backgroundColor="crimson" color="white">
                                     <form onSubmit={updateAllergy} className={styles.allergy_chart}>
                                         <h3>Allergy Chart</h3>
                                         <div className={styles.allergy_container}>
@@ -162,11 +167,11 @@ export default function UpdateTable() {
                                         <button>update</button>
                                     </form>
                                 </Modal>
-                                <Modal btn_name='event setting'>
+                                <Modal btn_name='occasion'>
                                     <form onSubmit={updateEvent} className={styles.event_setting}>
-                                        <h3>Event Setting</h3>
+                                        <h3>Occasion</h3>
                                         <div>
-                                            <label>Event: </label>
+                                            <label>Occasion: </label>
                                             <input onChange={e => setEvent(e.target.value)} type='text' value={event}/>
                                         </div>
                                         <button>update</button>
@@ -177,19 +182,19 @@ export default function UpdateTable() {
                         <br/>
                         <br/>
                       
-                        {
-                            table.event && <h3>Event: { table.event }</h3>
-                        }
-
                         <br/>
                         <div className={styles.table_allergies}>
-                            <h4>Table Allergies</h4>
-                            <br/>
-                            {   
-                                table.allergies.length > 0 ?
-                                table.allergies.map((allergy, i) => <span key={i}>{ i > 0 ? `, ${allergy}` : allergy }</span>) :
-                                <p>No allergy.</p>
+                            {
+                                table.event ?  <h3>{ table.event }</h3> : <h3>no special occasion</h3>
                             }
+                            <hr/>
+                            <h3>
+                                {   
+                                    table.allergies.length > 0 ?
+                                    table.allergies.map((allergy, i) => <span key={i}>{ i > 0 ? `, ${allergy}` : allergy }</span>) :
+                                    <span>no allergy</span>
+                                }
+                            </h3>
                         </div>
                         <br/>
                         <br/>
@@ -254,7 +259,7 @@ export default function UpdateTable() {
                             {
                                 currOrder.length > 0 &&
                                 <div className={styles.curr_order}>
-                                    <button onClick={() => setCurrOrder([])} className={styles.reset_btn}>reset</button>
+                                    <button onClick={() => setCurrOrder([...orderform.item.map(item => ({...item, quantity: 0, delivered: false}))])} className={styles.reset_btn}>reset</button>
                                     <h3>New Order</h3>
                                     <br/>
                                     {
@@ -262,7 +267,11 @@ export default function UpdateTable() {
                                             <div className={styles.added_item} key={i}>
                                                 <button onClick={() => removeItem(item)} className={styles.remove_item_btn}>X</button>
                                                 <p>{ item.name } X { item.quantity }</p>
-                                                <button onClick={() => decreaseItem(item)}>-</button>
+                                                <div>
+                                                    <button onClick={() => decreaseItem(item)}>-</button>
+                                                    <span>&nbsp;</span>
+                                                    <button onClick={() => increaseItem(item)}>+</button>
+                                                </div>
                                             </div>
                                         )
                                     }
@@ -273,7 +282,7 @@ export default function UpdateTable() {
                             }
                             <br/>
                             <br/>
-                            <h2>Table Status</h2>
+                            <h2>Order History</h2>
                             <br/>
                             {   
                                 table.orders.length < 1 ? 
@@ -286,7 +295,7 @@ export default function UpdateTable() {
                                             order.items.map((item, i) => <p style={{ textDecoration: item.delivered && 'line-through red' }} key={i}>{ item.name } X { item.quantity }</p>)
                                         }
                                         <br/>
-                                        <p><i>placed at { order.updatedAt }</i></p>
+                                        <p><i>{ order.updatedAt }</i></p>
                                     </div>
                                 )   
                             }  
