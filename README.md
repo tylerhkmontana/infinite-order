@@ -10,6 +10,9 @@ npm run dev
 yarn dev
 ```
 
+![chrome-capture-2024-2-21](https://github.com/tylerhkmontana/infinite-order/assets/63427616/97a28207-3947-47f8-8717-f18f9c946685)
+
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
