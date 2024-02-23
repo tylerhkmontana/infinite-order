@@ -1,6 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Infinite Order
 
-## Getting Started
+![icon-192x192](https://github.com/tylerhkmontana/infinite-order/assets/63427616/4a47b431-ba98-42c2-af1e-734914152349)
+
+
+Online order pad that does everything a paper order pad does paperlessly in an intutively designed user interface and more things that only a digital solution can offer. A business owner can create a customized order pad for the business and the servers can download the order pad to their mobile device simply through an unique id of the order pad. With `Infinite Order`, you don't need to squeeze your writtings into a small pocket-size paper and don't need to flip through pages to keep a track of each table and get confused. 
+
+Take the full control over your table management and deliver a perfect dining service!
+
+
+## Getting 
+Started
 
 First, run the development server:
 
