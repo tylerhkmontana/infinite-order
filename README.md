@@ -18,4 +18,24 @@ Take the full control over your table management and deliver a perfect dining se
 
 ## Usage
 
+When you access the main page of the website there are two main routes you can access, which are `management` and `server`. Simply put, in the `management` route you can create and modify an order pad for your business, and a server at your business can download the order pad from `sever` route and use it. 
+
+![chrome-capture](https://github.com/tylerhkmontana/infinite-order/assets/63427616/40f70478-d1cc-43a7-b8ae-78d623725451)
+
+### Management
+This is where you create and manage an order pad for your business
+
+
+#### 1. Login 
+You can login with your google account 
+![chrome-capture (1)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/7495e15e-9878-4cd3-968d-48f8b2a08b7f)
+
+#### 2. Initialize
+If you have not created your order pad, you can initialize one with your business name.
+![chrome-capture-2024-2-29 (1)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/32e5412a-75be-467b-9539-17bf58006718)
+
+#### 3. Order Pad Architecture
+An order pad has mainly three components, `Category`, `Allergen`, and `Item`. A `category` is different section of a menu such as **appetizers**, **entrées**, **desserts**, and **drinks**. Each `category` consists of `items` that fall under the same category. For example, a category, `"appetizers"`, can possibly contain items like **french fries**, **nachos**, **guacamole**, and **spinach dips**. An `allergen` is an ingredient that an `item` contain that can possibly be an allergen to a customer. You can create a list of allergens and select them when you create an item when the allergens are included in the item.
+
+
 
