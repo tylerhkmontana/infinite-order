@@ -69,14 +69,36 @@ You can delete the order pad and create a new one. Be cautious that deleting ord
 This is where a server downloads the order pad from a unique id of the order pad, and manage orders during the dining service.
 
 #### 1. Download the order pad
+A server can download the order pad by typing in the unique id of the order pad provided the management. 
+![chrome-capture-2024-3-1](https://github.com/tylerhkmontana/infinite-order/assets/63427616/bdef9623-6aa6-45bc-b1a8-b6d28a262b2b)
+
 #### 2. Order Pad
+This is an overview of the order pad that a server will be utilizing. On the `order pad` page you can access the menu in POS style, and on the `orders` page you can manage each table you are currently serving. 
+
+![chrome-capture-2024-3-1 (1)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/0a4ffbea-501e-40d5-834c-420294a8cb41)
+
 #### 3. Managing Orders
+You can create a table for each table you are serving in `orders` page and can manage your orders for the table from there.
 ##### a. Create a table
+![chrome-capture-2024-3-1 (2)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/7975f8ab-b0bb-4fe0-b862-bda7a0d5f3b6)
+
 ##### b. Table specification
+![chrome-capture-2024-3-1 (3)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/5c94c67b-efe4-47f9-8c13-a0ea4657d6e2)
+![chrome-capture-2024-3-1 (4)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/3056fa53-b790-47f2-97d5-800e7404503f)
+
 ##### c. Taking an order
+![chrome-capture-2024-3-1 (5)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/bdf02a0e-5db3-4594-9aaa-e912ea250886)
+![chrome-capture-2024-3-1 (6)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/19c92b30-1c2f-4df5-8d62-cb6a79bb8a62)
+
 ##### d. Table status
+![chrome-capture-2024-3-1 (7)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/92ef6340-968d-435d-af0f-68b567b7f857)
+
 ##### e. Delete or clear tables
+![chrome-capture-2024-3-1 (11)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/b8b669f3-83a9-47fa-9de1-fba5ffbcedb9)
+
 #### 4. Update or reset order pad
+![chrome-capture-2024-3-1 (9)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/1c6f2451-7170-4dd5-87a4-3d0564cebbae)
+![chrome-capture-2024-3-1 (10)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/e6711bda-2fcf-4409-8044-ebf4b84c9e4d)
 
 
 
