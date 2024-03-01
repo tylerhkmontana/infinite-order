@@ -16,6 +16,48 @@ Take the full control over your table management and deliver a perfect dining se
 [![sass logo](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
 [![sass logo](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 
+## Order Pad Architecture
+An order pad has mainly three components, `Category`, `Allergen`, and `Item`. A `category` is different section of a menu such as **appetizers**, **entrées**, **desserts**, and **drinks**. Each `category` consists of `items` that fall under the same category. For example, a category, `"appetizers"`, can possibly contain items like **french fries**, **nachos**, **guacamole**, and **spinach dips**. An `allergen` is an ingredient that an `item` contain that can possibly be an allergen to a customer. You can create a list of allergens and select them when you create an item when the allergens are included in the item.
+
 ## Usage
+
+When you access the main page of the website there are two main routes you can access, which are `management` and `server`. Simply put, in the `management` route you can create and modify an order pad for your business, and a server at your business can download the order pad from `sever` route and use it. 
+![chrome-capture](https://github.com/tylerhkmontana/infinite-order/assets/63427616/40f70478-d1cc-43a7-b8ae-78d623725451)
+
+
+### I. Management Page
+This is where you create and manage an order pad for your business
+
+#### 1. Login 
+You can login with your google account 
+![chrome-capture (1)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/7495e15e-9878-4cd3-968d-48f8b2a08b7f)
+
+#### 2. Initialize
+If you have not created your order pad, you can initialize one with your business name.
+![chrome-capture-2024-2-29 (1)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/32e5412a-75be-467b-9539-17bf58006718)
+
+#### 3. How to update your order pad
+##### a. Allergens and Category
+##### b. Items
+##### c. Order of items in the category
+
+#### 4. Delete the current order
+
+### II. Server Page
+This is where a server downloads the order pad from a unique id of the order pad, and manage orders during the dining service.
+
+#### 1. Download the order pad
+#### 2. Order Pad
+#### 3. Managing Orders
+##### a. Create a table
+##### b. Table specification
+##### c. Taking an order
+##### d. Table status
+##### e. Delete or clear tables
+#### 4. Update or reset order pad
+
+
+
+
 
 
