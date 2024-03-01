@@ -552,7 +552,7 @@ export default function Management() {
                                                     <h1>ALLERGENS</h1>
                                                     <br/>
                                                     <br/>
-                                                    <h3>List of allegens</h3>
+                                                    <h3>List of allergens</h3>
                                                     <div className={styles.curr_allergy}>
                                                         {
                                                             orderform.allergy.length < 1 ?
@@ -577,7 +577,7 @@ export default function Management() {
                                                     </div>
                                                     <br/>
                                                     <br/> 
-                                                    <h3>Update allegens</h3>
+                                                    <h3>Update allergens</h3>
                                                     <div className={styles.update_allergy}>
                                                         <form className={styles.add_allergy} onSubmit={addAllergy}>
                                                             <input type='text' placeholder='new allergy' required/>
