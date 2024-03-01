@@ -38,10 +38,32 @@ If you have not created your order pad, you can initialize one with your busines
 
 #### 3. How to update your order pad
 ##### a. Allergens and Category
-##### b. Items
-##### c. Order of items in the category
+You can add a list of allergens you want to update, and if you click update, your order pad is permanatly updated.
+![chrome-capture-2024-2-29 (2)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/96c583ca-bee7-41ae-9745-a89db862cc68)
 
-#### 4. Delete the current order
+You can update category in the same manner. As you can see below, when you update category, they appear in the section where you update items.
+![chrome-capture-2024-2-29 (3)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/074e5b39-e2f0-416c-8595-67bd72d7cf2e)
+
+
+##### b. Items
+First, you select the category that you want to create an item within, and fill out the information of the item.
+![chrome-capture-2024-2-29 (5)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/4c0b6d4e-3891-4859-8b0c-d8f2987fc307)
+
+**button color** is the color for the item that will appear on order pad. You can sub-categorize the item under the same category with a specific color based on such factor like how it is cooked (fried or steamed).
+
+Select any **allergen** that the item contains
+
+**option** is used for additional charge or special request where a customer ocassionally makes (Of course, you additional $1 for a ketch is a madness).
+
+![chrome-capture-2024-2-29 (6)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/b0fb0bec-1352-4496-bbdd-039a1e8e5a38)
+
+##### c. Order of items in the category
+Sometimes, you want the items to be in a specific order for efficiency, then you can re-organize the order of items from `Order of Item` section.
+![chrome-capture-2024-2-29 (8)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/6f8cf288-54cc-4326-87c8-c7f09a225c62)
+
+#### 4. Delete the current order pad
+You can delete the order pad and create a new one. Be cautious that deleting order pad will remove all the information you had associated with the previous order pad.
+![chrome-capture-2024-2-29 (9)](https://github.com/tylerhkmontana/infinite-order/assets/63427616/41d1c247-fb50-4042-8ba9-89c05123186f)
 
 ### II. Server Page
 This is where a server downloads the order pad from a unique id of the order pad, and manage orders during the dining service.
